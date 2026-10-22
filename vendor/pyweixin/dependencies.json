@@ -1,0 +1,67 @@
+{
+  "target": "CPython3.12-win_amd64",
+  "artifacts": [
+    {
+      "name": "pywinauto",
+      "version": "0.6.9",
+      "filename": "pywinauto-0.6.9-py2.py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/44/46/f2283648e0c237af451dc50ebc42121abfd198d12391fd9ad4df1c6b97d2/pywinauto-0.6.9-py2.py3-none-any.whl",
+      "sha256": "5924b3072864a1d730c5546bbeb17cf4063ba518b618dbc5e43c18276c7c9356",
+      "license_metadata": "BSD 3-clause",
+      "requires_dist": [
+        "six",
+        "python-xlib; platform_system == \"Linux\"",
+        "comtypes<=1.2.1; python_version <= \"3.6\"",
+        "pywin32<=227; python_version <= \"3.6\"",
+        "comtypes; python_version > \"3.6\" and sys_platform == \"win32\"",
+        "pywin32; python_version > \"3.6\" and sys_platform == \"win32\""
+      ],
+      "license_files": [
+        "licenses/pywinauto-0-LICENSE.txt"
+      ],
+      "installed": false
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "filename": "six-1.17.0-py2.py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "license_metadata": "MIT",
+      "requires_dist": null,
+      "license_files": [
+        "licenses/six-0-LICENSE.txt"
+      ],
+      "installed": false
+    },
+    {
+      "name": "comtypes",
+      "version": "1.4.13",
+      "filename": "comtypes-1.4.13-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/66/95/f30c80615fda0d3c0ee6493ac9db61183313b43499b62dec136773b0e870/comtypes-1.4.13-py3-none-any.whl",
+      "sha256": "21546210748ba52e839e52112124b16ffab7d7fb68096493165fbc249e9023ad",
+      "license_metadata": null,
+      "requires_dist": null,
+      "license_files": [
+        "licenses/comtypes-0-LICENSE.txt.txt"
+      ],
+      "installed": false
+    },
+    {
+      "name": "pywin32",
+      "version": "311",
+      "filename": "pywin32-311-cp312-cp312-win_amd64.whl",
+      "url": "https://files.pythonhosted.org/packages/d1/a8/a0e8d07d4d051ec7502cd58b291ec98dcc0c3fff027caad0470b72cfcc2f/pywin32-311-cp312-cp312-win_amd64.whl",
+      "sha256": "b8c095edad5c211ff31c05223658e71bf7116daa0ecf3ad85f3201ea3190d067",
+      "license_metadata": "PSF",
+      "requires_dist": null,
+      "license_files": [
+        "licenses/pywin32-0-LICENSE.txt",
+        "licenses/pywin32-1-LICENSE.txt",
+        "licenses/pywin32-2-LICENSE.txt",
+        "licenses/pywin32-3-LICENSE.txt"
+      ],
+      "installed": false
+    }
+  ]
+}

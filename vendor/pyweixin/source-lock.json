@@ -1,0 +1,76 @@
+{
+  "repository": "https://github.com/Hello-Mr-Crab/pywechat",
+  "commit": "8589baa049bb91d3a500602c167f07b2f8397a13",
+  "distribution": "pywechat127",
+  "declared_version": "1.9.8",
+  "module": "pyweixin",
+  "upstream_installed": false,
+  "files": [
+    {
+      "path": "LICENSE",
+      "git_blob": "9b6e30313936d022f00995e9885d9e5891a4598f",
+      "sha256": "49f2cf942857a38bcad3270a3b07c185e8bc302f3fb7ef3a3c9d2014438b6333",
+      "saved": "upstream/LICENSE"
+    },
+    {
+      "path": "src/setup.py",
+      "git_blob": "f71ec309f4eb5be7b666ecdb380aaea2767fe599",
+      "sha256": "1fe849cf4e6789239bc71d318e9f6c18192c87bde63122d6057e797322fb8086",
+      "saved": "upstream/src/setup.py"
+    },
+    {
+      "path": "src/setup.cfg",
+      "git_blob": "7d3f8f95b603dbe50e3383d2c7c435209f6855a0",
+      "sha256": "288a07705f3c4ee829440f5091d5940060264a8a749ffc9016f4b2a3bb5fb45c",
+      "saved": "upstream/src/setup.cfg"
+    },
+    {
+      "path": "src/pyproject.toml",
+      "git_blob": "f80f5212b366007f84422821bac07815fa35e23d",
+      "sha256": "7cdbfcc226b756b522f359aeba2fac9bc4d657d68f6862faa4a5a6fd30e77bfe",
+      "saved": "upstream/src/pyproject.toml"
+    },
+    {
+      "path": "src/requirements.txt",
+      "git_blob": "ff7a15f7b4156617a0f2efd77fa3dea2ebb2f543",
+      "sha256": "098d022dd421333f6ae523ac93722ae896c28569d32155511a65240f2ade4b96",
+      "saved": "upstream/src/requirements.txt"
+    },
+    {
+      "path": "src/pyweixin/__init__.py",
+      "git_blob": "d3e5d2dd69bef8771f2298352e82552a36f1cdcb",
+      "sha256": "b529804472c23f6c6efec3557b349f53fae553c8596edd135cd9ac57d433647c",
+      "saved": null
+    },
+    {
+      "path": "src/pyweixin/Config.py",
+      "git_blob": "c48caa1753eba6ed918749ab3b5e19b1475b5228",
+      "sha256": "a9c6079dc6e064a3cacd85417369cca32032fb4a074e5c8e468458e57e566a47",
+      "saved": null
+    },
+    {
+      "path": "src/pyweixin/Uielements.py",
+      "git_blob": "9bc5c8eee5f51b1d5bb1e86f909d1dea79cf2576",
+      "sha256": "d50b4ad02e5f80ac007fc0a5eb362439f737cb560e782404b6dcb1318c57e355",
+      "saved": null
+    },
+    {
+      "path": "src/pyweixin/WeChatAuto.py",
+      "git_blob": "e34af6684866b65b45f08321fbb63fdac6107f50",
+      "sha256": "128431100260ce104323224344ed10a12ee8a0fa0350ea060133d9b32eb26ac7",
+      "saved": null
+    },
+    {
+      "path": "src/pyweixin/WeChatTools.py",
+      "git_blob": "e8fbf3cc9fd10a7324367ab79b2605308130f9d2",
+      "sha256": "13caf8f001f182ba2f6ebd707f52c5c8ba2987d1d158e545d38eff91e3cf224f",
+      "saved": null
+    },
+    {
+      "path": "src/pyweixin/WinSettings.py",
+      "git_blob": "a55a776fff985a193bd13987b2a489abec1af4df",
+      "sha256": "92227e5d6fec84dcd5402a8a6685276586762456de0bf8d593f70e4b07742c4d",
+      "saved": null
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# WX-02 optional Windows CPython 3.12 x64 observation primitives; NOT installed.
+# Install only after subsequent explicit observation authorization.
+--only-binary=:all:
+--require-hashes
+pywinauto==0.6.9 --hash=sha256:5924b3072864a1d730c5546bbeb17cf4063ba518b618dbc5e43c18276c7c9356
+six==1.17.0 --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274
+comtypes==1.4.13 --hash=sha256:21546210748ba52e839e52112124b16ffab7d7fb68096493165fbc249e9023ad
+pywin32==311 --hash=sha256:b8c095edad5c211ff31c05223658e71bf7116daa0ecf3ad85f3201ea3190d067

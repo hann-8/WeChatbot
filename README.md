@@ -1,8 +1,8 @@
 # WeChatbot 离线核心
 
-独立 Python 3.12 项目，当前仅完成 **WX-01 实现及离线验证**。入口见 [PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-01/HANDOFF.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。微信身份、真实 @、发送确认、图片、登录及长期运行全部未验。
+独立 Python 3.12 项目，当前完成 **WX-01 核心及 WX-02 代码/离线验证**。入口见 [PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-01/HANDOFF.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。微信身份、真实 @、发送确认、图片、登录及长期运行全部未验。
 
-默认 `transport=mock`、`enabled=false`、`sends_enabled=false`、授权群空、私聊关闭、`mentions`、`single`，媒体/联网/长期记忆等均关闭。当前没有真实传输实现；修改开关不能产生生产资格。命令行只提供只读 `inspect`，没有启动真实通道、登录、发消息或真实生成命令。不自动进入 WX-02。
+默认 `transport=mock`、`enabled=false`、`sends_enabled=false`、授权群空、私聊关闭、`mentions`、`single`，媒体/联网/长期记忆等均关闭。当前没有真实传输实现；修改开关不能产生生产资格。命令行提供只读 `inspect` 和 `probe` 的inspect/mock模式，没有启动真实通道、登录、发消息或真实生成命令。不自动进入 WX-03；WX-02真实provider未接线。
 
 ## 本地准备与检查
 
@@ -48,3 +48,17 @@ uv sync --locked --python <本机Python3.12路径>
 回滚保持真实通道关闭，退出本项目 owner 即可；保留 pending/unknown 状态，恢复旧代码必须配对配置和 manifest。不退出/注销/结束日常微信，不按进程名清理，不操作 QQ。源码快照中未接入的 QQ 入口和功能只供溯源，禁止作为本项目启动入口。
 
 Git 当前仅本地 `codex/bootstrap` 检查点，没有 remote。后续需用户提供新项目远端和发布授权。
+
+## WX-02 候选探针
+
+[能力报告](docs/WX-02-CAPABILITY-REPORT.md) / [交接](tracks/tasks/WX-02/HANDOFF.md) / [固定来源与许可](vendor/pyweixin/README.md)。固定上游 `8589baa049bb91d3a500602c167f07b2f8397a13`，声明分发名pywechat127 1.9.8，模块pyweixin。整包初始化/监听有额外副作用，因此不安装/导入，不使用其AutoReply或Monitor。可选UI原语wheel锁及实际许可已单独保存，未加入默认环境；不随latest升级。
+
+```powershell
+.venv\Scripts\python.exe -m wechatbot probe
+.venv\Scripts\python.exe -m wechatbot probe --mode mock
+.venv\Scripts\python.exe scripts/check_pyweixin_source.py
+```
+
+默认probe核对惰性本地审阅证据，不访问微信；mock只运行内置自造runtime元数据。窗口原语通过显式注入替身验证，仅读绑定消息列表的runtime/class，读前后校验目标；没有真实provider。UI显示名/临时runtime_id/按键返回分别报告，稳定账号/会话/发送者/消息ID均unverified，真实@为mention_unverified，发送为delivery_unverified，当前图pixels=unsupported/source=none。普通@、昵称hash和图计数均不升级能力。
+
+真实观察入口继续关闭；CLI不接受observe，API即使显式声明也拒绝执行。还需后续明确授权、指定账号/已打开单会话窗口/120秒最多10条自造样本，并补证硬时限/窗口绑定provider。此次0真实UI/0模型/0发送，不读真实历史/数据库、不截图落盘。门槛缺口回sol/max决定，不降低黑名单或改全回复。

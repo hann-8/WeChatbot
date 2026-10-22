@@ -1,0 +1,62 @@
+[
+  {
+    "path": "src/pyweixin/__init__.py",
+    "start": 64,
+    "end": 60,
+    "text": "\n"
+  },
+  {
+    "path": "src/pyweixin/Config.py",
+    "start": 181,
+    "end": 232,
+    "text": "            self._language=self._language_detector()\n            if self._language is None:\n                warn(\"语言检测失败，使用默认 '简体中文'\", LanguageDetectionFailedWarning)\n                self._language='简体中文'\n        return self._language\n\n    @language.setter\n    def language(self, value):\n        if not isinstance(value, str):\n            raise TypeError(f\"language必须是str类型,但传入了 {type(value)}: {value}\")\n        if value not in {'简体中文', 'English', '繁體中文'}:\n            raise ValueError(f\"不支持的语言: {value}\")\n        self._language=value  #允许手动设置覆盖缓存\n\n    def _language_detector(self)->(str|None):\n        '''\n        通过WechatAppex的命令行参数判断语言版本\n        Returns:\n            lang:简体中文,繁體中文,English\n        '''\n        lang=None\n        cmdline=''\n        cmdlines=[]\n        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):\n            if proc.info['name'] and 'wechatappex' in proc.info['name'].lower():\n                cmdlines.append(proc.info['cmdline'])#wechatappex.exr不止一个！所以把所有的exe命令行参数都保留\n        for cmdline in cmdlines:\n            cmd_str=' '.join(cmdline).lower()\n            if '--type=renderer' in cmd_str:\n                if '--lang=zh-cn' in cmd_str:lang='简体中文'\n                if '--lang=zh-tw' in cmd_str:lang='繁體中文'\n                if '--lang=en' in cmd_str:lang='English'\n        return lang\n\n    def _get_weixin_version(self):\n        '''通过查询注册表来获取微信版本\n        Returns:\n            weixin_version:微信版本号,4.1.x.xx\n        '''\n        try:\n            reg_path=r\"Software\\Tencent\\Weixin\"\n            with winreg.OpenKey(winreg.HKEY_CURRENT_USER,reg_path) as key:\n                int_version=winreg.QueryValueEx(key,\"Version\")[0]\n                #0xf254186b,0xf25之后是微信版本,每隔一位加个.,最后两位16转10进制就是版本号\n                hex_str=hex(int_version)[5:]\n                weixin_version=f'{hex_str[0]}.{hex_str[1]}.{int(hex_str[2],16)}.{int(hex_str[-2:],16)}'\n            return weixin_version\n        except Exception:\n            return None\n   \n#全局实例\nGlobalConfig=globalConfig()\n"
+  },
+  {
+    "path": "src/pyweixin/Uielements.py",
+    "start": 39,
+    "end": 46,
+    "text": "import re\nimport time\nfrom.Config import GlobalConfig\nfrom packaging import version\nfrom pywinauto.controls.uia_controls import ListItemWrapper\nlanguage=GlobalConfig.language\nVersion=GlobalConfig.Version\nclass Button_Control():\n"
+  },
+  {
+    "path": "src/pyweixin/Uielements.py",
+    "start": 478,
+    "end": 498,
+    "text": "        self.CollectionLeftList={'auto_id':'fav_category_list','control_type':'List'}#收藏界面左侧的列表\n        self.CollectionRightList={'auto_id':'fav_detail_list','control_type':'List'}#点击左侧任一项目,收藏界面右側出现的列表\n        if self.language=='简体中文':\n            self.QuickActionsList={'title':'快捷操作','control_type':'List'}#主界面点击+号后弹出的快捷操作列表\n            self.ChatHistoryList={'title':'聊天记录','control_type':'List'}#聊天记录窗口中的存放聊天消息的列表\n            self.ConversationList={'title':'会话','control_type':'List'}#主界面左侧的好友聊天会话列表\n            self.FriendChatList={'title':'消息','control_type':'List'}#聊天界面内的消息列表\n        if self.language=='English':\n            self.QuickActionsList={'title':'Shortcuts','control_type':'List'}#主界面点击+号后弹出的快捷操作列表\n            self.ChatHistoryList={'title':'Chat History','control_type':'List'}#聊天记录窗口中的存放聊天消息的列表\n            self.ConversationList={'title':'Chats','control_type':'List'}#主界面左侧的好友聊天会话列表\n            self.FriendChatList={'title':'Messages','control_type':'List'}#聊天界面内的消息列表\n        if self.language=='繁體中文':\n            self.QuickActionsList={'title':'快捷操作','control_type':'List'}#主界面点击+号后弹出的快捷操作列表\n            self.ChatHistoryList={'title':'聊天記錄','control_type':'List'}#聊天记录窗口中的存放聊天消息的列表\n            self.ConversationList={'title':'對話','control_type':'List'}#主界面左侧的好友聊天会话列表\n            self.FriendChatList={'title':'訊息','control_type':'List'}#聊天界面内的消息列表\n\nclass Login_window_Control():\n    '''登录界面内的第一级ui'''\n    def __init__(self,language=language,Version=Version):\n"
+  },
+  {
+    "path": "src/pyweixin/WeChatAuto.py",
+    "start": 255,
+    "end": 278,
+    "text": "            if friend_type!='非好友' and chatList.children(control_type='ListItem'):\n                #自动回复逻辑\n                current_chat_name=main_window.child_window(**Texts.CurrentChatNameText).window_text()#主界面右半部分左上角的聊天对象文本\n                if friend_type=='好友' and current_chat_name not in NeverReply:\n                    latest_message=chatList.children(control_type='ListItem')[-1]#最新的消息\n                    runtime_id=latest_message.element_info.runtime_id\n                    if runtime_id!=initial_runtime_id and not Tools.is_my_bubble(latest_message):#不等于刚打开页面时的那条消息且发送者是对方\n                        input_edit.click_input()\n                        reply_content=callback(current_chat_name,latest_message.window_text())\n                        input_edit.set_text(reply_content)\n                        pyautogui.hotkey('alt','s',_pause=False)\n                        responded_friends.append(current_chat_name)\n                if friend_type=='群聊' and current_chat_name not in NeverReply:\n                    latest_message=chatList.children(control_type='ListItem')[-1]#最新的消息\n                    runtime_id=latest_message.element_info.runtime_id\n                    if runtime_id!=initial_runtime_id and not Tools.is_my_bubble(latest_message):\n                        if not chatOnly:\n                            input_edit.click_input()\n                            reply_content=callback(current_chat_name,latest_message.window_text())\n                            input_edit.set_text(reply_content)\n                            pyautogui.hotkey('alt','s',_pause=False)\n                            responded_friends.append(current_chat_name)\n                            responded_groups.append(current_chat_name)\n                        if chatOnly:#设置了仅回复私聊\n"
+  },
+  {
+    "path": "src/pyweixin/WeChatAuto.py",
+    "start": 4275,
+    "end": 4280,
+    "text": "class Monitor():\n    '''监听消息的一些方法'''          \n\n    @staticmethod\n    def listen_on_chat(dialog_window:WindowSpecification,duration:str,groupMembers:list=[],save_file:bool=False,save_media:bool=False,target_folder:str=None,close_dialog_window:bool=True)->dict:\n        '''\n"
+  },
+  {
+    "path": "src/pyweixin/WeChatAuto.py",
+    "start": 4309,
+    "end": 4334,
+    "text": "        def extract_info(texts):\n            senders=[]\n            contents=[]\n            if not is_group:\n                for text in texts:\n                    search_result=re.search(rf'^({re.escape(friend)})\\s',text)\n                    sender=myName if search_result is None else friend\n                    content=re.sub(rf'^{re.escape(sender)}\\s','',text)\n                    senders.append(sender)\n                    contents.append(content)\n            if is_group and groupMembers:\n                for text in texts:\n                    for groupMember in groupMembers:\n                        search_result=re.search(rf'^({groupMember})\\s',text)\n                        if search_result is not None:\n                            sender=search_result.group(1)\n                    content=re.sub(rf'^{sender}\\s','',text)\n                    senders.append(sender)\n                    contents.append(content)\n            if is_group and not groupMembers:\n                contents=texts\n            return contents,senders\n\n        friend=dialog_window.window_text()\n        chatName=dialog_window.child_window(**Texts.CurrentChatNameText)\n        if chatName.exists(timeout=0.2):friend=chatName.window_text()\n"
+  },
+  {
+    "path": "src/pyweixin/WeChatAuto.py",
+    "start": 4360,
+    "end": 4403,
+    "text": "        file_pattern=Regex_Patterns.File_pattern\n        is_group=Tools.is_group_chat(dialog_window)\n        myName='本人(MySelf)'\n        timestamp=time.strftime('%Y-%m')\n        chatfile_folder=Tools.where_chatfiles_folder()\n        chatList=dialog_window.child_window(**Lists.FriendChatList)#聊天界面内存储所有信息的容器\n        timestamp_pattern=Regex_Patterns.Message_Timestamp_pattern#系统消息的时间戳\n        if chatList.children(control_type='CheckBox'):\n            visibile_items=chatList.children(control_type='CheckBox')\n            initial_runtimeids=[item.element_info.runtime_id for item in visibile_items]\n        if not chatList.children(control_type='CheckBox'):initial_runtimeids=[]\n        end_timestamp=time.time()+duration#根据秒数计算截止时间\n        SystemSettings.open_listening_mode(volume=False)\n        while time.time()<end_timestamp:\n            visibile_items=chatList.children(control_type='CheckBox')\n            newItems=[item for item in visibile_items if item.element_info.runtime_id not in initial_runtimeids]\n            if newItems: \n                #改为列表轮询\n                for item in newItems:\n                    texts.append(item.window_text())\n                    if item.class_name()=='mmui::ChatItemView' and not timestamp_pattern.search(item.window_text()):\n                        memberEvents.append(item.window_text())\n                    if item.class_name()=='mmui::ChatBubbleItemView' and link_label in item.window_text():\n                        link_count+=1\n                    if item.class_name()=='mmui::ChatBubbleReferItemView' and image_labal in item.window_text():\n                        image_count+=1\n                    if item.class_name()=='mmui::ChatBubbleReferItemView' and video_label in item.window_text():\n                        video_count+=1#视频需要下载直接右键复制不行,需要先点击,如果时间长,要等半天，不太方便\n                    if item.class_name()=='mmui::ChatBubbleItemView' and file_label in item.window_text():\n                        filename=file_pattern.search(item.window_text()).group(1)\n                        filepath=os.path.join(chatfile_folder,timestamp,filename)\n                        files.append(filepath)\n                total+=len(newItems)\n                initial_runtimeids=[item.element_info.runtime_id for item in visibile_items]\n        media_count=image_count+video_count\n        SystemSettings.close_listening_mode()\n        contents,senders=extract_info(texts)\n        #最后结束时再批量复制到target_folder,不在循环里逐个复制是考虑到若文件过大(几百mb)没有自动下载完成移动不了\n        if save_file and files:SystemSettings.copy_files(files,file_folder)#文件复制粘贴到target_folder/Files内\n        if save_media and media_count:Messages.save_media(friend=friend,number=media_count,target_folder=target_folder)#保存图片到target_folder/Images内\n        details={'新消息总数':total,'文本数量':len(texts),'文件数量':len(files),'图片数量':image_count,'视频数量':video_count,'链接数量':link_count,'文本内容':contents,'消息发送人':senders,'出入群通知':memberEvents}\n        if close_dialog_window:dialog_window.close()\n        return details\n\n"
+  },
+  {
+    "path": "src/pyweixin/WeChatTools.py",
+    "start": 294,
+    "end": 305,
+    "text": "    def get_current_wxid()->str:\n        '''该方法用来获取当前登录账号的wxid,只有登录后才可以获取到\n        登录过多个账号可能有缓存,需要重启微信(关闭再打开)\n        Returns:\n            wxid:当期登录微信号的wxid\n        '''\n        wxid_folder=Tools.where_wxid_folder(open_folder=False)\n        wxid_pattern=re.compile(r'wxid_\\w+\\d+')\n        wxid=wxid_pattern.search(wxid_folder)\n        if wxid:return wxid.group(0)\n        return ''\n        \n"
+  },
+  {
+    "path": "src/pyweixin/WinSettings.py",
+    "start": 79,
+    "end": 94,
+    "text": "    def open_listening_mode(volume:bool=True):\n        '''运行后电脑将不会息屏且电脑音量设置为100,除非断电否则屏幕保持常亮\n        关闭时运行close_listening_mode方法即可'''\n        ES_DISPLAY_REQUIRED=0x00000002\n        ES_CONTINUOUS=0x80000000\n        if volume:\n            SystemSettings.set_system_volume()\n        ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS|ES_DISPLAY_REQUIRED)\n\n    @staticmethod   \n    def close_listening_mode():\n        '''需要与open_listening_mode方法结合使用,单独使用无意义''' \n        ES_CONTINUOUS=0x80000000\n        ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)\n\n    @staticmethod\n"
+  }
+]

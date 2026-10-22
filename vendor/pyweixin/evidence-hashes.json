@@ -1,0 +1,18 @@
+{
+  "dependencies.json": "2b8266cc2aca81d943d4cb36e9fb4d9af4f90426938fd6a98fd363ca934faa01",
+  "excerpts.json": "84f36a3f12bd3ba83826178a8655b80a4ada7e14c5f5394836dc93d12c304f88",
+  "observation-requirements.lock": "82d02cc65ffad71527c3f76c45985398f7ccfe2a40f8ea44649a035cf1ecc5b9",
+  "source-lock.json": "530c8e78cde1c978be8aae233c31b7c627718f6643d36e8fad1564ca5feda4d1",
+  "licenses/comtypes-0-LICENSE.txt.txt": "3b1767f010980b46926b23bf0afce5d72f3359ee5e2b27baca71b9b4209ab383",
+  "licenses/pywin32-0-LICENSE.txt": "5ea2f23c7f00c3006bacf267183e816d8d4b6dc95ea57a4ddb0ff81de6d8719e",
+  "licenses/pywin32-1-LICENSE.txt": "11d8462e134e8efe8f4bd52372292a72ff0b670753d2f49f71675eed0dbfd085",
+  "licenses/pywin32-2-LICENSE.txt": "11d8462e134e8efe8f4bd52372292a72ff0b670753d2f49f71675eed0dbfd085",
+  "licenses/pywin32-3-LICENSE.txt": "c3bdfa1152a9b9d404ddc90b817e1b6945803879ac53a14d2dde30d677f883bd",
+  "licenses/pywinauto-0-LICENSE.txt": "18a999a95b7b23d86c410b4534e44d69f6d8ce13c3a53719b06ab895d8a2e73a",
+  "licenses/six-0-LICENSE.txt": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0",
+  "upstream/LICENSE": "49f2cf942857a38bcad3270a3b07c185e8bc302f3fb7ef3a3c9d2014438b6333",
+  "upstream/src/pyproject.toml": "7cdbfcc226b756b522f359aeba2fac9bc4d657d68f6862faa4a5a6fd30e77bfe",
+  "upstream/src/requirements.txt": "098d022dd421333f6ae523ac93722ae896c28569d32155511a65240f2ade4b96",
+  "upstream/src/setup.cfg": "288a07705f3c4ee829440f5091d5940060264a8a749ffc9016f4b2a3bb5fb45c",
+  "upstream/src/setup.py": "1fe849cf4e6789239bc71d318e9f6c18192c87bde63122d6057e797322fb8086"
+}

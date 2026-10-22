@@ -1,0 +1,4 @@
+# Keep downloaded source/license evidence byte-exact, including original whitespace.
+* text eol=lf
+upstream/** -text -whitespace
+licenses/** -text -whitespace
