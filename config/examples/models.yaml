@@ -1,0 +1,64 @@
+# 仅显式选择一个后端，无自动切换；WX-01 只执行底层替身。
+llm:
+  # 默认 CodeBuddy 路线；不承诺免费。
+  backend: codebuddy_cli
+  # 新项目独立串行队列。
+  max_concurrency: 1
+  # 等待中的最大任务数，超限直接拒绝。
+  queue_limit: 5
+  # 两路线公开配置，无家庭连接资料。
+  profiles:
+    # CLI 参数由固定 runner 构造，工具及 MCP 禁用。
+    codebuddy_cli:
+      # 公开能力快照中的模型名。
+      model: deepseek-v4.1-flash
+      # auto 不传 effort；显式档位须当前控制握手支持。
+      reasoning_effort: auto
+      # 原生窗口未验证，必须 null；不等于输入预算。
+      context_window_tokens: null
+      # 一次调用超时（秒）。
+      run_timeout_seconds: 90
+      # 仅清理由本请求创建且身份可验证的进程。
+      cleanup_seconds: 5
+      # 保守 UTF-8 wire 预算，不是 tokenizer 实测值。
+      input_budget:
+        # 输入总预算。
+        context_input_limit_tokens: 16384
+        # 协议额外保留。
+        context_overhead_reserve_tokens: 2048
+        # 输出预算保留；不伪称 CLI 原生限制。
+        output_reserve_tokens: 2048
+    # 家庭路线只保留模板；WX-01 不读连接文件、不 SSH。
+    ollama_ssh:
+      # 已知模型标签，无有效性宣称。
+      model: qwen3.5:9b-q4_K_M
+      # 未核验 digest；真实启用前必须另批补齐。
+      expected_digest: null
+      # 本项目忽略文件，当前不存在。
+      access_file: secrets/home-5070-runtime.local.json
+      # Ollama 原生上下文窗口请求值。
+      num_ctx: 16384
+      # 当前原生请求关闭思考。
+      think: false
+      # 原生最大输出请求值。
+      num_predict: 1024
+      # 原生保活时间，秒。
+      keep_alive_seconds: 300
+      # 原生采样温度。
+      temperature: 0.7
+      # 原生概率采样。
+      top_p: 0.8
+      # 原生候选数量。
+      top_k: 20
+      # 单次调用超时，秒。
+      run_timeout_seconds: 120
+      # 清理等待秒数；unknown 不自动解除。
+      cleanup_seconds: 5
+      # 原生消息 JSON 的保守字节预算。
+      input_budget:
+        # 输入预算，小于窗口减输出。
+        context_input_limit_tokens: 12288
+        # 输入额外保留。
+        context_overhead_reserve_tokens: 2048
+        # 输出保留。
+        output_reserve_tokens: 2048

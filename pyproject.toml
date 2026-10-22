@@ -1,0 +1,12 @@
+[project]
+name = "wechatbot-offline"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["PyYAML==6.0.3", "psutil==7.1.3", "markdown-it-py==4.2.0", "aiohttp==3.14.5", "pillow==12.3.0", "paramiko==5.0.0"]
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wechatbot", "src/qqbot_gateway"]

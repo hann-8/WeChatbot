@@ -1,0 +1,22 @@
+# 微信私聊独立白名单；双方绑定同时满足才可接入。
+direct:
+  # 默认关闭，不影响 QQ。
+  enabled: false
+  # 可信发送者 ID。
+  allowed_users: []
+  # 可信会话 ID；不能以昵称代替。
+  allowed_conversations: []
+# 群触发模式。
+participation:
+  # 首期只支持传输真实 @；正文 @ 不算。
+  mode: mentions
+# 群停言；连接重连保留，owner 重启复位。
+silence:
+  # 复用固定基线的本地明确停言语义。
+  enabled: true
+# 每账号/类型/会话/发送者最多保留完整对话轮数。
+history_turns: 8
+# 出站文本策略。
+output:
+  # 单气泡一次提交；不拆分、不补发。
+  delivery_mode: single

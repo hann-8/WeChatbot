@@ -1,0 +1,12 @@
+# 微信平台；不接受 QQ 身份配置。
+platform: wechat
+# 真实通道总开关；WX-01 即使改 true 也无真实适配器。
+enabled: false
+# 仅 mock 可执行；pyweixin 仅保留未来候选枚举。
+transport: mock
+# 后续可信账号绑定元数据；当前不读取，不含密码。
+account_binding_file: secrets/wechat-account.local.json
+# 可信稳定群 ID；空列表不接收任何群。
+allowed_groups: []
+# 稳定发送者 ID 黑名单，先于白名单和模型。
+blocked_users: []

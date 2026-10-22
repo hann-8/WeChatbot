@@ -1,0 +1,389 @@
+{
+  "source_commit": "dd9373029412137023124751d75883824122c784",
+  "export": "git show tracked paths only",
+  "files": [
+    {
+      "path": "src/qqbot_gateway/__init__.py",
+      "source_sha256": "d3ed56e1df66bcf9138593b8f5fa5e857db1ad520805795389a2287860d351cd",
+      "sha256": "d3ed56e1df66bcf9138593b8f5fa5e857db1ad520805795389a2287860d351cd",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/attention.py",
+      "source_sha256": "e0c77972f18ac02dda719606df9bf19b24f6c466673d2d1ade4b2f3f0dec378d",
+      "sha256": "e0c77972f18ac02dda719606df9bf19b24f6c466673d2d1ade4b2f3f0dec378d",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/backends.py",
+      "source_sha256": "19f8ccc41810b5b6050ceacdeb199c7122b6a53ca4a52a3198f23259db6e8d6f",
+      "sha256": "19f8ccc41810b5b6050ceacdeb199c7122b6a53ca4a52a3198f23259db6e8d6f",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/bilibili_policy.py",
+      "source_sha256": "d6bac138facf4af6aed070a5aa6e49fd51dc92da1db4bfc72d94a47393f23127",
+      "sha256": "d6bac138facf4af6aed070a5aa6e49fd51dc92da1db4bfc72d94a47393f23127",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/bilibili_subtitles.py",
+      "source_sha256": "6aa5fb045380933b7dbc48bbcceaa6e383c0da661afe109de1f12e8195a90b67",
+      "sha256": "6aa5fb045380933b7dbc48bbcceaa6e383c0da661afe109de1f12e8195a90b67",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/chat_text.py",
+      "source_sha256": "6df85a06e34d91cf43d917e6e2a20ba26414766cc137ee2ddc27926099e43d52",
+      "sha256": "6df85a06e34d91cf43d917e6e2a20ba26414766cc137ee2ddc27926099e43d52",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/cleanup_identity.py",
+      "source_sha256": "6b523b5df865119e47dd972d3e3e11346eb9b4416cd74ffaf8f19e1bc49b8adb",
+      "sha256": "6b523b5df865119e47dd972d3e3e11346eb9b4416cd74ffaf8f19e1bc49b8adb",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/cli_control.py",
+      "source_sha256": "b9d5a2d82839cc38815981df2852f08843923004494424a793656fc6e3fa8305",
+      "sha256": "b9d5a2d82839cc38815981df2852f08843923004494424a793656fc6e3fa8305",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/config.py",
+      "source_sha256": "36bda225852e9fa3e3f0d793120bf52538384d5ec374e808c78e45f0c39fe242",
+      "sha256": "36bda225852e9fa3e3f0d793120bf52538384d5ec374e808c78e45f0c39fe242",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/config_comments.py",
+      "source_sha256": "d4e26f8362ceb81d900d156d22dde180d5a006c098292569eb36bc431f38ba6a",
+      "sha256": "d4e26f8362ceb81d900d156d22dde180d5a006c098292569eb36bc431f38ba6a",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/config_files.py",
+      "source_sha256": "224508119696f71b2a91e281fc425788d3f0f916a6037349d525f19e1c2adfd7",
+      "sha256": "224508119696f71b2a91e281fc425788d3f0f916a6037349d525f19e1c2adfd7",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/config_layout_ops.py",
+      "source_sha256": "029cd7e2a909027ba653ad94b784d7764d853b66b47f16d715c3a97da162dd47",
+      "sha256": "029cd7e2a909027ba653ad94b784d7764d853b66b47f16d715c3a97da162dd47",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/contracts.py",
+      "source_sha256": "d6e130997f721b5f0887d322d64099ee103d1a67b9e49345e79cafe99294a97c",
+      "sha256": "d6e130997f721b5f0887d322d64099ee103d1a67b9e49345e79cafe99294a97c",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/errors.py",
+      "source_sha256": "e66276d4001434c65ebd99b714a1073c629426d6f92b89688518c8087b5ce45f",
+      "sha256": "e66276d4001434c65ebd99b714a1073c629426d6f92b89688518c8087b5ce45f",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/event_guard.py",
+      "source_sha256": "9eb721ac0c5bea8a33b4707d7f9657031e87c93e0932824b51e64eded0c9f1bb",
+      "sha256": "9eb721ac0c5bea8a33b4707d7f9657031e87c93e0932824b51e64eded0c9f1bb",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/evidence_selection.py",
+      "source_sha256": "3a35a849109ad9ad45be737b7aa3012ae149beb6722fdb833f9b318486d334bc",
+      "sha256": "3a35a849109ad9ad45be737b7aa3012ae149beb6722fdb833f9b318486d334bc",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/extractor_limits.py",
+      "source_sha256": "e82d1704d134b412e7a643c0cb0bdd604f10f74443cef9c292dfe1b746377a09",
+      "sha256": "e82d1704d134b412e7a643c0cb0bdd604f10f74443cef9c292dfe1b746377a09",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/group_memory.py",
+      "source_sha256": "efcedcbf925f4d8850672a041c7ffcc539f642e43815d29d87630b032fc77500",
+      "sha256": "efcedcbf925f4d8850672a041c7ffcc539f642e43815d29d87630b032fc77500",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/group_protocol.py",
+      "source_sha256": "9a425fc29b0ebc5fd2cd858fd894d50e3e7d1db66ca28a6ad1fcebb39bf5c97f",
+      "sha256": "9a425fc29b0ebc5fd2cd858fd894d50e3e7d1db66ca28a6ad1fcebb39bf5c97f",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/group_silence.py",
+      "source_sha256": "199057ce32c76521a5f27bfe9914fb3d350b4a913f7d76d4c95de5e5dcec3157",
+      "sha256": "199057ce32c76521a5f27bfe9914fb3d350b4a913f7d76d4c95de5e5dcec3157",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/html_worker.py",
+      "source_sha256": "2231dd0e1e40772756245760e57d3c5f7951dec861e93857edc790d273a5be68",
+      "sha256": "2231dd0e1e40772756245760e57d3c5f7951dec861e93857edc790d273a5be68",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/lifecycle.py",
+      "source_sha256": "0625eee215ae943631b0fa5fbc519083b456f0fa80df46d1a4fc1782f11b1a35",
+      "sha256": "0625eee215ae943631b0fa5fbc519083b456f0fa80df46d1a4fc1782f11b1a35",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/media_protocol.py",
+      "source_sha256": "284c95ccb072fb1004285274aa133ccf148e9d9f4c6cd231fb3f55aa5a1497b0",
+      "sha256": "284c95ccb072fb1004285274aa133ccf148e9d9f4c6cd231fb3f55aa5a1497b0",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/members.py",
+      "source_sha256": "07ac2c4306f69ffc4983022d2c70b6b0b7c0da9bd4625659e2f8c7a8ab6d5d8b",
+      "sha256": "07ac2c4306f69ffc4983022d2c70b6b0b7c0da9bd4625659e2f8c7a8ab6d5d8b",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/meme_catalog.py",
+      "source_sha256": "ba07483601451ba1052b56d3a4411d869b5bafa6460195f5892eef84752fce19",
+      "sha256": "ba07483601451ba1052b56d3a4411d869b5bafa6460195f5892eef84752fce19",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/meme_import.py",
+      "source_sha256": "d85c1e1064327cdbd0a9129cf006f696132c2fa36b42ded0c05cf511061fd648",
+      "sha256": "d85c1e1064327cdbd0a9129cf006f696132c2fa36b42ded0c05cf511061fd648",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/model_gateway.py",
+      "source_sha256": "96b5564594ddfbe14d4de8a877fcac42c2ea8ac1f93c22214995619ef62d8f6c",
+      "sha256": "96b5564594ddfbe14d4de8a877fcac42c2ea8ac1f93c22214995619ef62d8f6c",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/napcat_login.py",
+      "source_sha256": "878797732be41a224cc315a2f83d1c0a0a082a938b6e5d916ce6d2a865803e92",
+      "sha256": "878797732be41a224cc315a2f83d1c0a0a082a938b6e5d916ce6d2a865803e92",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/napcat_login_client.py",
+      "source_sha256": "c8c6710684a9e3b8a649e8e90da6932fed705d2f92ac038edfc1b92adb619015",
+      "sha256": "c8c6710684a9e3b8a649e8e90da6932fed705d2f92ac038edfc1b92adb619015",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/napcat_login_observer.py",
+      "source_sha256": "cb179b2df65f844866ce2f278e63796d0b74398632f416811e28acf36b63c826",
+      "sha256": "cb179b2df65f844866ce2f278e63796d0b74398632f416811e28acf36b63c826",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/ollama_ssh_runner.py",
+      "source_sha256": "606deaf5bc62419e3d91a1adbbfcd02bb5991575c8e0cd8d99dcedcd55b70c55",
+      "sha256": "606deaf5bc62419e3d91a1adbbfcd02bb5991575c8e0cd8d99dcedcd55b70c55",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/onebot_gate.py",
+      "source_sha256": "65a9a3d30722e13f93aa31efcaae79af6e26d66a5faf8bb3e0641fc92c9eb582",
+      "sha256": "65a9a3d30722e13f93aa31efcaae79af6e26d66a5faf8bb3e0641fc92c9eb582",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/output_envelope.py",
+      "source_sha256": "150598c884de8ff4c5e88cfab73f89998f08ae8939c517d6ea9a649f3dc75322",
+      "sha256": "150598c884de8ff4c5e88cfab73f89998f08ae8939c517d6ea9a649f3dc75322",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/participation.py",
+      "source_sha256": "51a4916ea92644be80c7f7f018ac38288dfea5d36152a4e7f9054d1326792502",
+      "sha256": "51a4916ea92644be80c7f7f018ac38288dfea5d36152a4e7f9054d1326792502",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/persona.py",
+      "source_sha256": "da9b6e4a4f992bfc870d52abf1fb79e9985feb7a1629fcc7f7a3c97b12ce4eb5",
+      "sha256": "da9b6e4a4f992bfc870d52abf1fb79e9985feb7a1629fcc7f7a3c97b12ce4eb5",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/public_http.py",
+      "source_sha256": "1147aadd7a8f2557b18396d4db49bfcdb51f7d0634115b89af088b907f75cbed",
+      "sha256": "1147aadd7a8f2557b18396d4db49bfcdb51f7d0634115b89af088b907f75cbed",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/public_network.py",
+      "source_sha256": "d68daeb56368466d4b011dc88711089836c42ac4627f087a6447e958f5a11554",
+      "sha256": "d68daeb56368466d4b011dc88711089836c42ac4627f087a6447e958f5a11554",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/reply_delivery.py",
+      "source_sha256": "e086a1459e35cb3a94106d640600a5d828b783504d627b307b36e20e67ea59ef",
+      "sha256": "e086a1459e35cb3a94106d640600a5d828b783504d627b307b36e20e67ea59ef",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/reply_plan.py",
+      "source_sha256": "a011b27d4b2866352220d9b33f5c059ad432931a7894fbe10d496444f0242881",
+      "sha256": "a011b27d4b2866352220d9b33f5c059ad432931a7894fbe10d496444f0242881",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/session_queue.py",
+      "source_sha256": "90eb37fe772404886ab7664b16eab6d038a7060260df36ab25b30ccb07455282",
+      "sha256": "90eb37fe772404886ab7664b16eab6d038a7060260df36ab25b30ccb07455282",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/ssh_transport.py",
+      "source_sha256": "aeb1cc5cef05f1a2ee20d51867b2d1df085ff346b005b66e169dff9f944a62ea",
+      "sha256": "aeb1cc5cef05f1a2ee20d51867b2d1df085ff346b005b66e169dff9f944a62ea",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/task_store.py",
+      "source_sha256": "0d1c6b3951ac03616f592b706b09c717f7ee87f301971ccb1bc3389370c9d5c9",
+      "sha256": "0d1c6b3951ac03616f592b706b09c717f7ee87f301971ccb1bc3389370c9d5c9",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/text_safety.py",
+      "source_sha256": "9f3cef75d4887176eb82557eb24a1869775b1893ac0443a2ca8f739e9099bef3",
+      "sha256": "9f3cef75d4887176eb82557eb24a1869775b1893ac0443a2ca8f739e9099bef3",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/token_budget.py",
+      "source_sha256": "96a18ae3d13c948fc127aaab01ebfac02a9b4c1e4bcb0b457e70c0e5235db7d6",
+      "sha256": "96a18ae3d13c948fc127aaab01ebfac02a9b4c1e4bcb0b457e70c0e5235db7d6",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/turn_budget.py",
+      "source_sha256": "929d6f62be734f5999749484c392091088dfd40c2261b16973b95209c28d005f",
+      "sha256": "929d6f62be734f5999749484c392091088dfd40c2261b16973b95209c28d005f",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/turn_v2.py",
+      "source_sha256": "ec144a6add5ce5516636d580305371adfc3012edac14810710143ced6e943e76",
+      "sha256": "ec144a6add5ce5516636d580305371adfc3012edac14810710143ced6e943e76",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vendor/YT_DLP_SOURCE.md",
+      "source_sha256": "d6fa53439e390d10ec8d7fe78ce722c231e62743be5ef00080053500f5baf6bd",
+      "sha256": "d6fa53439e390d10ec8d7fe78ce722c231e62743be5ef00080053500f5baf6bd",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vendor/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vendor/bilibili_fields.py",
+      "source_sha256": "f7878fd8cf4c7130b7ddf4c4a071c0eb5a9fb1edb3988e26d52d499e42061837",
+      "sha256": "f7878fd8cf4c7130b7ddf4c4a071c0eb5a9fb1edb3988e26d52d499e42061837",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vendor/yt_dlp_UNLICENSE",
+      "source_sha256": "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c",
+      "sha256": "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vision.py",
+      "source_sha256": "d762fe801d99732d9d0e156f11704c867e52a9d1b32bdd2016dbe42607183ae5",
+      "sha256": "d762fe801d99732d9d0e156f11704c867e52a9d1b32bdd2016dbe42607183ae5",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vision_capabilities.py",
+      "source_sha256": "4cdd660bc495cb8e3a05ffa169156f4b08b9a3282ee4e303583f40f0fc89000f",
+      "sha256": "4cdd660bc495cb8e3a05ffa169156f4b08b9a3282ee4e303583f40f0fc89000f",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vision_ingress.py",
+      "source_sha256": "23b70a4b53a498b5a5d790da4982bc44834a5652af5b42c5f31682a5fdecd756",
+      "sha256": "23b70a4b53a498b5a5d790da4982bc44834a5652af5b42c5f31682a5fdecd756",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vision_intake_gate.py",
+      "source_sha256": "9b3a87aa4e76c8307e1f9e066eb76491376e37533613263b800815b4bd1cc966",
+      "sha256": "9b3a87aa4e76c8307e1f9e066eb76491376e37533613263b800815b4bd1cc966",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/vision_quality.py",
+      "source_sha256": "a24fda413f4b42b28028597c0706a6ab5b44e9d77169404ea1517106bc637ee8",
+      "sha256": "a24fda413f4b42b28028597c0706a6ab5b44e9d77169404ea1517106bc637ee8",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/web_extractor.py",
+      "source_sha256": "8bd7ea283e0a0f5088d122668676be070a23229191096d21ea80b880e12bb179",
+      "sha256": "8bd7ea283e0a0f5088d122668676be070a23229191096d21ea80b880e12bb179",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/web_policy.py",
+      "source_sha256": "9dd0009a2f0b0d0ab01674e132f632fd64dc6c3993ec649f9c046bd57c66f8e1",
+      "sha256": "9dd0009a2f0b0d0ab01674e132f632fd64dc6c3993ec649f9c046bd57c66f8e1",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/web_retrieval.py",
+      "source_sha256": "c6124b290727aa1bf6303d36926bd2fa1f434b9d2657da42082d1c1885e7cc99",
+      "sha256": "c6124b290727aa1bf6303d36926bd2fa1f434b9d2657da42082d1c1885e7cc99",
+      "local_changes": []
+    },
+    {
+      "path": "src/qqbot_gateway/workbuddy_cli_runner.py",
+      "source_sha256": "ba43456fdb1c320fe2a36188364c1bbf6cc9877fb735718a35e5d98e80877715",
+      "sha256": "67a9400ac37597fddb11efdf73bd6d4058188e4fe8b766a6d1fae2869c524b72",
+      "local_changes": [
+        "Resolve relative CLI artifact paths against supplied project root",
+        "Injectable spawn seam; default remains asyncio.create_subprocess_exec; WX facade requires offline replacement"
+      ]
+    },
+    {
+      "path": "config/cli-capabilities.json",
+      "source_sha256": "ec268fd53afffdb97bf0cf0e0aa2e9ff26f8158b06c2d92c206ed40eb1174aff",
+      "sha256": "ec268fd53afffdb97bf0cf0e0aa2e9ff26f8158b06c2d92c206ed40eb1174aff",
+      "local_changes": []
+    },
+    {
+      "path": "config/cli-tools-denied.json",
+      "source_sha256": "20d03ec8d2d0f2dbf5e5c81c93745104fa329cb0a49c89725b82096e0dad34f9",
+      "sha256": "20d03ec8d2d0f2dbf5e5c81c93745104fa329cb0a49c89725b82096e0dad34f9",
+      "local_changes": []
+    },
+    {
+      "path": "config/mcp-empty.json",
+      "source_sha256": "e93fc8db2b1bd77107fe6c758bca9545fa864cf7cce8ab93a7b2b93a1d566a7b",
+      "sha256": "e93fc8db2b1bd77107fe6c758bca9545fa864cf7cce8ab93a7b2b93a1d566a7b",
+      "local_changes": []
+    },
+    {
+      "path": "config/versions.lock.json",
+      "source_sha256": "702374e75727d332266ec4d665fde2638f83fd1c6756593c2530d609d814981b",
+      "sha256": "b0bfe83e9b5c7dc31c15b1ec4feb7a67526a5e830a296b27d3c82c6f9183d7f6",
+      "local_changes": [
+        "Retain only public text CLI lock; remove QQ deployment data and global paths; independently copied artifacts bound by SHA-256"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# 只读健康服务固定本机回环；不会自动启动。
+host: 127.0.0.1
+# 独立端口；占用拒启，不自动换端口。
+health_port: 8875
+# UI 观察另属 WX-02。
+ui_observation:
+  # 当前必须 false。
+  enabled: false
+# 真实发送总开关；WX-01 即使 true 仍无生产资格。
+sends_enabled: false
+# 固定 false；不日志记录消息正文或私密身份。
+raw_message_logging: false
+# 固定 false；不注册启动项/计划任务。
+auto_start: false
