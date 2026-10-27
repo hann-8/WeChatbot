@@ -1,6 +1,6 @@
 # WeChatbot项目入口
 
-当前实施：WX-WXA-01 已完成工具与离线验证；见[交接](tracks/tasks/WX-WXA-01/HANDOFF.md)和[报告](docs/WX-WXA-01-REPORT.md)。真实微信与模型未验，WX-WXA-02 未领取。
+当前实施：WX-WXA-02 已领取但受阻，账号未准备、安装器版本证据不符；见[交接](tracks/tasks/WX-WXA-02/HANDOFF.md)和[报告](docs/WX-WXA-02-REPORT.md)。WX-WXA-01 已完成离线工具，真实微信与模型尚未验证。
 
 此前规划：2026-10-27 `WX-WXAUTO4-PLAN-20261027` 已完成[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)与[medium指令](docs/IMPLEMENTATION_GUIDE.md)，11份文档复读、99个本地链接/围栏/双向入口与diff检查通过；只规划、不实施，未重跑业务测试。规划交接为[WX-WXAUTO4-PLAN](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)，文件归属和Git起点见[TASKS](TASKS.md)。
 
@@ -12,17 +12,18 @@
 
 当前路线：wxauto4免费版41.1.7＋微信4.1.8.107，公开API→薄封装→单会话人工监督试用→本项目固定runner→CodeBuddy。首期暂不加AstrBot，不连接QQ实例。用户自报4.1.15.13并已接受换版，不再询问换版意愿；实际更换尚未执行。依据为[26日选型](tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)和[27日详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)。WeChatFerry留作备选，不自行改写任何上游核心。
 
-WX-WXA-01 已完成最小试用工具/可选包及离线验证并停止；WX-WXA-02另做配套客户端和一个指定会话的文字试验（0模型），WX-WXA-03另接一次CLI。WX-WXA-01 已完成离线范围，02/03 未领取。已有严格离线Gate不直接放开，试用明确记录UI昵称/临时ID与本地结果，不伪造生产身份、真实@或服务端ACK。
+WX-WXA-01 已完成最小试用工具/可选包及离线验证并停止；WX-WXA-02另做配套客户端和一个指定会话的文字试验（0模型），WX-WXA-03另接一次CLI。WX-WXA-01 已完成离线范围，02受阻、03未领取。已有严格离线Gate不直接放开，试用明确记录UI昵称/临时ID与本地结果，不伪造生产身份、真实@或服务端ACK。
 
 最新用户原则：个人娱乐先能用，现成公开接口和少量项目适配优先，不限定注入，允许功能延期或舍弃；不得为复刻QQ功能自行改写框架核心或维护私有fork。缺完整消息ID/@/服务端ACK先标限制，不一律否决人工监督的单会话试用，也不伪造能力。真实群触发/对象动作仍待具体规划，当前没有实施；详见[AGENTS](AGENTS.md)和[PLAN第2节](docs/PLAN.md)。
 
 前次WX-02文档复核：`WX-02-gap-review-plan-20261023`（2026-10-23 20:02起，Asia/Shanghai）完成[缺口复核与后续详细计划](docs/WX-02-REVIEW-AND-PROVIDER-PLAN.md)，未实施、未重跑测试、未领取 WX-03。建议停止以当前固定上游推进生产；可选一次隔离UI元数据观察需另批代码/离线与指定对象真实观察，不是必须实施的步骤。归属与Git核对见 [TASKS](TASKS.md)。
 
-阅读顺序：[AGENTS](AGENTS.md)→本入口→[当前交接](tracks/tasks/WX-WXA-01/HANDOFF.md)→[TASKS](TASKS.md)→[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)→[medium指令](docs/IMPLEMENTATION_GUIDE.md)。历史依据：[PLAN](docs/PLAN.md)、[RESEARCH](docs/RESEARCH.md)、[README](README.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。
+阅读顺序：[AGENTS](AGENTS.md)→本入口→[当前交接](tracks/tasks/WX-WXA-02/HANDOFF.md)→[TASKS](TASKS.md)→[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)→[medium指令](docs/IMPLEMENTATION_GUIDE.md)。历史依据：[PLAN](docs/PLAN.md)、[RESEARCH](docs/RESEARCH.md)、[README](README.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。
 
 | 工作线 | 状态 | 下一步 | 交接 |
 | --- | --- | --- | --- |
-| WX-WXA-01 最小试用工具 | completed，离线验证；真实未验 | 停止，02 须另行授权 | [HANDOFF](tracks/tasks/WX-WXA-01/HANDOFF.md) |
+| WX-WXA-02 客户端与单会话试用 | blocked；工件摘要/签名通过但版本证据不符，账号未准备 | 解决版本证据与账号准备后再收集绑定 | [HANDOFF](tracks/tasks/WX-WXA-02/HANDOFF.md) |
+| WX-WXA-01 最小试用工具 | completed，离线验证；真实未验 | 停止；02 已领取 | [HANDOFF](tracks/tasks/WX-WXA-01/HANDOFF.md) |
 | WX-WXAUTO4-PLAN 详细实施规划 | completed，仅文档；校验通过 | 规划完成；实施不自动串行 | [HANDOFF](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md) |
 | WX-FRAMEWORK-DECISION 框架选型 | 26日续作completed，仅文档；已补版本答复 | wxauto4免费＋微信4.1.8.107；用户已接受换版，后续进入明确实施任务 | [HANDOFF](tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md) |
 | WX-PLAN-ALIGN 架构说明/框架迁移原则 | completed，仅文档；校验通过 | 原则已纳入本次选型决定 | [HANDOFF](tracks/tasks/WX-PLAN-ALIGN/HANDOFF.md) |
@@ -40,6 +41,6 @@ WX-02 新增：固定pywechat源码/pywechat127 1.9.8分发与许可冲突审阅
 
 WX-02复核差额：11源/16证据/4wheel字节hash匹配，但初始化片段64–60倒置，检查器空切片可通过；有效导入54–57本次静态核实，修复仅列后续计划。注入窗口字段不能证明账号/会话身份，真实@/稳定ID/当前图/关联ACK未获合同；有界只读观察也不能补齐这些生产门槛。
 
-既有任务序号与历史证据保留；后续先按最新首选和实际客户端版本规划一次最小文字收发，不要求全部自动群聊门槛先于任何试用。WX-03/04不自动领取，本轮未安装/观察/收发/调用模型。真实身份/@/稳定性/确认等级继续如实记录，不能把旧冻结条件当作用户新指令后仍不可调整的绝对要求。
+既有任务序号与历史证据保留；后续先按最新首选和实际客户端版本规划一次最小文字收发，不要求全部自动群聊门槛先于任何试用。WX-03/04不自动领取；WX-WXA-02未安装/观察/收发/调用模型。真实身份/@/稳定性/确认等级继续如实记录，不能把旧冻结条件当作用户新指令后仍不可调整的绝对要求。
 
 Git：独立本地仓库/`codex/bootstrap`，起点`a66319d`。27日用户明确授权本任务审阅文档commit/push，并补充要求创建public的WeChatbot；已建[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)并配置origin，发布分支codex/bootstrap。所有secrets/local/state/runtime/logs/cache忽略；当前文件及三次提交的保护路径/常见秘密模式检查未发现问题。按实际Git结果核对本地HEAD与远端分支SHA，不把建仓完成写成推送已完成。
