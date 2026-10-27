@@ -4,6 +4,12 @@
 
 状态：completed，仅详细规划与文档交付；session `WX-WXAUTO4-PLAN-20261027`，2026-10-27 19:05（Asia/Shanghai）起，负责人本会话 Codex。用户指定本轮sol/max规划，完成后交medium实施；不检测或切换会话设置。
 
+最新续作：`WX-WXAUTO4-PLAN-terra-20261027`，19:51（Asia/Shanghai）起，用户希望用`gpt-6.1-terra/medium`试落地。按TASKS登记仅改六份文档，起点`fa12125`且工作区干净；AGENTS与三段当前复制指令改为Terra，首项仍WX-WXA-01且未领取，范围/验收/机器人CodeBuddy后端不变。本次不实施或自动切换模型，沿既有授权commit/push核SHA。
+
+OpenAI Docs复核：[官方选型建议](https://learn.chatgpt.com/docs/model-selection)将Terra列为有明确目标、可验结果的代码/界面任务可试选项；[模型页](https://developers.openai.com/api/docs/models/gpt-6.1-terra)列有medium。判断本项目首项值得试是基于其已确定的接口/验收，不是Terra对本仓库的既有成功证据；用真实交付与回归结果评价，不额外运行模型对比工程。
+
+模型续作验证：六份文档写后复读、66个本地链接/围栏/UTF-8 LF与diff检查通过；三段当前指令全部使用Terra medium，业务代码/运行配置/依赖未变，不重跑业务测试。续作文档提交说明`docs: allow Terra medium for wxauto4 implementation`；基线规划提交为`fa12125`，本次提交SHA按最终本地HEAD/远端分支实际读取并核对，完成后停止。
+
 目标：把已选wxauto4免费版41.1.7＋微信4.1.8.107落实为最小文字收发、薄适配和模型复用的可执行计划，明确每次实施的文件/接口/验收/停止点，交付可复制medium指令。本轮不安装、更换客户端、登录、观察微信、收发消息、执行模型或改业务代码。用户当前4.1.15.13且已接受换版，不重复确认换版意愿。
 
 文件归属与起点见[TASKS登记](../../../TASKS.md)。起始为 `codex/bootstrap` / `a66319d`、无remote；前轮六份已跟踪文档差异与两份交接均已识别为本会话成果，保留并审阅后纳入本次11份文档检查点。最初缺地址已询问，随后用户给出建仓授权；不使用QQ远端。
@@ -20,6 +26,6 @@
 
 验证：11份归属/纳入检查点文档写后复读，99个本地链接、成对围栏、全部工作线根入口/返回链接、UTF-8无BOM/LF、git diff --check均通过；src/config/scripts/tests/vendor/pyproject.toml/uv.lock相对起点无差异。没有新业务测试，历史70项不作为本轮结果；没有下载/安装包或微信客户端、登录/观察/收发/模型/SSH，运行配置保持原样。
 
-Git检查点：包含本文且提交说明为`docs(wxauto4): plan supervised text trials`的文档提交；origin见上，发布分支`codex/bootstrap`。本地SHA从`git rev-parse HEAD`取，远端从`git ls-remote origin refs/heads/codex/bootstrap`取，实际交付答复报告一致性；不预写提交自身SHA。前轮差异均在本任务逐文件复核范围，没有未审阅源码/秘密混入。
+Git检查点：初版详细规划为`fa12125`（提交说明`docs(wxauto4): plan supervised text trials`），最新Terra续作接在其后；origin见上，发布分支`codex/bootstrap`。本地SHA从`git rev-parse HEAD`取，远端从`git ls-remote origin refs/heads/codex/bootstrap`取，实际交付答复报告一致性；不预写提交自身SHA。前轮差异均在本任务逐文件复核范围，没有未审阅源码/秘密混入。
 
-下一步仅由用户选择medium后按[当前首段指令](../../../docs/IMPLEMENTATION_GUIDE.md)领取WX-WXA-01；该项只做试用工具/可选依赖/离线验证。真实会话和客户端动作留给另行明确的WX-WXA-02，模型留给WX-WXA-03。本轮到规划/Git结束，不自动开始任何实施。
+下一步由用户在界面选择gpt-6.1-terra及medium后按[当前首段指令](../../../docs/IMPLEMENTATION_GUIDE.md)领取WX-WXA-01；该项只做试用工具/可选依赖/离线验证。真实会话和客户端动作留给另行明确的WX-WXA-02，模型留给WX-WXA-03。本轮到文档/Git结束，不自动开始任何实施。

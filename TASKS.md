@@ -1,5 +1,9 @@
 # WeChatbot任务台账
 
+27日模型选择续作登记：`WX-WXAUTO4-PLAN-terra-20261027`，2026-10-27 19:51（Asia/Shanghai）起，负责人本会话Codex，沿用WX-WXAUTO4-PLAN的文档续作。用户提出用terra medium试本项目落地能力；本次只调整实施人选与复制指令，首项仍为WX-WXA-01，不领取/实施该项。归属为AGENTS.md、PROGRESS.md、TASKS.md、docs/IMPLEMENTATION_GUIDE.md、docs/WXAUTO4-IMPLEMENTATION-PLAN.md、tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md六份文档。起点codex/bootstrap=`fa12125b1424bfa73ca92fe717e71ecd92d4be53`，工作区干净，origin为已授权公开WeChatbot；沿Git授权只提交检查文档并push核SHA，写后重读。
+
+模型续作结果：completed，仅文档；六份文档写后复读、66个本地链接/围栏/UTF-8 LF与diff检查通过，三段当前指令均为Terra medium，业务代码/配置/依赖不变，未运行业务测试或实施。后续只从当前首段指令领取WX-WXA-01。
+
 当前任务登记：`WX-WXAUTO4-PLAN-20261027`，2026-10-27 19:05（Asia/Shanghai）起，负责人本会话 Codex；仅领取 **WX-WXAUTO4-PLAN 详细规划**，不实施。文件归属：AGENTS.md、PROGRESS.md、TASKS.md、docs/PLAN.md、docs/RESEARCH.md、docs/IMPLEMENTATION_GUIDE.md、docs/WXAUTO4-IMPLEMENTATION-PLAN.md、tracks/bootstrap/HANDOFF.md、tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md、tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md；审阅并保留前轮 tracks/tasks/WX-PLAN-ALIGN/HANDOFF.md。起点 `codex/bootstrap` / `a66319d`，六份已跟踪文档修改与两份未跟踪交接是本会话前轮已知成果，不重置；无已暂存文件、无 remote。用户授权本任务审阅文件的 commit/push；缺少微信远端地址已询问，先完成本地工作，不借用QQ远端。写后重读登记，再核实公开API与本地接口，完成计划、可复制medium指令和文档校验后停止。
 
 当前规划交接：[WX-WXAUTO4-PLAN](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)。下方26日记录为前轮历史；本轮没有领取真实实施或WX-03/04。
@@ -15,7 +19,7 @@
 | ID | 范围 | 状态/证据 | 负责人/时间 | 下一步 |
 | --- | --- | --- | --- | --- |
 | WX-WXAUTO4-PLAN | wxauto4详细规划/medium指令 | completed，仅文档；11份文档/99链接/围栏/入口/diff校验通过；[HANDOFF](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md) | WX-WXAUTO4-PLAN-20261027，19:05起；上方登记文件 | 本轮Git交付后停止，三项实施均未领取 |
-| WX-WXA-01 | 最小试用工具/可选依赖/离线验证 | planned、未领取；[计划第5节](docs/WXAUTO4-IMPLEMENTATION-PLAN.md) | 未登记，不预建空HANDOFF | 后续medium只领这一项，0真实UI/发送/模型 |
+| WX-WXA-01 | 最小试用工具/可选依赖/离线验证 | planned、未领取；[计划第5节](docs/WXAUTO4-IMPLEMENTATION-PLAN.md) | 未登记，不预建空HANDOFF | 用户选择gpt-6.1-terra/medium，只领这一项；0真实UI/发送/模型 |
 | WX-WXA-02 | 配套客户端/一个指定会话文字收发 | planned、未领取；不要求全部生产能力先验 | 未登记 | 01后用户指定对象/动作，≤1发送、0模型 |
 | WX-WXA-03 | 固定CLI模型一次文字回复 | planned、未领取 | 未登记 | 02实测后另领，≤1生成/1发送，人工监督 |
 | WX-FRAMEWORK-DECISION | 委托选型；26日按能用优先修订 | completed，仅文档；已补版本答复；[HANDOFF](tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md) | WX-FRAMEWORK-DECISION-practical-20261026，18:44登记；上述七份文档 | wxauto4免费＋微信4.1.8.107；换版意愿已明确，后续按具体实施任务推进 |

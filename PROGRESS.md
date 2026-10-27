@@ -2,13 +2,15 @@
 
 当前任务：2026-10-27 `WX-WXAUTO4-PLAN-20261027` 已完成[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)与[medium指令](docs/IMPLEMENTATION_GUIDE.md)，11份文档复读、99个本地链接/围栏/双向入口与diff检查通过；只规划、不实施，未重跑业务测试。当前交接为[WX-WXAUTO4-PLAN](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)，文件归属和Git起点见[TASKS](TASKS.md)。
 
+最新模型续作：用户希望改用`gpt-6.1-terra/medium`试落地，AGENTS/当前三段复制指令已同步，首项仍为WX-WXA-01，范围与验收不变。该项仍未领取；本轮只调整六份文档，不检测/切换会话模型，不开始实现。
+
 2026-10-27（Asia/Shanghai）。唯一根进度入口，不另建根 HANDOFF。位置 `E:\CodexWS\WeChatbot`，独立于 QQbot。
 
 目标：个人微信与朋友家人聊天，复用显式 CodeBuddy/家庭 Ollama 两路线，账号/配置/历史/清理独立。当前 **WX-01 核心及 WX-02 代码/离线范围完成，历史70项离线通过；真实能力全部未验，未部署**。本次文档整理未重跑测试。
 
 当前路线：wxauto4免费版41.1.7＋微信4.1.8.107，公开API→薄封装→单会话人工监督试用→本项目固定runner→CodeBuddy。首期暂不加AstrBot，不连接QQ实例。用户自报4.1.15.13并已接受换版，不再询问换版意愿；实际更换尚未执行。依据为[26日选型](tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)和[27日详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)。WeChatFerry留作备选，不自行改写任何上游核心。
 
-下一推荐只领取 **WX-WXA-01**，完成最小试用工具/可选包及离线验证后停止；WX-WXA-02另做配套客户端和一个指定会话的文字试验（0模型），WX-WXA-03另接一次CLI。三项均未领取。已有严格离线Gate不直接放开，试用明确记录UI昵称/临时ID与本地结果，不伪造生产身份、真实@或服务端ACK。
+下一推荐用 **gpt-6.1-terra/medium，只领取WX-WXA-01**，完成最小试用工具/可选包及离线验证后停止；WX-WXA-02另做配套客户端和一个指定会话的文字试验（0模型），WX-WXA-03另接一次CLI。三项均未领取。已有严格离线Gate不直接放开，试用明确记录UI昵称/临时ID与本地结果，不伪造生产身份、真实@或服务端ACK。
 
 最新用户原则：个人娱乐先能用，现成公开接口和少量项目适配优先，不限定注入，允许功能延期或舍弃；不得为复刻QQ功能自行改写框架核心或维护私有fork。缺完整消息ID/@/服务端ACK先标限制，不一律否决人工监督的单会话试用，也不伪造能力。真实群触发/对象动作仍待具体规划，当前没有实施；详见[AGENTS](AGENTS.md)和[PLAN第2节](docs/PLAN.md)。
 
