@@ -1,0 +1,11 @@
+{
+  "package": "wxauto4",
+  "version": "41.1.7",
+  "wheel": "wxauto4-41.1.7-cp312-cp312-win_amd64.whl",
+  "size": 2946186,
+  "sha256": "096a365ba71060c1af3c1f096342d5a16609452f51bcaf46e7359dd54235ebbf",
+  "source": "https://pypi.org/project/wxauto4/41.1.7/",
+  "contract": "wxauto4/wx.pyi and wxauto4/msgs/base.pyi; ChatInfo, GetAllMessage, SendMsg; WeChat(debug=False, resize=False)",
+  "license": "No separate license file in wheel; metadata and https://docs.wxauto.org/ (user agreement and policies)",
+  "return_contract": "param.py WxResponse dict status: 成功 means framework local success; all unobserved sends remain unknown"
+}

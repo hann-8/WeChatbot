@@ -2,7 +2,7 @@
 
 独立 Python 3.12 项目，当前完成 **WX-01 核心及 WX-02 代码/离线验证**。入口见 [PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-01/HANDOFF.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。微信身份、真实 @、发送确认、图片、登录及长期运行全部未验。
 
-默认 `transport=mock`、`enabled=false`、`sends_enabled=false`、授权群空、私聊关闭、`mentions`、`single`，媒体/联网/长期记忆等均关闭。当前没有真实传输实现；修改开关不能产生生产资格。命令行提供只读 `inspect` 和 `probe` 的inspect/mock模式，没有启动真实通道、登录、发消息或真实生成命令。不自动进入 WX-03；WX-02真实provider未接线。
+默认 `transport=mock`、`enabled=false`、`sends_enabled=false`、授权群空、私聊关闭、`mentions`、`single`，媒体/联网/长期记忆等均关闭。旧核心没有真实传输实现；修改开关不能产生生产资格。独立人工监督试用入口见下文。命令行提供只读 `inspect` 和 `probe` 的inspect/mock模式，旧入口没有启动真实通道、登录、发消息或真实生成命令。不自动进入 WX-03；WX-02真实provider未接线。
 
 ## 本地准备与检查
 
@@ -62,3 +62,7 @@ Git 当前仅本地 `codex/bootstrap` 检查点，没有 remote。后续需用�
 默认probe核对惰性本地审阅证据，不访问微信；mock只运行内置自造runtime元数据。窗口原语通过显式注入替身验证，仅读绑定消息列表的runtime/class，读前后校验目标；没有真实provider。UI显示名/临时runtime_id/按键返回分别报告，稳定账号/会话/发送者/消息ID均unverified，真实@为mention_unverified，发送为delivery_unverified，当前图pixels=unsupported/source=none。普通@、昵称hash和图计数均不升级能力。
 
 真实观察入口继续关闭；CLI不接受observe，API即使显式声明也拒绝执行。还需后续明确授权、指定账号/已打开单会话窗口/120秒最多10条自造样本，并补证硬时限/窗口绑定provider。此次0真实UI/0模型/0发送，不读真实历史/数据库、不截图落盘。门槛缺口回sol/max决定，不降低黑名单或改全回复。
+
+## wxauto4 人工监督试用工具
+
+WX-WXA-01 提供独立试用入口，默认核心路径不变；安装额外依赖可用 `uv sync --locked --extra wxauto4`。`python -m wechatbot.wxauto4_trial inspect` 和 `mock` 不导入 wxauto4，mock 使用合成替身。真实运行与人工观察命令、绑定及限制见 [试用报告](docs/WX-WXA-01-REPORT.md)；真实试验须另行明确授权。发送后即使框架报告成功也保留未决，只有操作者确实观察后才记人工观察，不称服务端 ACK。

@@ -1,33 +1,36 @@
 # WeChatbot项目入口
 
-当前任务：2026-10-27 `WX-WXAUTO4-PLAN-20261027` 已完成[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)与[medium指令](docs/IMPLEMENTATION_GUIDE.md)，11份文档复读、99个本地链接/围栏/双向入口与diff检查通过；只规划、不实施，未重跑业务测试。当前交接为[WX-WXAUTO4-PLAN](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)，文件归属和Git起点见[TASKS](TASKS.md)。
+当前实施：WX-WXA-01 已完成工具与离线验证；见[交接](tracks/tasks/WX-WXA-01/HANDOFF.md)和[报告](docs/WX-WXA-01-REPORT.md)。真实微信与模型未验，WX-WXA-02 未领取。
 
-最新模型续作：用户希望改用`gpt-6.1-terra/medium`试落地，AGENTS/当前三段复制指令已同步，首项仍为WX-WXA-01，范围与验收不变。该项仍未领取；本轮只调整六份文档，不检测/切换会话模型，不开始实现。
+此前规划：2026-10-27 `WX-WXAUTO4-PLAN-20261027` 已完成[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)与[medium指令](docs/IMPLEMENTATION_GUIDE.md)，11份文档复读、99个本地链接/围栏/双向入口与diff检查通过；只规划、不实施，未重跑业务测试。规划交接为[WX-WXAUTO4-PLAN](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)，文件归属和Git起点见[TASKS](TASKS.md)。
+
+最新模型续作：用户希望改用`gpt-6.1-terra/medium`试落地，AGENTS/当前三段复制指令已同步，首项仍为WX-WXA-01，范围与验收不变。该说明是此前文档续作；WX-WXA-01 已在独立实施会话完成离线范围。
 
 2026-10-27（Asia/Shanghai）。唯一根进度入口，不另建根 HANDOFF。位置 `E:\CodexWS\WeChatbot`，独立于 QQbot。
 
-目标：个人微信与朋友家人聊天，复用显式 CodeBuddy/家庭 Ollama 两路线，账号/配置/历史/清理独立。当前 **WX-01 核心及 WX-02 代码/离线范围完成，历史70项离线通过；真实能力全部未验，未部署**。本次文档整理未重跑测试。
+目标：个人微信与朋友家人聊天，复用显式 CodeBuddy/家庭 Ollama 两路线，账号/配置/历史/清理独立。当前 **WX-01 核心及 WX-02 代码/离线范围完成，历史70项离线通过；真实能力全部未验，未部署**。WX-WXA-01 本轮全套80项离线通过。
 
 当前路线：wxauto4免费版41.1.7＋微信4.1.8.107，公开API→薄封装→单会话人工监督试用→本项目固定runner→CodeBuddy。首期暂不加AstrBot，不连接QQ实例。用户自报4.1.15.13并已接受换版，不再询问换版意愿；实际更换尚未执行。依据为[26日选型](tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)和[27日详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)。WeChatFerry留作备选，不自行改写任何上游核心。
 
-下一推荐用 **gpt-6.1-terra/medium，只领取WX-WXA-01**，完成最小试用工具/可选包及离线验证后停止；WX-WXA-02另做配套客户端和一个指定会话的文字试验（0模型），WX-WXA-03另接一次CLI。三项均未领取。已有严格离线Gate不直接放开，试用明确记录UI昵称/临时ID与本地结果，不伪造生产身份、真实@或服务端ACK。
+WX-WXA-01 已完成最小试用工具/可选包及离线验证并停止；WX-WXA-02另做配套客户端和一个指定会话的文字试验（0模型），WX-WXA-03另接一次CLI。WX-WXA-01 已完成离线范围，02/03 未领取。已有严格离线Gate不直接放开，试用明确记录UI昵称/临时ID与本地结果，不伪造生产身份、真实@或服务端ACK。
 
 最新用户原则：个人娱乐先能用，现成公开接口和少量项目适配优先，不限定注入，允许功能延期或舍弃；不得为复刻QQ功能自行改写框架核心或维护私有fork。缺完整消息ID/@/服务端ACK先标限制，不一律否决人工监督的单会话试用，也不伪造能力。真实群触发/对象动作仍待具体规划，当前没有实施；详见[AGENTS](AGENTS.md)和[PLAN第2节](docs/PLAN.md)。
 
 前次WX-02文档复核：`WX-02-gap-review-plan-20261023`（2026-10-23 20:02起，Asia/Shanghai）完成[缺口复核与后续详细计划](docs/WX-02-REVIEW-AND-PROVIDER-PLAN.md)，未实施、未重跑测试、未领取 WX-03。建议停止以当前固定上游推进生产；可选一次隔离UI元数据观察需另批代码/离线与指定对象真实观察，不是必须实施的步骤。归属与Git核对见 [TASKS](TASKS.md)。
 
-阅读顺序：[AGENTS](AGENTS.md)→本入口→[当前交接](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)→[TASKS](TASKS.md)→[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)→[medium指令](docs/IMPLEMENTATION_GUIDE.md)。历史依据：[PLAN](docs/PLAN.md)、[RESEARCH](docs/RESEARCH.md)、[README](README.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。
+阅读顺序：[AGENTS](AGENTS.md)→本入口→[当前交接](tracks/tasks/WX-WXA-01/HANDOFF.md)→[TASKS](TASKS.md)→[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)→[medium指令](docs/IMPLEMENTATION_GUIDE.md)。历史依据：[PLAN](docs/PLAN.md)、[RESEARCH](docs/RESEARCH.md)、[README](README.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。
 
 | 工作线 | 状态 | 下一步 | 交接 |
 | --- | --- | --- | --- |
-| WX-WXAUTO4-PLAN 详细实施规划 | completed，仅文档；校验通过 | 首推WX-WXA-01；三项不自动串行实施 | [HANDOFF](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md) |
+| WX-WXA-01 最小试用工具 | completed，离线验证；真实未验 | 停止，02 须另行授权 | [HANDOFF](tracks/tasks/WX-WXA-01/HANDOFF.md) |
+| WX-WXAUTO4-PLAN 详细实施规划 | completed，仅文档；校验通过 | 规划完成；实施不自动串行 | [HANDOFF](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md) |
 | WX-FRAMEWORK-DECISION 框架选型 | 26日续作completed，仅文档；已补版本答复 | wxauto4免费＋微信4.1.8.107；用户已接受换版，后续进入明确实施任务 | [HANDOFF](tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md) |
 | WX-PLAN-ALIGN 架构说明/框架迁移原则 | completed，仅文档；校验通过 | 原则已纳入本次选型决定 | [HANDOFF](tracks/tasks/WX-PLAN-ALIGN/HANDOFF.md) |
 | WX-00 独立项目规划/引导 | completed，仅规划 | 保留历史依据 | [HANDOFF](tracks/bootstrap/HANDOFF.md) |
 | WX-02 候选封装/能力探针 | 代码/离线完成；缺口复核/后续规划完成；真实未验 | [原复核计划](docs/WX-02-REVIEW-AND-PROVIDER-PLAN.md)保留历史；不继续新增provider投入 | [HANDOFF](tracks/tasks/WX-02/HANDOFF.md) |
 | WX-01 离线核心/严格入口/模型快照/mock 闭环 | completed；已实现、离线通过 | 核心保留；回归70项中含原41项 | [HANDOFF](tracks/tasks/WX-01/HANDOFF.md) |
 
-默认 transport=mock、enabled/sends=false、授权群空、私聊关闭且双名单空、mentions/single，视觉/网页/长期记忆/表情/成员等全部关闭。真实通道没有可执行实现，能力资格恒 false；真实模型必须关闭，facade 仅接受离线底层替身。黑名单与授权前置，unknown 不重放/重试/清账。没有操作微信/UI/登录/数据库、家庭 SSH 或 QQ 运行实例。
+默认 transport=mock、enabled/sends=false、授权群空、私聊关闭且双名单空、mentions/single，视觉/网页/长期记忆/表情/成员等全部关闭。旧核心真实通道关闭，独立试用入口仅显式 live 可调用；能力资格恒 false；真实模型必须关闭，facade 仅接受离线底层替身。黑名单与授权前置，unknown 不重放/重试/清账。没有操作微信/UI/登录/数据库、家庭 SSH 或 QQ 运行实例。
 
 WX-01 基线：独立 Python3.12/锁、五份中文严格模板、规范事件/能力分层、入口/有界串行队列/停言栅栏、冻结目标、SQLite 投递/有限隔离历史、只读 inspect/健康操作骨架；原 CLI/Ollama runner 底层替身业务闭环。固定源 commit `dd9373029412137023124751d75883824122c784`，63 文件 manifest、61 未改/2 处受控本地差异；工件复制/hash 通过，未执行真实 CLI。
 
