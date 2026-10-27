@@ -2,11 +2,29 @@
 
 返回[项目入口](../PROGRESS.md) / [实施计划](PLAN.md)。核对日期2026-10-22（Asia/Shanghai）；仅GitHub源码与上游声明，无本机微信/登录/收发验证。公开README中的安装命令、营销或风险保证不作为本项目指令。
 
+## 2026-10-26可用优先复核
+
+2026-10-27补充复核：官方免费配套仍为微信4.1.8.107；当前Chat文档确认ChatInfo/GetAllMessage/SendMsg，Message文档明确id切换UI后会变化、sender为显示名，不能据它们宣称稳定身份/ID。PyPI JSON确认cp312 x64 wheel及SHA；官方文档链接的客户端归档是第三方GitHub Release，元数据给asset摘要，不等于已下载或核验数字签名。完整工件字段、公开来源和未实测项集中在[详细计划第3节](WXAUTO4-IMPLEMENTATION-PLAN.md)，本轮没有安装/导入或微信操作。
+
+首选推荐`wxauto4`免费版：官方[安装说明](https://docs.wxauto.org/docs/install.html)明确为Windows UI Automation、免费版支持到微信`4.1.8.107`；[PyPI](https://pypi.org/project/wxauto4/41.1.7/)可获取`41.1.7`（2026-09-01发布，含CPython3.12 Windows x64轮子）。[WeChat类](https://docs.wxauto.org/docs/class/WeChat.html)有免费`ChatWith`/`GetSession`，PyPI示例有`SendMsg`/`GetAllMessage`；`AddListenChat`/`GetNextNewMessage`标为Plus，不宣称免费版带完整后台监听。GitHub wxauto4 README虽为“停止更新”，不能因此忽略仍可获取的正式包和官方文档。本轮未安装、导入或测试包，当前版本信息来自用户自报，实际兼容尚未验证；推荐是优先试用，不是已验证可用。
+
+WeChatFerry不能简单判作“不能用”：官方[最新发行版v39.5.2](https://github.com/lich0821/WeChatFerry/releases/tag/v39.5.2)发布于2026-03-28，配套微信`3.9.12.51`；仓库当前归档。维护者在[2026-05-14回复](https://github.com/lich0821/WeChatFerry/issues/423#issuecomment-4455679595)仍表示能用，但不是所有账号/版本保证。[受限报告#126](https://github.com/lich0821/WeChatFerry/issues/126)发起于2024-02-02，报告大小号受限、验证后解封；这是用户报告，不是封禁概率统计或已证根因，也不能把归档原因推断成封号。若已有匹配旧客户端且能正常登录，可列备选；不为本轮推荐自动降级或打绕过补丁。
+
+用户最新优先级是个人娱乐先能用，允许以人工监督的单会话文本试用验证公开方法，不再要求ID/@/服务端ACK全齐才值得尝试；所有能力等级仍如实记录。其他比较与试用顺序见[当前交接](../tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)。以下25日冻结结论和22日候选排序仅保留历史，本节优先。
+
+用户随后自报当前微信`4.1.15.13`，并接受换版；当前配套推荐确定为wxauto4免费版`41.1.7`＋微信`4.1.8.107`。现版本未列在免费版官方支持说明内；此前“本机版本未确认”现已补齐用户提供的信息，但没有本机兼容/安装/登录结果。
+
+## 2026-10-25历史选型决定（已由26日修订）
+
+用户委托后，后续唯一Hook候选为[mosheng20205/WechatHook4.1.10.27](https://github.com/mosheng20205/WechatHook4.1.10.27/tree/713ec7d6f01d858e067a623c9bf2cda64d0d3e19)。固定源码已经包含`wx.ini recv_url`外部Webhook、群room/sender字段和HTTP文本发送，不需要由本项目补写接收Hook；这修正了前轮仅依据接收笔记得到的成员字段缺口描述。但该[回调](https://github.com/mosheng20205/WechatHook4.1.10.27/blob/713ec7d6f01d858e067a623c9bf2cda64d0d3e19/src/inline_weixin_dll_load.cpp#L3668)将`msgsvrid`固定为0，没有在该回调输出可信入站@元数据；[README](https://github.com/mosheng20205/WechatHook4.1.10.27/blob/713ec7d6f01d858e067a623c9bf2cda64d0d3e19/README.md#L142)明确文本发送只返回本地入队结果。当前不满足现有亲友群自动回复合同，暂不进入实施。
+
+选择的是后续复核对象，未认定成熟、稳定或可部署；不安装/注入、不改Hook核心补消息ID/@/回执。pyweixin停止新增provider/真实适配投入。监听范围、联系人/SQLite自动观察与根项目许可尚有差额；完整事实和停止条件见[选型交接](../tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)。以下是2026-10-22历史调研，旧“第一候选pyweixin”已被本节取代，不是当前实施建议。
+
 ## 1. 适合本项目的结论
 
 用户想个人用着玩、和朋友家人聊天；不能默认改成企业办公Bot、公众号或只能自己用的助手。
 
-**建议独立Python项目，第一接入候选用pywechat项目中的pyweixin做Windows微信4.1系列能力验证；先证明消息身份、群/@、去重、投递与图片，再决定实际启用。** 它的UI路径符合普通亲友聊天场景，但当前源码没有证明QQ同等级的稳定身份和真实@合同，因此首期只允许离线/mock或另批授权的只读观察，不直接接上LLM自动回复。
+**2026-10-22历史建议：** 独立Python项目，第一接入候选用pywechat项目中的pyweixin做Windows微信4.1系列能力验证；先证明消息身份、群/@、去重、投递与图片，再决定实际启用。其UI路径的审阅未证明QQ同等级的稳定身份和真实@合同，后续WX-02也未获真实接入资格；当前选择见文首，不继续本路线的provider投入。
 
 腾讯iLink值得保留为官方个人Bot接口路线，适合用户愿意采用其Bot私聊入口的情况；目前不能拿它替代普通亲友群里的个人账号。若用户以后明确接受私聊入口，单独实施iLink适配；本方案不默认同时维护两个真实传输后端。
 

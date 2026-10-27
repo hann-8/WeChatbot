@@ -1,8 +1,68 @@
 # 给gpt-6.1-sol/medium的微信实施指令
 
-返回[PROGRESS](../PROGRESS.md) / [PLAN](PLAN.md) / [调研](RESEARCH.md)。用户自行选择medium；本目录目前只有规划，以下每次只领一项。无需为已授权离线实施中的普通实现细节重复确认。
+返回[PROGRESS](../PROGRESS.md) / [PLAN](PLAN.md) / [调研](RESEARCH.md)。用户自行选择medium，每次只领一项。无需为已授权离线实施中的普通实现细节重复确认。
 
-## 1. 首先复制：WX-01离线核心
+2026-10-26更新：WX-01及WX-02离线部分已交付，下文保留历史复制指令，不重复领取。最新[选型](../tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)推荐wxauto4免费版，先核客户端兼容、再规划单会话文本收发、最后接模型，不要求完整源消息ID/服务端回执先于任何人工监督试用。25日唯一Hook/一律冻结的决定已修订。本轮仅调研与规划，没有授权安装/真实窗口动作/发送/模型或领取WX-03；旧指令不能直接用于新路线，后续具体实施仍由用户指定。
+
+已收到版本答复：当前微信4.1.15.13，用户接受换版；按wxauto4免费版41.1.7＋微信4.1.8.107规划准备，不再把换版意愿列作待确认项。客户端更换尚未执行，进入明确实施任务后再按该任务范围操作。
+
+## 当前路线：先复制WX-WXA-01，只准备试用工具
+
+2026-10-27详细规划已写入[wxauto4实施计划](WXAUTO4-IMPLEMENTATION-PLAN.md)，由[当前任务交接](../tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)管理。按顺序每次只执行下面一个文本块。第一项不需要真实会话名；后两项的占位内容由用户填齐，不能由agent猜。用户自行选择medium，不自动切换或声称检测到设置。
+
+```text
+你是gpt-6.1-sol/medium。请在E:\CodexWS\WeChatbot只领取WX-WXA-01：实现wxauto4最小试用工具及离线验证，完成后停止。
+
+先读AGENTS.md、PROGRESS.md、tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md、TASKS.md、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第1—5节和本指令。读取当前Git HEAD/diff；基线是包含该详细计划的文档提交，不能回退到旧a66319d丢掉选型更新。按需要建codex/wxauto4-trial-kit分支。修改前登记session、Asia/Shanghai时间和实际文件归属，首次建立tracks/tasks/WX-WXA-01/HANDOFF.md并同步PROGRESS/TASKS、写后重读。保留其他session/用户修改。
+
+配套已定为wxauto4免费版41.1.7＋微信4.1.8.107；用户现用4.1.15.13并已接受换版，不再询问换版意愿。本项只允许在本项目Python3.12 x64环境准备可选依赖及离线运行，不下载/安装/切换微信客户端，不import或构造真实WeChat，不观察窗口、操作键鼠剪贴板、登录、发送、SSH或调用模型。
+
+按计划只新增薄封装src/wechatbot/transports/wxauto4_adapter.py和试用入口src/wechatbot/wxauto4_trial.py，加test_wxauto4_trial.py、合成绑定示例及vendor/wxauto4/manifest.json；只记录wheel元数据/hash/公开合同/许可位置，不提交wheel、不反汇编、不改上游核心或选择器。pyproject/uv.lock加入Windows可选extra并仅锁必要依赖；基础mock安装不强制wxauto4，不全局重装或升级无关固定依赖。README/报告/任务交接与入口同步。
+
+inspect与mock不能import wxauto4，实际流程通过工厂/时钟替身测试。live命令单独显式开启，留到WX-WXA-02再运行。用ChatInfo/GetAllMessage/SendMsg三个免费公开业务方法；首试只操作用户已打开的一个会话，不用ChatWith/GetSession/Plus监听/自动回复/联系人/历史数据库接口。微信初始化参数按固定包公开合同处理，未知返回归unknown，不能靠对象bool假装微信已接受。
+
+实现TrialBinding/TrialMessage和单owner的最小试用台账：昵称仅显示名、UI ID仅本次周期、production_eligible=false；不伪造NormalizedEvent或放开旧Gate。初始快照只建基线不触发，既有正文不打印/落盘/送模型。默认每2秒检查，最多120秒/10条候选，只消费指定测试者的一条新自造挑战文本；self/system/非文字/其他人/试用黑名单先拒绝。切窗、ID重建、超时或歧义则停。SendMsg前复核当前会话，恰好调用一次且不传who，不补发、不拆泡。先落盘与消耗次数再副作用；异常/取消/未知返回和重启不重放，未决记录不因换trial编号自动解除。过程状态和ACK等级分开，框架本地成功不解除未决；操作者确实看到后可标completed_observed，不伪造服务端ACK。日志只封闭元数据，合成输入验证无隐私泄漏。
+
+验证实际调用计数和状态转移，覆盖旧基线/新消息/重复/黑名单/错窗/超时/上限/取消/unknown/重启未决；不要写只照实现字段断言的测试。跑新增针对性测试及现有全套unittest一次、scripts/check_snapshot.py、inspect/mock和git diff --check；测试数按实际结果，不沿用历史70项作本轮通过数。固定runner/旧默认配置/QQ仓库不改，不接模型、不做OneBot/AstrBot桥或功能复刻。
+
+更新docs/WX-WXA-01-REPORT.md和HANDOFF/PROGRESS/TASKS，写明已实现、离线通过、真实全部未验及实际live命令。沿用户Git授权，只stage/commit本任务检查文件；origin应为用户已授权建立的https://github.com/hann-8/WeChatbot.git，核对后普通push并核HEAD=实际远端分支SHA，不force或借QQ地址。提交后停止，不领取WX-WXA-02、不实际操作微信。
+```
+
+## 后续单独复制：WX-WXA-02，客户端与一次文字试用
+
+此块只在用户发出实际实施指令并补齐对象后使用；填写行为不是再询问“是否同意换版”。
+
+```text
+你是gpt-6.1-sol/medium。在E:\CodexWS\WeChatbot只领取WX-WXA-02，完成后停止。先读AGENTS/PROGRESS/TASKS、WX-WXA-01交接和实际报告、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第3—6节；核对HEAD/diff，登记session/时间/文件并首次建立本项HANDOFF及入口链接，写后重读，保留他人修改。
+
+本项授权准备配套微信4.1.8.107，并在一个指定会话做基本文字试验：本地账号别名=<填写>；类型group或friend=<填写>；准确会话显示名=<填写>；测试发送者=<填写>；试用黑名单=<填写，空时写空>；新自造输入/输出=<填写>。仅0模型、最多120秒/10候选和一次SendMsg；这里不授权其他会话/自动群回复。真实绑定写本项目secrets忽略文件，报告只用代号。缺目标时先完成可独立准备部分，再一次收集缺失项，不猜联系人。
+
+用户现用4.1.15.13且已接受换版。本任务可下载/校验计划内客户端工件，检查摘要、Authenticode发布者/状态与文件版本后按正常安装流程准备；关闭当前客户端、系统交互及扫码登录由操作者完成。不自动卸载/删除聊天数据、不读微信数据库/账号目录/密码/密钥、不绕登录限制、不改全局设置/启动项、不按进程名kill微信。安装若实际要求删数据或其他未涵盖动作，停那个动作并说明，不再次泛问换版意愿。
+
+先按WX-WXA-01报告核可选包及实际命令。由操作者手动打开指定会话，试用期间不切其他聊天。读取当前已加载消息只为RAM内UI ID基线，不打印/存旧正文、不拉更早历史；基线建立后由约定亲友发新自造文本，仅消费这一条。self/system/非文字/其他发送者/试用黑名单不触发。框架在该指定会话所需焦点/界面/剪贴板动作包含在本次试用范围，项目不另写键鼠发送器。目标变化/ID重建/账号疑变/窗口歧义立即停，不自动恢复。
+
+发送自造测试文字前复核ChatInfo，一次SendMsg且不传who；没有可靠返回即unknown，不补发、不撤回、不换trial编号再试。框架本地报告与操作者在正确会话/对端看到分别记录，不冒充服务端ACK。文件传输助手可作另行明确的出站自检，不能将自己消息当亲友新入站验收。已有未决先处理其观察记录，不能删台账重试。
+
+报告具体版本/兼容及接收、调用发送、本地返回、人工观察各状态，失败也正常收口；不反复换版本或改框架/买Plus。同步本任务报告/HANDOFF/PROGRESS/TASKS并只提交已检查文件，有明确remote才push核SHA。结束不接模型、不领取WX-WXA-03、不做常驻/多群/图片。
+```
+
+## 后续单独复制：WX-WXA-03，一次CLI模型回复
+
+```text
+你是gpt-6.1-sol/medium。在E:\CodexWS\WeChatbot只领取WX-WXA-03。先读AGENTS/PROGRESS/TASKS、WX-WXA-02交接/报告、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第4—6节及本指令，登记session/时间/文件并首次建立本项HANDOFF/双向链接，写后重读，保留现有差异。
+
+前提是该目标最小收发已经实测且无未决记录；不要求先有服务端ACK、稳定wxid或真实@。本次明确目标/测试者=<填写或明确沿用WX-WXA-02本机忽略绑定>；本次新的自造输入=<填写>。本项授权离线接线后在这个人工监督会话做最多一次真实CodeBuddy生成和一次纯文本发送；失败/unknown消耗次数，不补跑、不自动推进常驻运行。
+
+按计划复用本项目固定InputBudget/create_runner/纯文本过滤/工具MCP隔离/清理，在model_facade.py增显式CLI试用工厂或TrialCliModel，复用共用函数而非复制runner；保留原ModelFacade默认要求离线替身的行为。试用输入只为选中的新测试纯文本，history为空，视觉ContextVar清空，不伪造生产NormalizedEvent、不放开旧Gate/真实@、不改qqbot_gateway快照或QQ环境。CodeBuddy固定deepseek-v4.1-flash，一次尝试、串行、既有预算/超时/清理，不换账号/后端/模型，不买额度或接Ollama真实连接。
+
+先验证本项目runtime/cli的锁定工件、工具隔离、清理状态；健康检查0生成，缺工件/认证/额度/握手能力则报告，不静默走别的路线或从QQ复制凭据。必要准备只使用现有prepare_cli及明确给定的本机匹配工件，不全局重装。模型意图和次数在生成前落盘，崩溃不重生成；模型/清理unknown不清账。新测试者/黑名单/会话检查均在生成前完成，旧可见消息不交模型。
+
+先用真实runner底层替身做从试用入口到生成/过滤/同目标发送的离线闭环，运行受影响回归及snapshot/diff检查。真实尝试只针对上述新自造输入，最多一次生成，输出一条自然纯文本且≤500字符；超出/目标变化/unknown本次不发，不截成多泡、不改who找新目标。发送前复核当前会话，一次SendMsg。分别记录生成、发送调用、框架报告和人工观察，不把UI返回当服务端确认，不写持久对话历史。
+
+更新本项报告/HANDOFF/PROGRESS/TASKS，列已实现/离线/真实证据及限制；只commit已检查文件，明确remote才push核远端SHA，不force。结束即停，不做图片、free、多群、长期记忆或24h运行，不自动领取下一项。
+```
+
+## 历史指令：WX-01离线核心（已交付，不重复领取）
 
 ```text
 你是gpt-6.1-sol/medium。请在E:\CodexWS\WeChatbot开发，只领取WX-01。
@@ -19,7 +79,7 @@
 更新README、独立报告、WX-01交接/TASKS/PROGRESS，区分已实现/离线通过与所有真实能力未验。可初始化本地Git，默认codex/bootstrap分支，只commit本任务审阅文件；本项目尚无remote，不创建或臆造远端、不把QQ地址拿来push。报告本地提交号和保留差异，结束不自动开始WX-02/真实验证。
 ```
 
-## 2. 下一独立会话：WX-02候选接入/探针
+## 历史指令：WX-02候选接入/探针（已交付，不重复领取）
 
 ```text
 你是gpt-6.1-sol/medium。工作目录E:\CodexWS\WeChatbot，只领取WX-02。
@@ -34,7 +94,9 @@
 按PLAN的同名/改名/重连/虚拟列表/突发/普通@/自己消息/错窗/单图绑定和副作用隔离做有意义离线测试，保留WX-01投递/预算/工具隔离回归。同步任务交接/索引和独立报告，只提交本任务文件；没有用户给出的远端继续只做本地Git提交。结束不自动领取WX-03/登录/发消息/模型。
 ```
 
-## 3. WX-03/04进入条件
+## 历史WX-03/04进入条件（不作为当前最小试用前置）
+
+下文是原pyweixin生产路线的门槛，仅保留历史。当前wxauto4人工监督试用走WX-WXA-01/02/03及独立合同，不因缺稳定ID/真实@/服务端ACK一律禁止试用，也不据试用成功宣称原生产路线通过。
 
 WX-03仅在WX-02已用实际证据证明所选会话的可信身份、真实@、新消息去重和可关联发送结果后领取；按PLAN第3节实现实际适配，默认仍不启用。若未达到，不能复制一条“继续完整实现”的泛化指令绕过结论，应将具体缺口交回max。
 

@@ -1,6 +1,14 @@
 # WeChatbot独立项目详细实施计划
 
+2026-10-27当前执行依据：[wxauto4最小收发与模型接入详细计划](WXAUTO4-IMPLEMENTATION-PLAN.md)及[medium指令](IMPLEMENTATION_GUIDE.md)，本轮仅完成规划。后续WX-WXA-01→明确对象的WX-WXA-02→一次CLI的WX-WXA-03分别领取；原WX-03/04门槛仅对应旧生产路线，不阻断当前人工监督小试验。暂不加AstrBot，薄封装公开API，先收发后模型，不改框架核心。
+
 返回[PROGRESS](../PROGRESS.md) / [TASKS](../TASKS.md) / [源码调研](RESEARCH.md) / [medium指引](IMPLEMENTATION_GUIDE.md)。2026-10-22，Asia/Shanghai；仅规划。目标目录 `E:\CodexWS\WeChatbot` 初始为空，本轮仅建立文档。
+
+2026-10-26最新[选型与试用顺序](../tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)：按用户“能用优先、不限定注入”，首选`wxauto4`免费版，通过公开方法规划一个明确会话的文字收发试用。官方免费兼容说明仅到微信`4.1.8.107`，PyPI当前包为`41.1.7`，尚未核实本机兼容。`AddListenChat`等后台监听方法属Plus，不能写成免费版能力；首期不做多群后台监听，不购买Plus、不改框架核心。WeChatFerry仍可作为配套旧版能登录时的备选。25日唯一Hook和一律冻结试用的结论撤回；本轮没有实施或实际操作微信。
+
+版本答复已补齐：用户当前为微信`4.1.15.13`，明确接受更换版本。计划配套确定为`wxauto4 41.1.7`免费版＋微信`4.1.8.107`；当前版本不在官方免费支持说明内，不为保持该版本改写框架。不重复询问换版意愿，安装/客户端更换与实际验证仍未执行，后续按具体实施任务推进。
+
+试用规划先确认客户端兼容，再由操作者指定单个会话，验证读取新文本和发送一条自造文本；人工观察可记`operator_observed`，不要求先拿到服务端回执，也不把本地提交标成服务端成功。先完成最小收发再接模型，图片/free/多群/复杂记忆延后。没有可靠@元数据就不称真实@，并保留群触发方式待后续具体规划；消息ID不足记录去重限制，不借机扩大读取历史。当前代码的默认mock、关闭开关和能力标记尚未改动。下文为既有离线实现及较严格自动群聊目标，不自动成为首次人工监督试用的全部前置条件。
 
 ## 1. 需求、假设与非目标
 
@@ -14,6 +22,12 @@
 
 ## 2. 分层架构与技术选择
 
+2026-10-25架构澄清与用户约束，见[本次交接](../tracks/tasks/WX-PLAN-ALIGN/HANDOFF.md)和[AGENTS](../AGENTS.md)：下面的图是既有微信方案，WX-01已实现其离线核心；它另设轻量Router，直接复用固定模型runner，没有接入AstrBot。因此当前代码并非只把QQ链路的SnowLuma替换成微信框架。
+
+后续以现成收发方法和公开接口为先：优先复用已有应用/模型调用，只维护项目侧薄适配；不把更换框架扩展为QQ功能等价复刻或第三方核心改写。已有轻量Router/源码快照不决定未来必须采用这条路线。当前按文首wxauto4首选推荐先做兼容/单会话收发；AstrBot及薄适配如何接线仍未实施。旧WX-02 provider计划不自动继续。
+
+允许先关闭、延期或舍弃图片、free、成员、表情、网页等附加功能，再适配已选框架。身份/授权/黑名单与发送结果必须如实处理：缺少可信@就关闭依赖它的群触发，缺少可靠发送结果就保留unknown，不能用扩大触发或虚假能力补齐。若框架无法满足剩余最小目标，出口是缺口说明与后续选型决定，不是自行深入改写上游。本次只整理说明与约束，没有修改下面的代码架构或启用任何真实路径。
+
 ```mermaid
 flowchart LR
   W[个人微信 / 明确绑定窗口] --> T[TransportAdapter 候选pyweixin]
@@ -26,7 +40,7 @@ flowchart LR
   P --> T
 ```
 
-采用Python3.12、独立虚拟环境。WX-01不安装pyweixin；只mock。微信适配放 `src/wechatbot/transports/`，业务不直接依赖第三方UI对象、联系人名字或上游AutoReply。首期直接调用固定模型runner库，不复用QQ的AstrBot实例/qq_router，不伪造数字QQ身份塞进OneBot；避免让框架自己的默认自动回复/工具/历史抢先触发。
+既有方案采用Python3.12、独立虚拟环境。WX-01不安装pyweixin；只mock。微信适配放 `src/wechatbot/transports/`，业务不直接依赖第三方UI对象、联系人名字或上游AutoReply。既有方案直接调用固定模型runner库，不复用QQ的AstrBot实例/qq_router，不伪造数字QQ身份塞进OneBot；避免让框架自己的默认自动回复/工具/历史抢先触发。这是当前离线实现的说明，后续接入选择遵循本节新增约束。
 
 复用方式：从已审阅QQ基线commit `dd9373029412137023124751d75883824122c784` 导出**已跟踪的**`src/qqbot_gateway/`固定源码包和必要公开CLI能力/锁文件，到新项目同层`src/qqbot_gateway/`及config公开文件。记录逐文件sha256、源commit和本地改动于 `vendor/qq-core-manifest.json`。这是独立快照，不是editable指向QQ、不软链、不运行git clone复制秘密、不直接依赖QQ的8765服务。
 
@@ -104,13 +118,13 @@ WX-01默认不取图。WX-02只报告图片事件存在与像素可得性分开�
 
 保存后下次正常手动启动读取单一配置快照/摘要；启用与能力证明分别校验，enabled=true不能绕过未验门槛。字段unknown/错误值拒绝。配置检查0模型、0登录、0发送；状态输出只显示分层ready，不回显账号/群/私密路径。新项目不继承QQ版本化persona正文，模板用中性简短说明，用户以后自行选择内容。
 
-## 5. 任务顺序与文件归属
+## 5. 原路线任务与文件归属（当前试用见独立计划）
 
 | 任务 | 本次状态 | 后续可写文件/完成出口 |
 | --- | --- | --- |
 | WX-00 | 详细规划完成，未实施 | PROGRESS/TASKS/AGENTS、docs三份、tracks/bootstrap/HANDOFF；无runtime |
-| WX-01 | 待用户实施指令 | pyproject/锁、src/wechatbot的config/contracts/capabilities/gate/router/delivery/store/model_facade、mock、固定src/qqbot_gateway快照/manifest与必要公开config、tests、README/操作骨架及任务交接；离线从入站到mock ACK闭环 |
-| WX-02 | 待指令，依赖01 | transports/pyweixin_adapter.py、能力/窗口绑定探针、固定第三方锁与来源/许可、mock/默认inspect测试、报告；真实UI阶段另批，0模型/0发送默认 |
+| WX-01 | 已实现、离线交付 | pyproject/锁、src/wechatbot的config/contracts/capabilities/gate/router/delivery/store/model_facade、mock、固定src/qqbot_gateway快照/manifest与必要公开config、tests、README/操作骨架及任务交接；离线从入站到mock ACK闭环 |
+| WX-02 | 代码/离线交付，真实未验 | transports/pyweixin_adapter.py、能力/窗口绑定探针、固定第三方锁与来源/许可、mock/默认inspect测试、报告；不继续增加旧provider投入 |
 | WX-03 | 条件待领取 | 已证明的transport能力接入严格gate/投递/当前图接口及回归；门槛未过只报告，不实现昵称旁路 |
 | WX-04 | 条件待领取 | 真实小批次文本/必要图片、同目标投递/隔离/重启接受报告及本机明确启用；不先做24h/开机自启 |
 
@@ -130,7 +144,7 @@ WX-04以后明确小批次：一个白名单会话、两条正常文本（最多
 
 没有QQ数据迁移。源码复用只带已审阅公开代码及必要锁文件，逐文件记录来源；修复两项目采用显式移植/各自验证，不互相覆盖活动工作区。家庭秘密不复制，后续明确授权时在本项目secrets单独建立对应连接文件；已有QQ未知状态不会被微信服务读写或清除。
 
-本规划文档的版本化快照在QQ仓库LAP-38内并按其长期授权交付；目标微信目录是同内容引导副本，尚无独立Git/remote。WX-01后续实施可初始化本地Git并提交可审阅检查点；默认分支codex/bootstrap，用户以后给出远端地址及发布指令再推送，不自行创建公开仓库。
+初始规划文档快照在QQ仓库LAP-38内。WX-01已建立本项目独立本地Git，当前分支codex/bootstrap；2026-10-27用户明确授权只提交本任务检查文件并push核远端SHA，并随后要求创建public的WeChatbot。现已建立[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)，origin为该仓库；初始“尚无独立Git/remote”仅为历史，不借用QQ地址。
 
 回滚只停有创建身份的微信网关/worker，禁用transport/sends，保留pending/unknown、配置备份和有限历史；不关闭、注销或kill附着的日常微信，不修改QQ进程/端口/全局账户。恢复旧代码须配对配置/manifest；旧版无法识别unknown保持停止。
 

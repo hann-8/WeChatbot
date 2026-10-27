@@ -1,5 +1,7 @@
 # 微信项目规划交接
 
+2026-10-27续作指向：本文件是WX-00历史规划，非当前实施入口；最新为[wxauto4详细规划交接](../tasks/WX-WXAUTO4-PLAN/HANDOFF.md)和[详细计划](../../docs/WXAUTO4-IMPLEMENTATION-PLAN.md)。WX-01/02离线已交付；wxauto4免费配套4.1.8.107已选，用户已接受换版，当前仍未真实实施。旧pyweixin/归档即排除等结论以最新选型为准。下一推荐仅WX-WXA-01，不重复WX-01，不自动推进。
+
 返回[PROGRESS](../../PROGRESS.md) / [TASKS](../../TASKS.md)。继承[AGENTS](../../AGENTS.md)。状态：WX-00详细规划完成，未实施/真实验证。
 
 2026-10-22，session `LAP-38-vision-web-wechat-plan`；用户要求sol/max规划，后续sol/medium实施。用户说明个人娱乐、和朋友家人聊天。项目初始空目录 `E:\CodexWS\WeChatbot`，本轮仅建立七份引导文档，不装依赖/写运行配置、不建remote、不登录/触碰微信、不调用LLM或家庭SSH。
