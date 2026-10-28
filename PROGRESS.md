@@ -1,10 +1,14 @@
 # WeChatbot项目入口
 
-当前实施：WX-WXA-02 已领取但受阻，账号未准备、安装器版本证据不符；见[交接](tracks/tasks/WX-WXA-02/HANDOFF.md)和[报告](docs/WX-WXA-02-REPORT.md)。WX-WXA-01 已完成离线工具，真实微信与模型尚未验证。
+当前规划：2026-10-28 **WX-MIGRATION-PLAN 已完成详细功能规划**，见[计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md)、[交接](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)和[sol/medium指令](docs/IMPLEMENTATION_GUIDE.md)。按用户新意图把QQ成熟业务向wxauto4迁移，优先WX-MIG-01人设/纯文本/48000预算及角色字符门槛/模型代码接点，再02短期上下文与本机控制，再03指定网页读取。均仅规划、未实施；测试暂缓，WXA-02真实阻塞不挡独立代码准备。
+
+后续实施统一 **gpt-6.1-sol/medium**，不再用Terra；27日临时选择保留为历史。输入政策可采用48000字节，不能据此宣称原生token窗口/实时能力已验。本轮只改六份文档，已获用户直接推默认主线codex/bootstrap的授权，Git回执见本轮交接；未改实际运行配置或调用模型/微信。
+
+既有真实试用：WX-WXA-02 已领取但受阻，账号未准备、安装器版本证据不符；见[交接](tracks/tasks/WX-WXA-02/HANDOFF.md)和[报告](docs/WX-WXA-02-REPORT.md)。WX-WXA-01 已完成离线工具，真实微信与模型尚未验证。
 
 此前规划：2026-10-27 `WX-WXAUTO4-PLAN-20261027` 已完成[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)与[medium指令](docs/IMPLEMENTATION_GUIDE.md)，11份文档复读、99个本地链接/围栏/双向入口与diff检查通过；只规划、不实施，未重跑业务测试。规划交接为[WX-WXAUTO4-PLAN](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)，文件归属和Git起点见[TASKS](TASKS.md)。
 
-最新模型续作：用户希望改用`gpt-6.1-terra/medium`试落地，AGENTS/当前三段复制指令已同步，首项仍为WX-WXA-01，范围与验收不变。该说明是此前文档续作；WX-WXA-01 已在独立实施会话完成离线范围。
+2026-10-27历史模型续作曾选择Terra；已被顶部28日sol/medium决定覆盖。WX-WXA-01已在独立实施会话完成离线范围，不重复领取。
 
 2026-10-27（Asia/Shanghai）。唯一根进度入口，不另建根 HANDOFF。位置 `E:\CodexWS\WeChatbot`，独立于 QQbot。
 
@@ -18,10 +22,11 @@ WX-WXA-01 已完成最小试用工具/可选包及离线验证并停止；WX-WXA
 
 前次WX-02文档复核：`WX-02-gap-review-plan-20261023`（2026-10-23 20:02起，Asia/Shanghai）完成[缺口复核与后续详细计划](docs/WX-02-REVIEW-AND-PROVIDER-PLAN.md)，未实施、未重跑测试、未领取 WX-03。建议停止以当前固定上游推进生产；可选一次隔离UI元数据观察需另批代码/离线与指定对象真实观察，不是必须实施的步骤。归属与Git核对见 [TASKS](TASKS.md)。
 
-阅读顺序：[AGENTS](AGENTS.md)→本入口→[当前交接](tracks/tasks/WX-WXA-02/HANDOFF.md)→[TASKS](TASKS.md)→[详细计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)→[medium指令](docs/IMPLEMENTATION_GUIDE.md)。历史依据：[PLAN](docs/PLAN.md)、[RESEARCH](docs/RESEARCH.md)、[README](README.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。
+阅读顺序：[AGENTS](AGENTS.md)→本入口→[当前交接](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)→[TASKS](TASKS.md)→[功能迁移详规](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md)→[medium指令](docs/IMPLEMENTATION_GUIDE.md)。历史依据：[PLAN](docs/PLAN.md)、[RESEARCH](docs/RESEARCH.md)、[README](README.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。
 
 | 工作线 | 状态 | 下一步 | 交接 |
 | --- | --- | --- | --- |
+| WX-MIGRATION-PLAN 功能迁移详规 | completed，仅文档；未实施/未跑业务测试 | sol/medium后续仅领WX-MIG-01，见详规 | [HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md) |
 | WX-WXA-02 客户端与单会话试用 | blocked；工件摘要/签名通过但版本证据不符，账号未准备 | 解决版本证据与账号准备后再收集绑定 | [HANDOFF](tracks/tasks/WX-WXA-02/HANDOFF.md) |
 | WX-WXA-01 最小试用工具 | completed，离线验证；真实未验 | 停止；02 已领取 | [HANDOFF](tracks/tasks/WX-WXA-01/HANDOFF.md) |
 | WX-WXAUTO4-PLAN 详细实施规划 | completed，仅文档；校验通过 | 规划完成；实施不自动串行 | [HANDOFF](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md) |

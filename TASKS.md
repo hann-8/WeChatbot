@@ -1,6 +1,10 @@
 # WeChatbot任务台账
 
-当前登记：`WX-WXA-02-20261027`，2026-10-27 20:07（Asia/Shanghai）起，负责人本会话 Codex；起点 `e750878`，工作区干净，分支 `codex/wxauto4-trial-kit`。归属：PROGRESS.md、TASKS.md、docs/WX-WXA-02-REPORT.md、tracks/tasks/WX-WXA-02/HANDOFF.md；真实绑定仅项目忽略的 secrets 文件，客户端工件不提交。仅配套客户端与一次明确单会话文字试验，0模型；目标尚缺。
+2026-10-28 14:06（Asia/Shanghai）：session `WX-FEATURE-MIGRATION-PLAN-20261028`，负责人本会话 Codex，领取新任务 **WX-MIGRATION-PLAN**。用户要求把 QQbot（SnowLuma 主线）易迁移功能优先规划到 WeChatbot，测试暂缓，并明确要求规划完成后 commit/push。仅文档规划，不实施代码、不运行业务测试或真实微信/模型。来源 QQ main=`52866fe10cc654d2e12c5520f7afc5aa8bbe0179`；基线微信试用分支=`29240978a298e3fd5a47a21af7eb10a670d48994`，曾据此建立 `codex/wechat-feature-migration-plan` 作为准备指针；用户随后明确允许直接推主线，最终交付改为 `codex/bootstrap` 的普通快进。本机无另一台电脑项目目录，使用 GitHub 精确提交和本地文档覆层审阅，最终提交只含本任务六文件。归属：`AGENTS.md`、`PROGRESS.md`、`TASKS.md`、`docs/IMPLEMENTATION_GUIDE.md`、`docs/QQ-TO-WECHAT-MIGRATION-PLAN.md`、`tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md`。登记写后重读；保留试用分支两个既有提交的历史后快进主线，本轮新增提交仍只含六份文档；不处理 WX-WXA-02 真实阻塞。
+
+本轮规划结果：详细计划已完成；后续实施统一 **gpt-6.1-sol/medium**，不再用 Terra。先 WX-MIG-01 人设/纯文本/48000预算与8000字符门槛/模型接点，再 WX-MIG-02 短期上下文/本机控制，后 WX-MIG-03 指定URL读取。三项实施均未领取，真实测试暂缓；下方27日模型/首项领取描述保留为历史，现行入口以本轮计划为准。文档检查与Git交付见[本轮交接](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)。
+
+历史登记：`WX-WXA-02-20261027`，2026-10-27 20:07（Asia/Shanghai）起，负责人本会话 Codex；起点 `e750878`，工作区干净，分支 `codex/wxauto4-trial-kit`。归属：PROGRESS.md、TASKS.md、docs/WX-WXA-02-REPORT.md、tracks/tasks/WX-WXA-02/HANDOFF.md；真实绑定仅项目忽略的 secrets 文件，客户端工件不提交。仅配套客户端与一次明确单会话文字试验，0模型；目标尚缺。
 
 当前登记：`WX-WXA-01-20261027`，2026-10-27 19:56（Asia/Shanghai）起，负责人本会话 Codex；起点 `8ad1334`，干净工作区，分支 `codex/wxauto4-trial-kit`。归属：src/wechatbot/transports/wxauto4_adapter.py、src/wechatbot/wxauto4_trial.py、tests/test_wxauto4_trial.py、config/examples/wxauto4-trial.example.json、vendor/wxauto4/manifest.json、pyproject.toml、uv.lock、README.md、docs/WX-WXA-01-REPORT.md、PROGRESS.md、TASKS.md、tracks/tasks/WX-WXA-01/HANDOFF.md。只实施离线试用工具和依赖准备；不操作真实微信或模型。完成验证后按授权提交并推送。
 
@@ -22,6 +26,10 @@
 
 | ID | 范围 | 状态/证据 | 负责人/时间 | 下一步 |
 | --- | --- | --- | --- | --- |
+| WX-MIGRATION-PLAN | QQ业务向wxauto4的分阶段详细规划 | completed，仅文档；[计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md) / [HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md) | WX-FEATURE-MIGRATION-PLAN-20261028，14:06登记 | 本轮主线Git交付后停止；后续统一sol/medium |
+| WX-MIG-01 | 人设/纯文本/48000输入与角色门槛/监督模型代码准备 | planned，未领取；不依赖WXA-02真实通过 | 未登记，不预建空交接 | sol/medium首推，仅独立代码准备；不自动启用真实模型 |
+| WX-MIG-02 | 短期RAM上下文与本机reset/pause/resume | planned，未领取；依赖MIG-01文字接点 | 未登记 | 不搬旧历史/记忆库，不把昵称当稳定身份 |
+| WX-MIG-03 | 显式指定单URL正文读取 | planned，未领取；复用公共HTTP/提取/预算 | 未登记 | 默认关闭，无搜索/媒体；实际网络与模型另定时段 |
 | WX-WXAUTO4-PLAN | wxauto4详细规划/medium指令 | completed，仅文档；11份文档/99链接/围栏/入口/diff校验通过；[HANDOFF](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md) | WX-WXAUTO4-PLAN-20261027，19:05起；上方登记文件 | 规划时停止；01后续已完成离线实施 |
 | WX-WXA-01 | 最小试用工具/可选依赖/离线验证 | completed；10项专项、80项全套离线通过；[HANDOFF](tracks/tasks/WX-WXA-01/HANDOFF.md) | WX-WXA-01-20261027，本会话，19:56起 | 停止；真实试用另行授权 |
 | WX-WXA-02 | 配套客户端/一个指定会话文字收发 | blocked；[HANDOFF](tracks/tasks/WX-WXA-02/HANDOFF.md)、[报告](docs/WX-WXA-02-REPORT.md) | WX-WXA-02-20261027，本会话，20:07起 | 解决账号准备与工件版本证据，≤1发送、0模型 |

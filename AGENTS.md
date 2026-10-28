@@ -2,19 +2,27 @@
 
 ## 项目入口与当前范围
 
-先读[PROGRESS](PROGRESS.md)、当前规划线[HANDOFF](tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)和[TASKS](TASKS.md)；[bootstrap交接](tracks/bootstrap/HANDOFF.md)保留初始历史。PROGRESS为唯一根进度入口，不另建根HANDOFF。目标位置为 `E:\CodexWS\WeChatbot`，独立于QQbot。
+先读[PROGRESS](PROGRESS.md)、当前规划线[HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)和[TASKS](TASKS.md)；[bootstrap交接](tracks/bootstrap/HANDOFF.md)保留初始历史。PROGRESS为唯一根进度入口，不另建根HANDOFF。Windows真实运行目录为 `E:\CodexWS\WeChatbot`，独立于QQbot；云端代码任务以实际仓库checkout为根，不强求该盘符。本笔记本不留存项目文件，规划/Git交付后删除本轮本地覆层。
 
 用户2026-10-22要求先详细规划，微信用于个人娱乐、朋友家人聊天。本目录在规划时只有文档；WX-01 后已实现离线核心，当前状态以 PROGRESS 为准，不代表安装、登录、真实收发或模型调用获授权。参考[PLAN](docs/PLAN.md)、[调研](docs/RESEARCH.md)、[medium指引](docs/IMPLEMENTATION_GUIDE.md)。
 
 ## 规划与实施
 
-新功能/边界变更由gpt-6.1-sol/max及以上档位先规划；后续由用户选择实施模型及medium档并给实施指令。2026-10-27用户希望改用gpt-6.1-terra/medium试本项目落地，当前复制指令据此更新，先只领取WX-WXA-01；原先sol/medium字样不限制此次选择，不必因此重做已完成规划。不能自动切换/伪称检测会话设置。一个session一个已领取任务，登记负责人/时间/文件、建立任务交接与返回链接，写后重读；保留其他session/用户未提交修改。
+新功能/边界变更由gpt-6.1-sol/max及以上档位先规划；后续由用户给实施指令。2026-10-28用户明确本项目后续统一使用 **gpt-6.1-sol/medium** 落地，不再使用Terra；27日临时选择仅保留为历史，不作为现行推荐，不必因此重做已交付工具。不能自动切换/伪称检测会话设置。一个session一个已领取任务，登记负责人/时间/文件、建立任务交接与返回链接，写后重读；保留其他session/用户未提交修改。
 
 2026-10-26用户明确“以能用为优先、不用绝对遵循注入等设想”。当前首选组合为`wxauto4`免费版与微信`4.1.8.107`，先按公开接口规划单会话文字收发试用。用户已提供当前版本`4.1.15.13`并接受更换版本，不再重复询问换版意愿；免费版官方支持说明不覆盖当前版本，尚未实际安装或验证配套版本。25日“唯一Hook候选/必须等上游全补齐”的决定已被[最新选型](tracks/tasks/WX-FRAMEWORK-DECISION/HANDOFF.md)修订；WeChatFerry可在配套旧版能正常登录时作为备选，不能因归档或个别受限报告断言整体不能用。pyweixin和旧Hook成果保留，不删除、不继续改写核心。此次仍只是选型/规划，默认mock、真实通道关闭，没有执行安装、登录、观察、发送或模型；真实实施任务仍待用户指定。官方iLink不默认替代亲友群目标。
 
+## 2026-10-28 QQ功能向微信迁移
+
+当前详细合同为[功能迁移计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md)，交接见[WX-MIGRATION-PLAN](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)。迁移指QQbot当前SnowLuma主线的成熟业务向wxauto4复用，不是继续扩大通道安装/测试。先人设/纯文本/模型接点，再短期RAM和本机控制，后指定URL读取；搜索、free/真实@、媒体、成员、长期记忆等延后，不为追平功能改上游核心。
+
+用户要求详细规划、测试暂缓；独立代码准备不再等待WX-WXA-02真实试用通过，但真实微信/模型/网络运行仍按具体后续任务范围。输入预算不是固定16384：若有效能力/工件无更低硬上限，CodeBuddy可按48000的可见UTF-8字节政策规划，overhead/output各2048；角色另有8000字符校验也须改为最终预算校验。真实原生窗口未验证，不据此改context_window_tokens或保证成本。
+
+本轮仅文档，用户明确授权commit/push并可直接推当前默认主线codex/bootstrap；保留试用分支两个既有提交的历史后普通快进，不force、不改默认分支名称。后续实施统一sol/medium，Git按届时适用授权执行。账号/旧历史/凭据/图库不随功能复制，不以历史80项测试宣称本轮通过。
+
 ## 框架接入与功能取舍
 
-2026-10-27用户授权详细规划，当前依据为[wxauto4实施计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)与[medium指令](docs/IMPLEMENTATION_GUIDE.md)。推荐后续只领取WX-WXA-01（本项目可选依赖/最小试用工具、离线验证）；WX-WXA-02才是客户端与指定会话真实文字试用，WX-WXA-03才接一次CLI。首期暂不加AstrBot，直接复用本项目固定runner；旧Gate/NormalizedEvent不强行放开，人工监督试用单独标明昵称/UI临时ID/本地提交等级。当前仍只规划，三项均未实施。用户本轮明确commit/push，并随后明确要求在其GitHub创建public的WeChatbot；现已创建[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)，origin为该仓库，不借QQ远端。
+2026-10-27用户授权详细规划，当前依据为[wxauto4实施计划](docs/WXAUTO4-IMPLEMENTATION-PLAN.md)与[medium指令](docs/IMPLEMENTATION_GUIDE.md)。该轮原推荐WX-WXA-01（现已交付）；当前新功能首项改见WX-MIG-01。WX-WXA-02才是客户端与指定会话真实文字试用，WX-WXA-03才接一次CLI。首期暂不加AstrBot，直接复用本项目固定runner；旧Gate/NormalizedEvent不强行放开，人工监督试用单独标明昵称/UI临时ID/本地提交等级。截至试用分支记录，WX-WXA-01已实现/离线交付，02真实试用受阻、03真实模型未验；当前新功能仍仅规划。用户本轮明确commit/push，并随后明确要求在其GitHub创建public的WeChatbot；现已创建[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)，origin为该仓库，不借QQ远端。
 
 用户2026-10-25澄清：更换框架首先是接通框架原生接口和验证稳定收发，允许暂时舍弃不适配功能；不要求等价复刻QQbot全部功能。
 

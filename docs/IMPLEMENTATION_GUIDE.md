@@ -1,4 +1,19 @@
-# 微信medium实施指令（当前：gpt-6.1-terra）
+# 微信medium实施指令（当前：gpt-6.1-sol）
+
+## 2026-10-28当前推荐：先WX-MIG-01，真实测试暂缓
+
+后续全部使用 **gpt-6.1-sol/medium**；用户明确不再使用Terra落地本项目。[功能迁移详规](QQ-TO-WECHAT-MIGRATION-PLAN.md)及[本轮交接](../tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)是新增功能的当前入口：先迁移QQ已有文字业务，不等待账号/客户端真实测试。输入政策可规划48000，不把16384或8000字符人设限制当不可变的产品约束。
+
+```text
+你是 gpt-6.1-sol/medium。请在实际 WeChatbot 项目只领取 WX-MIG-01，按 docs/QQ-TO-WECHAT-MIGRATION-PLAN.md 第1—4、7—10节完成最容易迁移的文字功能代码准备，交付后停止。
+先读 AGENTS、PROGRESS、TASKS 和 WX-MIGRATION-PLAN/HANDOFF，核对主线最新 HEAD/工作区；登记本任务负责人、时间、文件并写后重读，保留用户/其他session修改。
+复用固定QQ核心与现有微信调用面：增加微信能力/人设组合、一次纯文本处理，以及显式 TrialCliModel 共用接点。旧 ModelFacade 默认仍仅离线替身，不造生产身份/资格，不改框架核心，不新建后端。
+输入政策可按本计划改为48000，overhead/output各2048，保留模型/auto/null。同步处理8000字符人设门槛，以最终UTF-8 wire预算校验；QQ角色正文9585字符不是必须先删到8000。已有local只改归属内精确标量或报告保留，不能模板覆盖。
+本项不安装/切换/登录/观察微信，不运行真实CLI/模型、公共网页、SSH或发送，不领取WXA-02/03真实试用。测试按用户当前“暂缓”安排，不自行展开完整矩阵；必要静态与定向离线检查据实记录，没跑就标未验。
+仅提交本任务检查文件，按届时适用的Git授权核远端SHA，不force；更新任务报告、HANDOFF/PROGRESS/TASKS后停止，不自动做MIG-02/03。
+```
+
+下方27日三段是既有试用合同；WX-WXA-01已经交付，不再重复领取。02受阻/03真实范围未验，等待用户另选测试时段。当前首项是上面的WX-MIG-01，不是下方历史工具实施指令。
 
 返回[PROGRESS](../PROGRESS.md) / [PLAN](PLAN.md) / [调研](RESEARCH.md)。用户自行选择medium，每次只领一项。无需为已授权离线实施中的普通实现细节重复确认。
 
@@ -6,14 +21,14 @@
 
 已收到版本答复：当前微信4.1.15.13，用户接受换版；按wxauto4免费版41.1.7＋微信4.1.8.107规划准备，不再把换版意愿列作待确认项。客户端更换尚未执行，进入明确实施任务后再按该任务范围操作。
 
-## 当前路线：先复制WX-WXA-01，只准备试用工具
+## 2026-10-27既有试用合同：01已交付，02/03真实范围后置
 
 2026-10-27详细规划已写入[wxauto4实施计划](WXAUTO4-IMPLEMENTATION-PLAN.md)，由[当前任务交接](../tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md)管理。按顺序每次只执行下面一个文本块。第一项不需要真实会话名；后两项的占位内容由用户填齐，不能由agent猜。用户自行选择medium，不自动切换或声称检测到设置。
 
-用户最新希望改用`gpt-6.1-terra/medium`试本项目落地，下面三段当前路线已改为Terra；先执行WX-WXA-01，用既定接口、有效回归和交付记录判断一次实际表现，不为评测另建系统或同时复刻两份实现。该选择指开发agent，机器人后端仍按计划使用CodeBuddy。下方历史Sol指令不重复执行。
+2026-10-28已按用户新决定将全部后续实施指令统一为gpt-6.1-sol/medium；Terra不再是本项目实施选择。该选择指开发agent，机器人后端仍按计划使用CodeBuddy。下方01保留作已交付合同，不能再次执行；真实02/03须用户另选。
 
 ```text
-你是gpt-6.1-terra/medium。请在E:\CodexWS\WeChatbot只领取WX-WXA-01：实现wxauto4最小试用工具及离线验证，完成后停止。
+你是gpt-6.1-sol/medium。请在E:\CodexWS\WeChatbot只领取WX-WXA-01：实现wxauto4最小试用工具及离线验证，完成后停止。
 
 先读AGENTS.md、PROGRESS.md、tracks/tasks/WX-WXAUTO4-PLAN/HANDOFF.md、TASKS.md、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第1—5节和本指令。读取当前Git HEAD/diff；基线是包含该详细计划的文档提交，不能回退到旧a66319d丢掉选型更新。按需要建codex/wxauto4-trial-kit分支。修改前登记session、Asia/Shanghai时间和实际文件归属，首次建立tracks/tasks/WX-WXA-01/HANDOFF.md并同步PROGRESS/TASKS、写后重读。保留其他session/用户修改。
 
@@ -35,7 +50,7 @@ inspect与mock不能import wxauto4，实际流程通过工厂/时钟替身测试
 此块只在用户发出实际实施指令并补齐对象后使用；填写行为不是再询问“是否同意换版”。
 
 ```text
-你是gpt-6.1-terra/medium。在E:\CodexWS\WeChatbot只领取WX-WXA-02，完成后停止。先读AGENTS/PROGRESS/TASKS、WX-WXA-01交接和实际报告、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第3—6节；核对HEAD/diff，登记session/时间/文件并首次建立本项HANDOFF及入口链接，写后重读，保留他人修改。
+你是gpt-6.1-sol/medium。在E:\CodexWS\WeChatbot只领取WX-WXA-02，完成后停止。先读AGENTS/PROGRESS/TASKS、WX-WXA-01交接和实际报告、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第3—6节；核对HEAD/diff，登记session/时间/文件并首次建立本项HANDOFF及入口链接，写后重读，保留他人修改。
 
 本项授权准备配套微信4.1.8.107，并在一个指定会话做基本文字试验：本地账号别名=<填写>；类型group或friend=<填写>；准确会话显示名=<填写>；测试发送者=<填写>；试用黑名单=<填写，空时写空>；新自造输入/输出=<填写>。仅0模型、最多120秒/10候选和一次SendMsg；这里不授权其他会话/自动群回复。真实绑定写本项目secrets忽略文件，报告只用代号。缺目标时先完成可独立准备部分，再一次收集缺失项，不猜联系人。
 
@@ -51,7 +66,7 @@ inspect与mock不能import wxauto4，实际流程通过工厂/时钟替身测试
 ## 后续单独复制：WX-WXA-03，一次CLI模型回复
 
 ```text
-你是gpt-6.1-terra/medium。在E:\CodexWS\WeChatbot只领取WX-WXA-03。先读AGENTS/PROGRESS/TASKS、WX-WXA-02交接/报告、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第4—6节及本指令，登记session/时间/文件并首次建立本项HANDOFF/双向链接，写后重读，保留现有差异。
+你是gpt-6.1-sol/medium。在E:\CodexWS\WeChatbot只领取WX-WXA-03。先读AGENTS/PROGRESS/TASKS、WX-WXA-02交接/报告、docs/WXAUTO4-IMPLEMENTATION-PLAN.md第4—6节及本指令，登记session/时间/文件并首次建立本项HANDOFF/双向链接，写后重读，保留现有差异。
 
 前提是该目标最小收发已经实测且无未决记录；不要求先有服务端ACK、稳定wxid或真实@。本次明确目标/测试者=<填写或明确沿用WX-WXA-02本机忽略绑定>；本次新的自造输入=<填写>。本项授权离线接线后在这个人工监督会话做最多一次真实CodeBuddy生成和一次纯文本发送；失败/unknown消耗次数，不补跑、不自动推进常驻运行。
 
