@@ -2,7 +2,7 @@
 
 ## 项目入口与当前范围
 
-先读[PROGRESS](PROGRESS.md)、当前规划线[HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)和[TASKS](TASKS.md)；[bootstrap交接](tracks/bootstrap/HANDOFF.md)保留初始历史。PROGRESS为唯一根进度入口，不另建根HANDOFF。Windows真实运行目录为 `E:\CodexWS\WeChatbot`，独立于QQbot；云端代码任务以实际仓库checkout为根，不强求该盘符。本笔记本不留存项目文件，规划/Git交付后删除本轮本地覆层。
+先读[PROGRESS](PROGRESS.md)、当前规划线[HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)和[TASKS](TASKS.md)；[bootstrap交接](tracks/bootstrap/HANDOFF.md)保留初始历史。PROGRESS为唯一根进度入口，不另建根HANDOFF。Windows真实运行目录为 `E:\CodexWS\WeChatbot`，独立于QQbot；云端代码任务以实际仓库checkout为根，不强求该盘符。2026-10-28本轮按用户要求将远端最新提交拉回该Windows目录保留；此前另一台笔记本临时覆层的删除要求不适用于本目录。
 
 用户2026-10-22要求先详细规划，微信用于个人娱乐、朋友家人聊天。本目录在规划时只有文档；WX-01 后已实现离线核心，当前状态以 PROGRESS 为准，不代表安装、登录、真实收发或模型调用获授权。参考[PLAN](docs/PLAN.md)、[调研](docs/RESEARCH.md)、[medium指引](docs/IMPLEMENTATION_GUIDE.md)。
 
@@ -18,7 +18,7 @@
 
 用户要求详细规划、测试暂缓；独立代码准备不再等待WX-WXA-02真实试用通过，但真实微信/模型/网络运行仍按具体后续任务范围。输入预算不是固定16384：若有效能力/工件无更低硬上限，CodeBuddy可按48000的可见UTF-8字节政策规划，overhead/output各2048；角色另有8000字符校验也须改为最终预算校验。真实原生窗口未验证，不据此改context_window_tokens或保证成本。
 
-本轮仅文档，用户明确授权commit/push并可直接推当前默认主线codex/bootstrap；保留试用分支两个既有提交的历史后普通快进，不force、不改默认分支名称。后续实施统一sol/medium，Git按届时适用授权执行。账号/旧历史/凭据/图库不随功能复制，不以历史80项测试宣称本轮通过。
+28日下午功能规划仅文档，按当时授权直接普通快进codex/bootstrap，保留试用分支两个既有提交的历史。随后用户明确改为只保留main，当前分支规则以下方“证据与Git”为准。后续实施统一sol/medium，Git按届时适用授权执行。账号/旧历史/凭据/图库不随功能复制，不以历史80项测试宣称本轮通过。
 
 ## 框架接入与功能取舍
 
@@ -49,4 +49,4 @@
 
 区分已规划、源码支持、已实现、离线通过、真实观察和完整接受。日志只输出封闭元数据，不含原始亲友消息、真实身份、URL签名或凭据；样本以自造内容为主。
 
-本引导包在QQbot的LAP-38内有已版本化快照，微信目录已在WX-01建立独立本地仓库。2026-10-27用户明确授权创建public仓库并发布，已建[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)，origin=`https://github.com/hann-8/WeChatbot.git`；本轮发布分支`codex/bootstrap`，后续分支默认codex/前缀。只提交本任务检查文件，普通push后核对远端分支SHA，不force；本地与远端状态分别报告。忽略的本机秘密/状态/运行工件仍不发布，不将QQ地址或其他仓库当新远端。
+本引导包在QQbot的LAP-38内有已版本化快照，微信目录已在WX-01建立独立本地仓库。2026-10-27用户明确授权创建public仓库并发布，已建[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)，origin=`https://github.com/hann-8/WeChatbot.git`。2026-10-28用户要求以当日14:24的最新远端提交`c2bc5fa`为基线，只保留一个`main`作为本地工作分支和GitHub默认主线；后续直接在main工作，不自动新建任务分支。旧分支仅在确认提交已全部包含后清理，历史提交保留；此前codex/bootstrap和codex/默认前缀属于历史。只提交本任务检查文件，普通push后核对远端main的SHA，不force；本地与远端状态分别报告。忽略的本机秘密/状态/运行工件仍不发布，不将QQ地址或其他仓库当新远端。

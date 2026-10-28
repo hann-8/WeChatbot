@@ -1,5 +1,7 @@
 # WeChatbot任务台账
 
+本次登记：`WX-GIT-MAIN-20261028`，2026-10-28 23:01（Asia/Shanghai）起，负责人本会话Codex；仅领取 **WX-GIT-MAIN 远端同步与单main主线**，已完成分支整理。用户要求拉取今天下午最新提交并只保留main。起点本地`codex/wxauto4-trial-kit=2924097`，工作区干净；fetch确认远端最新`codex/bootstrap=c2bc5fadcafcda2d5c6ebb08edbb4fc2767ef9ff`，三个远端分支均为其祖先，只有本项目一个worktree。已普通快进、改名main并推送，GitHub默认与origin/HEAD均为main；三个远端旧分支和本地旧codex/bootstrap已安全删除，历史提交保留。归属：AGENTS.md、PROGRESS.md、TASKS.md、tracks/tasks/WX-GIT-MAIN/HANDOFF.md；登记写后重读，四文档72个本地链接/围栏/UTF-8 LF及双向入口检查通过。本任务文档随main提交推送并在会话核最终SHA，不领取功能实施或运行真实微信/模型。见[交接](tracks/tasks/WX-GIT-MAIN/HANDOFF.md)。
+
 2026-10-28 14:06（Asia/Shanghai）：session `WX-FEATURE-MIGRATION-PLAN-20261028`，负责人本会话 Codex，领取新任务 **WX-MIGRATION-PLAN**。用户要求把 QQbot（SnowLuma 主线）易迁移功能优先规划到 WeChatbot，测试暂缓，并明确要求规划完成后 commit/push。仅文档规划，不实施代码、不运行业务测试或真实微信/模型。来源 QQ main=`52866fe10cc654d2e12c5520f7afc5aa8bbe0179`；基线微信试用分支=`29240978a298e3fd5a47a21af7eb10a670d48994`，曾据此建立 `codex/wechat-feature-migration-plan` 作为准备指针；用户随后明确允许直接推主线，最终交付改为 `codex/bootstrap` 的普通快进。本机无另一台电脑项目目录，使用 GitHub 精确提交和本地文档覆层审阅，最终提交只含本任务六文件。归属：`AGENTS.md`、`PROGRESS.md`、`TASKS.md`、`docs/IMPLEMENTATION_GUIDE.md`、`docs/QQ-TO-WECHAT-MIGRATION-PLAN.md`、`tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md`。登记写后重读；保留试用分支两个既有提交的历史后快进主线，本轮新增提交仍只含六份文档；不处理 WX-WXA-02 真实阻塞。
 
 本轮规划结果：详细计划已完成；后续实施统一 **gpt-6.1-sol/medium**，不再用 Terra。先 WX-MIG-01 人设/纯文本/48000预算与8000字符门槛/模型接点，再 WX-MIG-02 短期上下文/本机控制，后 WX-MIG-03 指定URL读取。三项实施均未领取，真实测试暂缓；下方27日模型/首项领取描述保留为历史，现行入口以本轮计划为准。文档检查与Git交付见[本轮交接](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)。
@@ -26,6 +28,7 @@
 
 | ID | 范围 | 状态/证据 | 负责人/时间 | 下一步 |
 | --- | --- | --- | --- | --- |
+| WX-GIT-MAIN | 拉取最新远端，统一单main及后续Git规则 | completed；本地/远端仅main，默认已核对；[HANDOFF](tracks/tasks/WX-GIT-MAIN/HANDOFF.md) | WX-GIT-MAIN-20261028，23:01登记 | 后续直接main；四份协作文档随提交交付，停止本Git任务 |
 | WX-MIGRATION-PLAN | QQ业务向wxauto4的分阶段详细规划 | completed，仅文档；[计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md) / [HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md) | WX-FEATURE-MIGRATION-PLAN-20261028，14:06登记 | 本轮主线Git交付后停止；后续统一sol/medium |
 | WX-MIG-01 | 人设/纯文本/48000输入与角色门槛/监督模型代码准备 | planned，未领取；不依赖WXA-02真实通过 | 未登记，不预建空交接 | sol/medium首推，仅独立代码准备；不自动启用真实模型 |
 | WX-MIG-02 | 短期RAM上下文与本机reset/pause/resume | planned，未领取；依赖MIG-01文字接点 | 未登记 | 不搬旧历史/记忆库，不把昵称当稳定身份 |

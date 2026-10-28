@@ -1,8 +1,10 @@
 # WeChatbot项目入口
 
+Git主线已统一：2026-10-28以远端最新`c2bc5fa`（14:24，QQ功能迁移规划）为基线快进到本地；本地和GitHub均只保留`main`，GitHub默认分支与origin/HEAD均为main，旧分支提交完整保留。后续直接在main工作，见[主线交接](tracks/tasks/WX-GIT-MAIN/HANDOFF.md)。
+
 当前规划：2026-10-28 **WX-MIGRATION-PLAN 已完成详细功能规划**，见[计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md)、[交接](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)和[sol/medium指令](docs/IMPLEMENTATION_GUIDE.md)。按用户新意图把QQ成熟业务向wxauto4迁移，优先WX-MIG-01人设/纯文本/48000预算及角色字符门槛/模型代码接点，再02短期上下文与本机控制，再03指定网页读取。均仅规划、未实施；测试暂缓，WXA-02真实阻塞不挡独立代码准备。
 
-后续实施统一 **gpt-6.1-sol/medium**，不再用Terra；27日临时选择保留为历史。输入政策可采用48000字节，不能据此宣称原生token窗口/实时能力已验。本轮只改六份文档，已获用户直接推默认主线codex/bootstrap的授权，Git回执见本轮交接；未改实际运行配置或调用模型/微信。
+后续实施统一 **gpt-6.1-sol/medium**，不再用Terra；27日临时选择保留为历史。输入政策可采用48000字节，不能据此宣称原生token窗口/实时能力已验。下午功能规划只改六份文档，已推送当时默认主线codex/bootstrap；此后用户改为main，见顶部主线交接。未改实际运行配置或调用模型/微信。
 
 既有真实试用：WX-WXA-02 已领取但受阻，账号未准备、安装器版本证据不符；见[交接](tracks/tasks/WX-WXA-02/HANDOFF.md)和[报告](docs/WX-WXA-02-REPORT.md)。WX-WXA-01 已完成离线工具，真实微信与模型尚未验证。
 
@@ -10,7 +12,7 @@
 
 2026-10-27历史模型续作曾选择Terra；已被顶部28日sol/medium决定覆盖。WX-WXA-01已在独立实施会话完成离线范围，不重复领取。
 
-2026-10-27（Asia/Shanghai）。唯一根进度入口，不另建根 HANDOFF。位置 `E:\CodexWS\WeChatbot`，独立于 QQbot。
+2026-10-28（Asia/Shanghai）。唯一根进度入口，不另建根 HANDOFF。位置 `E:\CodexWS\WeChatbot`，独立于 QQbot。
 
 目标：个人微信与朋友家人聊天，复用显式 CodeBuddy/家庭 Ollama 两路线，账号/配置/历史/清理独立。当前 **WX-01 核心及 WX-02 代码/离线范围完成，历史70项离线通过；真实能力全部未验，未部署**。WX-WXA-01 本轮全套80项离线通过。
 
@@ -26,6 +28,7 @@ WX-WXA-01 已完成最小试用工具/可选包及离线验证并停止；WX-WXA
 
 | 工作线 | 状态 | 下一步 | 交接 |
 | --- | --- | --- | --- |
+| WX-GIT-MAIN 同步与单main主线 | completed；本地/远端仅main，默认已核对 | 后续直接main；本任务四份协作文档随提交交付 | [HANDOFF](tracks/tasks/WX-GIT-MAIN/HANDOFF.md) |
 | WX-MIGRATION-PLAN 功能迁移详规 | completed，仅文档；未实施/未跑业务测试 | sol/medium后续仅领WX-MIG-01，见详规 | [HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md) |
 | WX-WXA-02 客户端与单会话试用 | blocked；工件摘要/签名通过但版本证据不符，账号未准备 | 解决版本证据与账号准备后再收集绑定 | [HANDOFF](tracks/tasks/WX-WXA-02/HANDOFF.md) |
 | WX-WXA-01 最小试用工具 | completed，离线验证；真实未验 | 停止；02 已领取 | [HANDOFF](tracks/tasks/WX-WXA-01/HANDOFF.md) |
@@ -48,4 +51,4 @@ WX-02复核差额：11源/16证据/4wheel字节hash匹配，但初始化片段64
 
 既有任务序号与历史证据保留；后续先按最新首选和实际客户端版本规划一次最小文字收发，不要求全部自动群聊门槛先于任何试用。WX-03/04不自动领取；WX-WXA-02未安装/观察/收发/调用模型。真实身份/@/稳定性/确认等级继续如实记录，不能把旧冻结条件当作用户新指令后仍不可调整的绝对要求。
 
-Git：独立本地仓库/`codex/bootstrap`，起点`a66319d`。27日用户明确授权本任务审阅文档commit/push，并补充要求创建public的WeChatbot；已建[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)并配置origin，发布分支codex/bootstrap。所有secrets/local/state/runtime/logs/cache忽略；当前文件及三次提交的保护路径/常见秘密模式检查未发现问题。按实际Git结果核对本地HEAD与远端分支SHA，不把建仓完成写成推送已完成。
+Git：独立仓库[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)，origin保持该地址。当前用户要求单main主线，后续直接在main工作；27日codex/bootstrap发布及保护路径检查保留为历史。所有secrets/local/state/runtime/logs/cache继续忽略。当前同步、默认分支、旧分支清理及远端SHA证据见[主线交接](tracks/tasks/WX-GIT-MAIN/HANDOFF.md)，不把分支整理视为功能实施或真实验收。
