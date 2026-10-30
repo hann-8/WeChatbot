@@ -2,13 +2,13 @@
 
 2026-10-30（Asia/Shanghai）。唯一根进度入口；Windows根E:/CodexWS/WeChatbot，独立于QQ，不另建根HANDOFF。
 
-当前：**WX-MIG-ALL 已完成实现与必要离线检查，待用户单群实测**。入口[README](README.md) / [当前交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md) / [检查报告](docs/WX-MIG-ALL-REPORT.md)。只领取ALL一次，未分MIG-01/02/03轮流停下。禁止过度防御，优先公开接口与已有代码；正常用户反馈即可接受，不加无关验收轮次。
+当前：**WX-MIG-ALL 已实现；用户已换4.1.8.107，首次live启动失败，正在定位**。入口[README](README.md) / [当前交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md) / [检查报告](docs/WX-MIG-ALL-REPORT.md)。只领取ALL一次，未分MIG-01/02/03轮流停下。禁止过度防御，优先公开接口与已有代码；正常用户反馈即可接受，不加无关验收轮次。
 
 文字版包含wxauto4单群收发薄适配、人设/单条自然纯文本、八轮上下文、本机控制、固定runner、CLI原生WebSearch/WebFetch、schema2全文独立记忆、配置和一个启动入口。媒体/成员/真实@/QQ式free关闭。源只读固定42911afc4c1f2bcfbbc3c26afc2647fd21992f08，来源与本地差异见[映射](docs/WX-MIGRATION-SOURCE-MAP.json)及manifest；源项目代码/配置/运行实例不变，不搬私密数据。
 
 本轮60项组合/相关回归通过，74项快照/工件摘要、compileall、默认启动inspect及旧trial mock通过。只有合成框架/模型/SDK证据；未执行真实微信、模型生成、联网服务、SSH或群发送，不替代真实验收。local_reported可继续；unknown只暂停本会话，不重试、不清账、不索逐条人工ACK。
 
-用户自报已登录微信4.2.0.11并接受换版。Python3.12.14、免费wxauto4 41.1.7和锁定CLI工件已准备；免费公开支持到微信4.1.8.107，已有签名/摘要匹配的安装包未运行，元数据差异不永久阻断。**下一步用户正常退出/安装/登录，填本机secrets的一个群名，打开该群，显式Start-WeChatbot.ps1 -Live后实测**。换版与登录由用户完成，不再重复询问意愿。
+用户最新反馈已换微信4.1.8.107；首次显式-Live在框架初始化附近失败，原入口隐藏异常，具体原因尚未确定。已补启动阶段/异常类型/安全代码帧诊断，10项相关替身检查通过；默认inspect仍0真实操作。下一步用户重跑同一-Live命令并提供startup_error JSON；无需再换版，不提供secrets或真实群名。
 
 默认通道仍mock、enabled/sends=false；增强模板准备true，但默认启动仅inspect、0真实操作。config/local五份文件和secrets/wxauto4-chat.local.json空模板已准备，后端仍codebuddy_cli，账号/模型/微信persona保留；Ollama手选不自动切换，原生工具仅CLI。数据/密钥/历史/记忆/日志独立且忽略，模型/群文字不执行本机控制，群内全部成员均可按前缀触发，无发送者白名单，不默认回复每条闲聊。
 

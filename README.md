@@ -8,7 +8,7 @@ WX-MIG-ALL 已实现，等待用户在一个指定群实测。入口：[PROGRESS
 
 本机 Python3.12、wxauto4 41.1.7及独立CLI工件已准备；config/local五份配置与secrets/wxauto4-chat.local.json空模板已建立。真实群名、昵称只填本机绑定，不提交Git。
 
-1. 由你退出当前微信，正常安装兼容版本并登录。官方免费版支持说明目前到[微信4.1.8.107](https://docs.wxauto.org/docs/install.html)；当前4.2.0.11不在说明内，实际兼容未测试。
+1. 由你退出当前微信，正常安装兼容版本并登录。官方免费版支持说明目前到[微信4.1.8.107](https://docs.wxauto.org/docs/install.html)；你已反馈换成4.1.8.107，当前需定位实际启动异常，无需再次换版。
 2. 已有安装包：`C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe`。233506664字节，SHA-256 `b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90`；Tencent签名Valid。安装器文件/产品元数据为4.1.8.1000/4.1.8.0，安装后看客户端版本和实际API表现，这个差异不作为永久阻断。安装包未运行。正常安装保留原数据；若旧版登录或安装遇到限制，记录具体提示，不自动绕过。
 3. 编辑[本机绑定](secrets/wxauto4-chat.local.json)，填chat_name，必要时填blacklist；不需要发送者白名单，群内全部成员均可触发。account_alias和conversation_key是自定的本地持久别名，保持不变才能继续同一份记忆；不是微信服务端身份。昵称仅用于当前发送者标记，不要求逐人绑定。
 4. 手动打开这个群，保持消息区域在最新位置。先运行只读检查，再显式启动live：
@@ -67,3 +67,7 @@ Copy-Item config/examples/wxauto4-chat.example.json secrets/wxauto4-chat.local.j
 复制模板仅用于新检出；已有local不用模板覆盖。prepare_cli仅复制并核对Node、entry、bundle、types，不执行CLI，不复制账号/凭据。[manifest](vendor/qq-core-manifest.json)为诚实混合快照：所需文件固定42911af，未用旧文件保留原提交；微信路径/spawn差异逐项登记。无源目录运行依赖，不启动QQ服务，不改第三方核心。
 
 旧严格核心 `python -m wechatbot inspect/probe`、[wxauto4挑战工具](docs/WX-WXA-01-REPORT.md)和各自台账保留，不因新入口升级为真实微信能力。历史见[WX-01](docs/WX-01-OFFLINE-REPORT.md)、[WX-02](docs/WX-02-CAPABILITY-REPORT.md)。Git只用本项目main和origin，不借QQ远端。
+
+## 启动错误诊断
+
+若-Live失败，控制台输出startup_error JSON，并把相同封闭元数据写入忽略的state/startup-last-error.json：包含stage、error_type、代码文件/函数/行号及可用的数值错误码；不包含原始异常消息、群名、消息正文或局部变量。wxauto免费版广告本身不是报错。将这段JSON发回即可定位，不需要提供本机secrets。
