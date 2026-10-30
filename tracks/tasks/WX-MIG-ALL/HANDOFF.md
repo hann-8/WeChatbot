@@ -10,7 +10,7 @@
 
 ## 已实现与文件归属
 
-- src/wechatbot/chat_session.py、chat_model.py、chat_policy.py、wxauto4_chat.py：单绑定群连续文字、精确允许昵称/黑名单、基线去重、单并发队列、本机控制、八轮RAM、真实local_reported/unknown语义、schema2全文记忆及原生联网小包装；仍用原transports/wxauto4_adapter.py三个公开API，不伪造生产事件/QQ身份。
+- src/wechatbot/chat_session.py、chat_model.py、chat_policy.py、wxauto4_chat.py：单绑定群连续文字、全体群成员可触发/黑名单、基线去重、单并发队列、本机控制、八轮RAM、真实local_reported/unknown语义、schema2全文记忆及原生联网小包装；仍用原transports/wxauto4_adapter.py三个公开API，不伪造生产事件/QQ身份。
 - config/defaults、config/examples、config/README、models policy：524288可见UTF-8字节/low/thinking=false、memory/web准备true，其他能力关闭；本机config/local与secrets空模板忽略。微信persona/后端/模型/账号不替换，家庭连接不复制。
 - docs/WX-MIGRATION-SOURCE-MAP.json所列共用模块及三份插件；公开capabilities、framework四字段、types锁定；scripts/check_snapshot.py/prepare_cli.py、versions锁与vendor manifest。74项混合快照，未用旧文件保留旧来源，微信相对Node/entry与spawn替身接点合并。
 - Start-WeChatbot.ps1一个入口；README、报告、PROGRESS/TASKS及上轮已知规划文档同步。tests/test_chat_migration.py、test_native_guard.py及固定源合成SDK fixtures；offline_backend和test_core适配low元数据握手。
@@ -27,4 +27,10 @@
 
 安装器已存在于C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe，233506664字节，SHA256 b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90，Tencent签名Valid；未运行。文件/产品元数据差异不永久阻断。用户正常退出/安装/登录，安装后看客户端版本与公开API表现；当前4.2.0.11兼容未验。
 
-下一步只由用户：按README正常换版/登录，填一个群和允许昵称、手动打开群，Start-WeChatbot.ps1先inspect再-Live，等baseline_ready后实测。正常就接受，不再加无关验收轮次。本会话交付后停止；后续有具体故障就在本范围修复。回滚保留未决/记忆/用户数据，不退出微信，不操作QQ。
+下一步只由用户：按README正常换版/登录，填一个群名、手动打开群，Start-WeChatbot.ps1先inspect再-Live，等baseline_ready后实测。正常就接受，不再加无关验收轮次。本会话交付后停止；后续有具体故障就在本范围修复。回滚保留未决/记忆/用户数据，不退出微信，不操作QQ。
+
+## 用户反馈续修：取消发送者白名单
+
+2026-10-30 23:16 Asia/Shanghai，本会话Codex按用户反馈续修WX-MIG-ALL：取消连续聊天的发送者白名单，指定群全部成员可按前缀触发，保留黑名单和本机控制边界。归属src/wechatbot/chat_session.py、chat_model.py、chat_policy.py、wxauto4_chat.py、绑定模板及忽略的本机绑定、tests/test_chat_migration.py、README/AGENTS/计划/报告/PROGRESS/TASKS/当前HANDOFF。无真实通道操作。
+
+续修完成：取消连续入口的发送者白名单，绑定群全部非黑名单成员可按bot前缀触发；旧allowed_senders读取时忽略，模板及本机文件移除。9项迁移定向检查通过，默认inspect仍0真实通道/模型/发送，未运行live。本机绑定格式已验证，用户填写的其他值保留。

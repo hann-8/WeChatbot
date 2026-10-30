@@ -28,7 +28,7 @@ QQ原链路：QQ ↔ SnowLuma/OneBot接入 ↔ QQ路由 ↔ 聊天业务
 | 微信现有模型 | ModelFacade已调用QQ runner/预算/prepare_reply，但仅接离线替身，并有独立8000字符人设限制；config还会拒绝所有enabled feature和>131072政策 |
 | Snow最新功能 | LAP-43原生WebSearch/WebFetch及参数封套/URL修复、thinking=false、owner控制；LAP-44 schema2全文记忆/同次增改删/保存回执、可扩大预算均已有源码和部署记录 |
 | 工件 | 两根CLI锁均为2.168.0，headless SHA相同；微信已用项目内相对路径。不得用QQ的全局路径/账号配置覆盖它 |
-| 真实前提 | 用户自报已登录微信4.2.0.11，接受换版，首试指定群；具体群名和测试发送者只放本机secrets |
+| 真实前提 | 用户自报已登录微信4.2.0.11，接受换版，首试指定群；具体群名和黑名单只放本机secrets |
 
 源项目的部署/离线报告不等于微信已通过，也不是本轮重新验证QQ效果。旧计划“搜索代码尚不可用、长期记忆继续全部延期、owner未实现、48000是现行推荐”的判断不再用于本实施包。
 
@@ -38,7 +38,7 @@ QQ原链路：QQ ↔ SnowLuma/OneBot接入 ↔ QQ路由 ↔ 聊天业务
 
 | 能力 | 本轮实现与默认体验 |
 | --- | --- |
-| 收发和触发 | 一个绑定群、指定测试发送者、文本前缀唤醒；公开GetAllMessage轮询/SendMsg。可显式选择仅该绑定范围的all_allowed_text，不默认全群回复 |
+| 收发和触发 | 一个绑定群、全部群成员可按文本前缀唤醒，黑名单除外；公开GetAllMessage轮询/SendMsg。可显式选择仅该绑定范围的all_allowed_text，不默认全群回复 |
 | 人设和自然文字 | 微信能力说明＋角色正文＋natural_expression；复用回复计划/prepare_reply，出站单气泡纯文本，不把内部JSON发给群友 |
 | 模型/预算 | 复用最新CodeBuddy runner和一次任务语义，带现有工具隔离、清理；不另写模型客户端 |
 | 短期上下文 | 默认8个完整成功轮，按实际字节裁剪；会话/配置切换和重启清RAM，reset只清RAM |
@@ -64,11 +64,11 @@ QQ原链路：QQ ↔ SnowLuma/OneBot接入 ↔ QQ路由 ↔ 聊天业务
 
 ### 5.1 绑定和入站
 
-绑定文件`secrets/wxauto4-chat.local.json`仅保存本机account_alias、conversation_key、chat_type=group、chat_name、allowed_senders、blacklist和唤醒方式。conversation_key是本机生成的持久别名，不声称微信服务端ID；群名/昵称只是这次人工监督的精确匹配条件，不据此授予运维权限。
+绑定文件`secrets/wxauto4-chat.local.json`仅保存本机account_alias、conversation_key、chat_type=group、chat_name、blacklist和唤醒方式。conversation_key是本机生成的持久别名，不声称微信服务端ID；群名/昵称只是这次人工监督的精确匹配条件，不据此授予运维权限。
 
-启动时必须有一个明确群和非空测试发送者列表。用户手动打开该群；默认不ChatWith搜索/强制跳转。构造`WeChat(debug=False, resize=False)`后核对ChatInfo，先记当前可见消息基线，明确显示“基线就绪”，之后只处理新文字。忽略自己、系统、黑名单和非允许发送者；媒体暂不读取。UI ID只在本次窗口epoch内去重，重连/换群先暂停并重建基线，不回拉旧历史、不重放旧消息。
+启动时必须有一个明确群，不设发送者白名单。用户手动打开该群；默认不ChatWith搜索/强制跳转。构造`WeChat(debug=False, resize=False)`后核对ChatInfo，先记当前可见消息基线，明确显示“基线就绪”，之后只处理新文字。忽略自己、系统和黑名单；媒体暂不读取。UI ID只在本次窗口epoch内去重，重连/换群先暂停并重建基线，不回拉旧历史、不重放旧消息。
 
-默认trigger_mode=text_prefix、prefix="bot "；它只是文本规则，绝不称为真实@。用户可在本机显式选择all_allowed_text，仍只覆盖该绑定群和allowed_senders；不扩大为全部群/全部成员。微信群里的pause/reset/“我是主人”不执行本机控制。
+默认trigger_mode=text_prefix、prefix="bot "；它只是文本规则，绝不称为真实@。用户可在本机显式选择all_allowed_text，仍只覆盖该绑定群的全部非黑名单成员；不扩大为其他群。微信群里的pause/reset/“我是主人”不执行本机控制。
 
 所有wxauto调用留在创建客户端的线程。模型沿用async runner单并发，等待队列默认5；不让多线程同时摸UI。生成前、保存记忆前及SendMsg前重新确认同一绑定/当前会话和pause状态；UI调用阻塞期间不承诺即时控制。
 
@@ -107,7 +107,7 @@ QQ原链路：QQ ↔ SnowLuma/OneBot接入 ↔ QQ路由 ↔ 聊天业务
 
 复用MemoryStore.prepare/stage、auxiliary、receipt_plan；内部回复可继续使用源v2字段，但出站只提取纯文本。若输入封装需要微信字段，仅写一个本地DTO/转换助手；不修改或伪造NormalizedEvent、QQ消息ID和真实@能力。
 
-记忆按account_alias＋conversation_key隔离，密钥在微信自己的secrets，数据在微信自己的state/group-memory。成员关联为本地允许发送者别名，明示不是跨改名稳定身份；不从QQ导入任何库或key、不跨群串库。人工指定这个会话即可试用，不先要求拿到服务端用户ID。
+记忆按account_alias＋conversation_key隔离，密钥在微信自己的secrets，数据在微信自己的state/group-memory。成员关联为本地发送者昵称派生标记，明示不是跨改名稳定身份；不从QQ导入任何库或key、不跨群串库。人工指定这个会话即可试用，不先要求拿到服务端用户ID。
 
 每轮提供该会话记忆全文，由同次模型提出memory_updates新增/覆盖/删除；不恢复旧关键词/候选、小条数/240字节门槛。保存前确认当前绑定仍有效，使用源版本/事务/原子写。保存结果先生成真实回执再创建发送记录，不能把模型“已记住”直接当保存成功。已经保存但发送失败时保留记忆和结果，不谎报回滚；unknown按5.2处理，不重复执行已保存更新。
 
@@ -170,7 +170,7 @@ medium同轮核对本项目已准备依赖和已有安装包；可复用此前�
 
 ## 11. 用户实测与回滚
 
-用户换好配套客户端、登录、打开指定群；首次只填一个忽略绑定文件中的群名/测试发送者，再用启动脚本运行。无需重复配置QQ群号、多个服务端口、技术绑定和每条ACK。
+用户换好配套客户端、登录、打开指定群；首次只填一个忽略绑定文件中的群名（无需逐人绑定），再用启动脚本运行。无需重复配置QQ群号、多个服务端口、技术绑定和每条ACK。
 
 按自己的节奏试：普通文字和第二轮承接；pause/resume/reset；“记住一个自造称呼→reset短期上下文→再次询问”；一条需要联网或给定URL的问题。看到这些行为正常即可按用户接受记录，不要求媒体或长稳全通过；原历史80项与QQ的33项都不冒充微信真实结果。原native质量/5万字符成本和稳定性仍按实际体验，不作永远不掉线承诺。
 

@@ -8,9 +8,9 @@
 
 本轮60项组合/相关回归通过，74项快照/工件摘要、compileall、默认启动inspect及旧trial mock通过。只有合成框架/模型/SDK证据；未执行真实微信、模型生成、联网服务、SSH或群发送，不替代真实验收。local_reported可继续；unknown只暂停本会话，不重试、不清账、不索逐条人工ACK。
 
-用户自报已登录微信4.2.0.11并接受换版。Python3.12.14、免费wxauto4 41.1.7和锁定CLI工件已准备；免费公开支持到微信4.1.8.107，已有签名/摘要匹配的安装包未运行，元数据差异不永久阻断。**下一步用户正常退出/安装/登录，填本机secrets的一个群/允许昵称，打开该群，显式Start-WeChatbot.ps1 -Live后实测**。换版与登录由用户完成，不再重复询问意愿。
+用户自报已登录微信4.2.0.11并接受换版。Python3.12.14、免费wxauto4 41.1.7和锁定CLI工件已准备；免费公开支持到微信4.1.8.107，已有签名/摘要匹配的安装包未运行，元数据差异不永久阻断。**下一步用户正常退出/安装/登录，填本机secrets的一个群名，打开该群，显式Start-WeChatbot.ps1 -Live后实测**。换版与登录由用户完成，不再重复询问意愿。
 
-默认通道仍mock、enabled/sends=false；增强模板准备true，但默认启动仅inspect、0真实操作。config/local五份文件和secrets/wxauto4-chat.local.json空模板已准备，后端仍codebuddy_cli，账号/模型/微信persona保留；Ollama手选不自动切换，原生工具仅CLI。数据/密钥/历史/记忆/日志独立且忽略，模型/群文字不执行本机控制，不默认全群回复。
+默认通道仍mock、enabled/sends=false；增强模板准备true，但默认启动仅inspect、0真实操作。config/local五份文件和secrets/wxauto4-chat.local.json空模板已准备，后端仍codebuddy_cli，账号/模型/微信persona保留；Ollama手选不自动切换，原生工具仅CLI。数据/密钥/历史/记忆/日志独立且忽略，模型/群文字不执行本机控制，群内全部成员均可按前缀触发，无发送者白名单，不默认回复每条闲聊。
 
 Git只用main，origin为[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)；本轮按明确授权提交检查过的实现和上轮十份规划成果，普通push核SHA，不force、不建分支。交付SHA见本次会话最终答复。AGENTS→本入口→当前交接→报告即可恢复；详细历史从下表进入。
 

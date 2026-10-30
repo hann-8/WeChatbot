@@ -31,7 +31,7 @@ async def live(root=ROOT):
         raise ValueError('install_wxauto4_41_1_7')
     # This branch is entered only through the explicit --live operator instruction.
     with owner(Path(root) / 'state/wxauto4-chat'):
-        model = ChatCliModel(cfg, private_ids=[binding.chat_name, *binding.allowed_senders, *binding.blacklist])
+        model = ChatCliModel(cfg, private_ids=[binding.chat_name, *binding.blacklist])
         session = None
         try:
             session = ChatSession(cfg, binding, Wxauto4Client(live_factory), model)

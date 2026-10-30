@@ -10,7 +10,7 @@ WX-MIG-ALL 已实现，等待用户在一个指定群实测。入口：[PROGRESS
 
 1. 由你退出当前微信，正常安装兼容版本并登录。官方免费版支持说明目前到[微信4.1.8.107](https://docs.wxauto.org/docs/install.html)；当前4.2.0.11不在说明内，实际兼容未测试。
 2. 已有安装包：`C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe`。233506664字节，SHA-256 `b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90`；Tencent签名Valid。安装器文件/产品元数据为4.1.8.1000/4.1.8.0，安装后看客户端版本和实际API表现，这个差异不作为永久阻断。安装包未运行。正常安装保留原数据；若旧版登录或安装遇到限制，记录具体提示，不自动绕过。
-3. 编辑[本机绑定](secrets/wxauto4-chat.local.json)，填chat_name、allowed_senders数组（精确显示昵称），必要时填blacklist。account_alias和conversation_key是自定的本地持久别名，保持不变才能继续同一份记忆；不是微信服务端身份。改昵称后人工重绑。
+3. 编辑[本机绑定](secrets/wxauto4-chat.local.json)，填chat_name，必要时填blacklist；不需要发送者白名单，群内全部成员均可触发。account_alias和conversation_key是自定的本地持久别名，保持不变才能继续同一份记忆；不是微信服务端身份。昵称仅用于当前发送者标记，不要求逐人绑定。
 4. 手动打开这个群，保持消息区域在最新位置。先运行只读检查，再显式启动live：
 
 ```powershell
@@ -19,9 +19,9 @@ cd E:\CodexWS\WeChatbot
 .\Start-WeChatbot.ps1 -Live
 ```
 
-默认命令仅inspect：0微信构造、0模型生成、0发送。-Live是本次会话的显式启动授权，无需再改旧mock总开关。看见baseline_ready后，让允许发送者发新文字，如 `bot 你好`。启动可见文字不回放。前缀只是文本规则，不是真实@；可在绑定文件显式选all_allowed_text，仍仅本群与允许名单，不默认全群回复。
+默认命令仅inspect：0微信构造、0模型生成、0发送。-Live是本次会话的显式启动授权，无需再改旧mock总开关。看见baseline_ready后，让群内任意成员发新文字，如 `bot 你好`。启动可见文字不回放。前缀只是文本规则，不是真实@；可在绑定文件显式选all_allowed_text，适用于本群所有非黑名单成员；默认仍需要bot前缀，不自动回复每条闲聊。
 
-同名昵称无法区分真实个人，首试只用你确认不混淆的发送者。运行中不切群、滚到旧历史或改绑定；切群/窗口变化会暂停，返回目标群后在本机输入resume重建基线。绑定文件变更需停止后重启。
+同名昵称无法区分真实个人，记忆中的发送者标记也不是稳定微信身份。运行中不切群、滚到旧历史或改绑定；切群/窗口变化会暂停，返回目标群后在本机输入resume重建基线。绑定文件变更需停止后重启。
 
 ## 本机控制与实测
 

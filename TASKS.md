@@ -61,3 +61,7 @@ WX-02 原实施轮归属（402ffd2）：src/wechatbot/transports/pyweixin_adapte
 WX-02 结果：70/70离线通过（原41+新增29），11份固定源/16份证据/4份wheel hash通过；默认inspect/mock，生产关闭。真实provider未接线，身份/@/发送/图片均未验；新任务或产品/传输变更回sol/max。只本地提交，无remote，不改WX-01测试/模型快照/默认依赖或运行配置。
 
 WX-02复核轮（2026-10-23）：session `WX-02-gap-review-plan-20261023`，20:02起；归属能力报告、独立复核计划、WX-02交接及PROGRESS/TASKS。上述70项保留为历史结果，未重跑。独立只读核对11源/16证据/4wheel hash匹配；发现初始化证据区间64–60倒置、检查器缺区间校验，有效导入54–57已静态核实。证据JSON/检查器/代码未修，后续修正列入可选P1。建议停止当前UI上游的生产推进；可选一次元数据provider须分开授权代码/离线和真实对象观察，不能补齐稳定身份/@/像素/关联ACK或领取WX-03。该轮最终仅本地文档提交，真实验收差额见报告/计划/交接。
+
+2026-10-30 23:16 Asia/Shanghai，本会话Codex按用户反馈续修WX-MIG-ALL：取消连续聊天的发送者白名单，指定群全部成员可按前缀触发，保留黑名单和本机控制边界。归属src/wechatbot/chat_session.py、chat_model.py、chat_policy.py、wxauto4_chat.py、绑定模板及忽略的本机绑定、tests/test_chat_migration.py、README/AGENTS/计划/报告/PROGRESS/TASKS/当前HANDOFF。无真实通道操作。
+
+续修完成：取消连续入口的发送者白名单，绑定群全部非黑名单成员可按bot前缀触发；旧allowed_senders读取时忽略，模板及本机文件移除。9项迁移定向检查通过，默认inspect仍0真实通道/模型/发送，未运行live。本机绑定格式已验证，用户填写的其他值保留。

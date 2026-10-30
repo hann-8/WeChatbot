@@ -1,6 +1,6 @@
 """Section 10 combinations. Synthetic messages only, no real framework/model/network."""
 import asyncio
-from dataclasses import replace
+from dataclasses import asdict, replace
 import json
 import os
 from pathlib import Path
@@ -71,7 +71,7 @@ class MigrationTests(unittest.IsolatedAsyncioTestCase):
         (self.root / 'config/persona.md').write_text('角色材料' * 3000, encoding='utf-8')
         self.config = Config(self.root, load_config().data)
         self.binding = ChatBinding('synthetic-account', 'synthetic-conversation', 'synthetic-group',
-                                   ['tester'], ['blocked'])
+                                   ['blocked'])
         self.framework = FakeFramework()
         self.runner = FakeRunner()
         self.model = ChatCliModel(self.config, runner=self.runner)
@@ -84,8 +84,8 @@ class MigrationTests(unittest.IsolatedAsyncioTestCase):
         await self.session.close()
         self.tmp.cleanup()
 
-    async def turn(self, identity='1', text='bot 测试'):
-        self.framework.messages.append(self.framework.message(identity, text))
+    async def turn(self, identity='1', text='bot 测试', sender='tester'):
+        self.framework.messages.append(self.framework.message(identity, text, sender=sender))
         self.session.poll()
         await self.session.advance()
         await asyncio.sleep(0)
@@ -96,7 +96,7 @@ class MigrationTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(self.runner.calls)
         self.framework.messages.extend([self.framework.message('self', 'bot self', attr='self'),
                                        self.framework.message('blocked', 'bot blocked', sender='blocked'),
-                                       self.framework.message('other', 'bot other', sender='other'),
+                                       self.framework.message('other', 'ordinary text', sender='other'),
                                        self.framework.message('no-prefix', 'hello')])
         await self.turn()
         await self.turn('2', 'bot 第二轮')
@@ -113,6 +113,20 @@ class MigrationTests(unittest.IsolatedAsyncioTestCase):
         await self.turn('4', 'bot pause')  # Ordinary text never performs local control.
         self.assertFalse(self.session.paused)
         self.assertEqual(len(self.runner.calls), 3)
+
+    async def test_all_members_trigger_and_legacy_allowlist_does_not_restrict(self):
+        path = self.root / 'binding.json'
+        path.write_text(json.dumps(asdict(self.binding) | {'allowed_senders': ['tester']}), encoding='utf-8')
+        binding = ChatBinding.read(path)
+        self.assertFalse(hasattr(binding, 'allowed_senders'))
+        self.session.binding = binding
+        await self.turn(sender='new-member')
+        self.assertEqual(len(self.runner.calls), 1)
+        self.assertEqual(self.framework.sent, ['合成回复'])
+        self.assertIn('new-member', self.runner.web_private_ids)
+        await self.turn('2', sender='blocked')
+        await self.turn('3', text='没有前缀', sender='another-member')
+        self.assertEqual(len(self.runner.calls), 1)
 
     async def test_unknown_no_retry_retained_on_restart_and_operator_resolves(self):
         self.framework.response = None

@@ -5,7 +5,7 @@
 ## 已实现
 
 - 只读固定SnowLuma提交42911afc4c1f2bcfbbc3c26afc2647fd21992f08，按映射更新48个共用候选模块，保留未用旧文件。三份codebuddy_vision_guard资产、公开framework四字段、公开capabilities及锁定types齐全。manifest逐文件标来源/本地摘要与差异，74项诚实混合快照；3项本地差异含旧适配及本次runner路径/spawn和精简审阅字段。源项目保持不变，不复制QQ本机配置/凭据/历史/记忆/图库/active/probe。
-- 新ChatSession仅经原Wxauto4Client的ChatInfo/GetAllMessage/SendMsg，所有框架调用在创建线程；基线不回放，黑名单前置、精确允许昵称、文本前缀触发，错群/暂停/重建窗口/改绑定作废旧结果。昵称及会话别名如实标为本地条件，不造QQ号码、NormalizedEvent或真实@资格。单并发、等待队列5、RAM8完整轮。
+- 新ChatSession仅经原Wxauto4Client的ChatInfo/GetAllMessage/SendMsg，所有框架调用在创建线程；基线不回放，黑名单前置、全体群成员按文本前缀触发（按用户反馈取消白名单），错群/暂停/重建窗口/改绑定作废旧结果。昵称及会话别名如实标为本地条件，不造QQ号码、NormalizedEvent或真实@资格。单并发、等待队列5、RAM8完整轮。
 - ChatCliModel复用原runner/InputBudget/自然表达/ReplyPlan；微信小JSON包装只在内部，出站一条自然纯文本。人设保留，不再独立8000字符拒绝；524288可见UTF-8字节、overhead/output各2048、low/thinking=false、原生窗口null。只裁整轮旧历史，当前请求和全文记忆不截。原runner/实际插件做最终wire、来源和预算限制。
 - 原生web仅WebSearch/WebFetch、3调用/4步骤/90秒、单8000/总12000字节，含固定源参数封套和HTTP(S)修复。MCP空，其余工具关闭；最终最多2个本次成功公开来源URL。工具材料不入记忆，不另做分类/修复生成或切后端。
 - 源MemoryStore schema2 prepare/stage/auxiliary/receipt_plan全文同次增改删；微信独立密钥与state，账号别名＋会话别名隔离，50000 Unicode字符/1048576单文件/8388608总字节，可配置扩大。保存前复核当前目标，真实原子保存结果生成回执；失败原件保留，增强失败基本文字继续。reset仅清RAM。
@@ -34,3 +34,7 @@
 ## Git和回滚
 
 只在main提交已检查的本任务及上轮规划归属文件，普通push到hann-8/WeChatbot并核远端SHA；最终SHA见本次会话交付答复。忽略的local/secrets/state/runtime不提交。源仓库只读且无改动。回滚仅撤本任务代码/精确配置字段，不清未决、记忆或用户数据，不退出微信、不操作QQ。关闭web/memory只停增强。
+
+## 用户反馈续修：全群成员可触发
+
+取消连续入口发送者白名单，指定群的所有非黑名单成员都可用bot前缀触发。模板不含allowed_senders，旧文件该字段忽略，本机文件仅移除废弃字段并保留用户其他值。当前发送者昵称仍加入当次联网私密标识过滤，无需枚举群成员。新增新成员/旧白名单不限制反例，9项迁移定向检查通过，默认inspect零真实操作；未启动live，待用户实测。

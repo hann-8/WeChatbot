@@ -18,7 +18,6 @@ class ChatBinding:
     account_alias: str
     conversation_key: str
     chat_name: str
-    allowed_senders: list
     blacklist: list
     chat_type: str = 'group'
     trigger_mode: str = 'text_prefix'
@@ -26,7 +25,9 @@ class ChatBinding:
 
     @classmethod
     def read(cls, path):
-        binding = cls(**json.loads(Path(path).read_text(encoding='utf-8')))
+        data = json.loads(Path(path).read_text(encoding='utf-8'))
+        data.pop('allowed_senders', None)  # Obsolete local field no longer restricts members.
+        binding = cls(**data)
         binding.validate()
         return binding
 
@@ -36,10 +37,8 @@ class ChatBinding:
                 raise ValueError('local_alias_required')
         if self.chat_type != 'group' or not isinstance(self.chat_name, str) or not self.chat_name.strip():
             raise ValueError('one_group_required')
-        if (not isinstance(self.allowed_senders, list) or not self.allowed_senders or
-                any(not isinstance(s, str) or not s.strip() for s in self.allowed_senders)
-                or not isinstance(self.blacklist, list) or any(not isinstance(s, str) for s in self.blacklist)):
-            raise ValueError('allowed_senders_required')
+        if not isinstance(self.blacklist, list) or any(not isinstance(s, str) for s in self.blacklist):
+            raise ValueError('invalid_blacklist')
         if self.trigger_mode not in ('text_prefix', 'all_allowed_text'):
             raise ValueError('trigger_mode')
         if self.trigger_mode == 'text_prefix' and (not isinstance(self.prefix, str) or not self.prefix):
@@ -118,9 +117,8 @@ class ChatSession:
         self.window_ids = current
         for message in new:
             b = self.binding
-            # Blacklist before allowlist and model dispatch; self/system/media ignored.
-            if (message.sender in b.blacklist or message.sender not in b.allowed_senders
-                    or message.attr != 'friend' or message.type != 'text'):
+            # All members in this bound group may trigger; self/system/media ignored.
+            if (message.sender in b.blacklist or message.attr != 'friend' or message.type != 'text'):
                 continue
             question = message.content
             if b.trigger_mode == 'text_prefix':
@@ -215,6 +213,8 @@ class ChatSession:
                 self.notify('memory_unavailable_basic_text_continues'); self.memory_notice = True
                 self.memory.disabled.add(self.binding.conversation_key)
             self.active = (sender, question, request, version, source, context, ref)
+            # Protect the current display name without requiring a member allowlist.
+            self.model.runner.web_private_ids = [self.binding.chat_name, *self.binding.blacklist, sender]
             self.task = asyncio.create_task(self.model.generate(question, ref, source, list(self.history), request))
 
     def command(self, line):
