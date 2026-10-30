@@ -7,7 +7,7 @@
 - Windows根为 `E:/CodexWS/WeChatbot`，独立于QQ；云端使用实际checkout。本目录保留，不适用另一台笔记本临时覆层的删除要求。
 - 先读[PROGRESS](PROGRESS.md)、[TASKS](TASKS.md)和[当前交接](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md)。PROGRESS是唯一根进度入口，历史和详细状态放各任务交接，不另建根HANDOFF。
 - 当前按[统一迁移计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md)和[medium指令](tracks/tasks/WX-MIGRATION-PLAN/MEDIUM_START.md)推进：微信↔wxauto4薄适配↔已有聊天业务。优先复用SnowLuma的业务模块；使用框架公开接口，不改第三方核心或维护私有fork。
-- 用户2026-10-30自报已登录微信4.2.0.11，先测一个指定群，接受更换兼容版本。账号已准备；实际兼容/收发尚未验证。免费wxauto4配套与换版操作按计划执行，不重复询问换版意愿。
+- 用户已自报换成微信4.1.8.107，2026-10-31反馈启动恢复、测试OK，接受本次单群文字版。按正常使用交付，不重复要求换版或新增无关验收轮次；未逐项反馈的增强功能不扩写为已专项实测。
 
 ## 协作与交付
 

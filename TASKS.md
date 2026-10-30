@@ -1,5 +1,7 @@
 # WeChatbot任务台账
 
+当前收尾：2026-10-31（Asia/Shanghai），用户先反馈“现在可以了”，随后反馈“测试ok，继续”。据此记录指定单群文字版启动恢复、整体试用OK并由用户接受；用户未逐项列出记忆/联网/本机控制结果，不扩写为这些专项全部实测通过，不称服务端ACK或长期稳定性证明。 本轮仅文档及框架本机工件忽略规则，无业务改动/新测试或真实操作。
+
 WX-MIG-ALL 2026-10-30交付：实现/必要检查completed，60项相关离线检查和74项快照/工件摘要通过；源42911af只读不变，未操作真实微信/模型/联网服务/发送。新启动入口与本机空绑定已准备，交用户实测后停止。文件与证据见[本任务交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md)和[报告](docs/WX-MIG-ALL-REPORT.md)。本轮按授权仅main提交检查文件及上轮规划，普通push核SHA。
 
 2026-10-30 22:37（Asia/Shanghai）：本会话 Codex 领取唯一任务 **WX-MIG-ALL**，session WX-MIG-ALL-20261030。main 起点33c18f0；保留上轮十份规划差异。归属：统一计划第9节的微信业务/配置/启动/定向测试、映射共用源码与资产、manifest/CLI准备脚本、README/本任务报告及交接、PROGRESS/TASKS和已知规划文档。源固定42911af只读；不运行真实UI/模型/发送。授权审阅后commit及普通push main。见[本任务交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md)。
@@ -38,7 +40,7 @@ WX-MIG-ALL 2026-10-30交付：实现/必要检查completed，60项相关离线�
 | --- | --- | --- | --- | --- |
 | WX-GIT-MAIN | 拉取最新远端，统一单main及后续Git规则 | completed；本地/远端仅main，默认已核对；[HANDOFF](tracks/tasks/WX-GIT-MAIN/HANDOFF.md) | WX-GIT-MAIN-20261028，23:01登记 | 后续直接main；四份协作文档随提交交付，停止本Git任务 |
 | WX-MIGRATION-PLAN | 最新Snow源码/统一批量迁移详规、精简规范 | completed；75链接/52源blob/归属检查通过；[计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md) / [HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md) | WX-MIGRATION-CLARIFY-20261030，21:53起 | 用户提交统一medium指令；当前不实施 |
-| WX-MIG-ALL | 单群收发/文字/模型/上下文/本机控制/原生联网/schema2记忆和启动入口 | completed；60项离线与74项摘要通过；[HANDOFF](tracks/tasks/WX-MIG-ALL/HANDOFF.md) | 本会话Codex，2026-10-30 22:37 | 入口已交付；用户实测后接受 |
+| WX-MIG-ALL | 单群收发/文字/模型/上下文/本机控制/原生联网/schema2记忆和启动入口 | completed；用户测试OK接受，既有离线/摘要证据保留；[HANDOFF](tracks/tasks/WX-MIG-ALL/HANDOFF.md) | 本会话Codex，2026-10-30 22:37 | 用户已接受，正常使用 |
 | WX-MIG-01 | 原人设/纯文本/预算/模型接点 | merged_into WX-MIG-ALL，未单独实施 | 历史任务号保留 | 不再单独领取/停下 |
 | WX-MIG-02 | 原短期上下文/本机控制 | merged_into WX-MIG-ALL，未单独实施 | 历史任务号保留 | 不再单独领取/停下 |
 | WX-MIG-03 | 原指定URL读取 | merged_into WX-MIG-ALL；采用最新原生两工具 | 历史任务号保留 | 不恢复旧Python检索前置 |
@@ -69,3 +71,5 @@ WX-02复核轮（2026-10-23）：session `WX-02-gap-review-plan-20261023`，20:0
 2026-10-30 23:21 Asia/Shanghai，本会话Codex续修WX-MIG-ALL启动故障：用户实报-Live在wxauto初始化附近失败，原入口吞掉异常。范围为启动诊断、必要公开API适配、替身检查及README/报告/当前交接/PROGRESS/TASKS；不自行执行live或操作微信。先补封闭元数据诊断再据具体证据修复，不把广告输出当兼容结论。
 
 启动续修检查点：用户自报已换4.1.8.107；已修复入口吞掉全部异常的问题，startup_error会显示阶段/异常类型/安全代码帧与数值错误码，并写state/startup-last-error.json，不含异常原文/群名/消息。新增构造器失败与隐私反例，连同9项迁移检查共10项通过；默认inspect仍0真实操作。未重跑live，真实启动原因待用户提供新诊断，尚不声称已修复实际框架故障。
+
+2026-10-31 00:15 Asia/Shanghai，本会话Codex继续WX-MIG-ALL收尾：用户反馈启动已恢复，随后明确“测试ok，继续”，记录本次单群文字版用户接受。归属AGENTS.md、PROGRESS.md、TASKS.md、README.md、docs/WX-MIG-ALL-REPORT.md、tracks/tasks/WX-MIG-ALL/HANDOFF.md及.gitignore。保留新出现的_temp/与wxauto_logs/本机工件，不读内容、不删除、不提交；仅补忽略。无代码/配置/运行实例改动，无新增验收。

@@ -1,6 +1,6 @@
 # WeChatbot 文字版
 
-WX-MIG-ALL 已实现，等待用户在一个指定群实测。入口：[PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md)、[检查报告](docs/WX-MIG-ALL-REPORT.md)。真实微信兼容、模型效果、原生联网服务与群发送均未由 agent 验收。
+WX-MIG-ALL 已实现；2026-10-31用户反馈启动恢复、测试OK，单群文字版已接受。入口：[PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md)、[检查报告](docs/WX-MIG-ALL-REPORT.md)。真实微信兼容、模型效果、原生联网服务与群发送均未由 agent 验收。
 
 微信 → wxauto4 免费公开接口 → 单群会话 → 已有 CodeBuddy CLI/家庭 Ollama 业务。支持人设、单条自然纯文本、8轮RAM上下文、本机控制、CLI WebSearch/WebFetch、schema2会话独立全文记忆。媒体、成员、真实@和QQ式free关闭。
 
@@ -8,8 +8,8 @@ WX-MIG-ALL 已实现，等待用户在一个指定群实测。入口：[PROGRESS
 
 本机 Python3.12、wxauto4 41.1.7及独立CLI工件已准备；config/local五份配置与secrets/wxauto4-chat.local.json空模板已建立。真实群名、昵称只填本机绑定，不提交Git。
 
-1. 由你退出当前微信，正常安装兼容版本并登录。官方免费版支持说明目前到[微信4.1.8.107](https://docs.wxauto.org/docs/install.html)；你已反馈换成4.1.8.107，当前需定位实际启动异常，无需再次换版。
-2. 已有安装包：`C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe`。233506664字节，SHA-256 `b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90`；Tencent签名Valid。安装器文件/产品元数据为4.1.8.1000/4.1.8.0，安装后看客户端版本和实际API表现，这个差异不作为永久阻断。安装包未运行。正常安装保留原数据；若旧版登录或安装遇到限制，记录具体提示，不自动绕过。
+1. 由你退出当前微信，正常安装兼容版本并登录。官方免费版支持说明目前到[微信4.1.8.107](https://docs.wxauto.org/docs/install.html)；你已反馈换成4.1.8.107并测试OK，无需再次换版。
+2. 已有安装包：`C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe`。233506664字节，SHA-256 `b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90`；Tencent签名Valid。安装器文件/产品元数据为4.1.8.1000/4.1.8.0，安装后看客户端版本和实际API表现，这个差异不作为永久阻断。agent未运行安装包；用户已自行完成换版。新安装时保留原数据；若旧版登录或安装遇到限制，记录具体提示，不自动绕过。
 3. 编辑[本机绑定](secrets/wxauto4-chat.local.json)，填chat_name，必要时填blacklist；不需要发送者白名单，群内全部成员均可触发。account_alias和conversation_key是自定的本地持久别名，保持不变才能继续同一份记忆；不是微信服务端身份。昵称仅用于当前发送者标记，不要求逐人绑定。
 4. 手动打开这个群，保持消息区域在最新位置。先运行只读检查，再显式启动live：
 

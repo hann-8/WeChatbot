@@ -4,7 +4,7 @@
 
 ## 当前状态
 
-2026-10-30 Asia/Shanghai，session WX-MIG-ALL-20261030，负责人本会话Codex，22:37登记。**实现与必要检查completed，等待用户实测**。main基线33c18f0，上轮十份规划成果保留并审阅，同本任务交付。未操作真实微信/安装器，未调用真实CLI模型/工具服务/SSH或群发送；无真实兼容/收发验收声明。
+2026-10-31收尾completed，负责人本会话Codex，沿用WX-MIG-ALL-20261030。2026-10-31（Asia/Shanghai），用户先反馈“现在可以了”，随后反馈“测试ok，继续”。据此记录指定单群文字版启动恢复、整体试用OK并由用户接受；用户未逐项列出记忆/联网/本机控制结果，不扩写为这些专项全部实测通过，不称服务端ACK或长期稳定性证明。 实现起点main33c18f0，最新代码/诊断提交3277e37；本轮仅文档/忽略规则收尾。agent未运行真实微信/模型或发送，用户反馈与离线证据分别记录。
 
 唯一任务WX-MIG-ALL，未分领MIG-01/02/03。按授权普通commit/push main，远端SHA在最终答复核对，不建分支/force。源SnowLuma42911af只读无改动。
 
@@ -23,11 +23,11 @@
 
 ## 本机准备与下一步
 
-当前后端codebuddy_cli；Python3.12.14、wxauto4 41.1.7依赖存在，相对CLI Node/entry/bundle/types齐全。config/local五文件和secrets/wxauto4-chat.local.json为空模板；真实名字只由用户填本机，不入报告/Git。旧挑战未决不清理。
+当前后端codebuddy_cli；Python3.12.14、wxauto4 41.1.7依赖存在，相对CLI Node/entry/bundle/types齐全。config/local五文件和secrets/wxauto4-chat.local.json已准备；真实名字由用户填本机，不入报告/Git。旧挑战未决不清理。
 
-安装器已存在于C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe，233506664字节，SHA256 b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90，Tencent签名Valid；未运行。文件/产品元数据差异不永久阻断。用户正常退出/安装/登录，安装后看客户端版本与公开API表现；当前4.2.0.11兼容未验。
+安装器已存在于C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe，233506664字节，SHA256 b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90，Tencent签名Valid；未运行。文件/产品元数据差异不永久阻断。用户已自报换到4.1.8.107并反馈测试OK，agent未操作安装或客户端。
 
-下一步只由用户：按README正常换版/登录，填一个群名、手动打开群，Start-WeChatbot.ps1先inspect再-Live，等baseline_ready后实测。正常就接受，不再加无关验收轮次。本会话交付后停止；后续有具体故障就在本范围修复。回滚保留未决/记忆/用户数据，不退出微信，不操作QQ。
+下一步：用户正常使用，遇到具体问题就在本任务范围修复，不新增完整验收轮次；媒体/成员/真实@/free仍延期。本轮仅记录接受并收尾，不操作实例/账号/配置/消息。_temp/与wxauto_logs/为新出现的本机工件，保留且补Git忽略，不读取内容、不删除或提交。
 
 ## 用户反馈续修：取消发送者白名单
 
@@ -40,3 +40,8 @@
 2026-10-30 23:21 Asia/Shanghai，本会话Codex续修WX-MIG-ALL启动故障：用户实报-Live在wxauto初始化附近失败，原入口吞掉异常。范围为启动诊断、必要公开API适配、替身检查及README/报告/当前交接/PROGRESS/TASKS；不自行执行live或操作微信。先补封闭元数据诊断再据具体证据修复，不把广告输出当兼容结论。
 
 启动续修检查点：用户自报已换4.1.8.107；已修复入口吞掉全部异常的问题，startup_error会显示阶段/异常类型/安全代码帧与数值错误码，并写state/startup-last-error.json，不含异常原文/群名/消息。新增构造器失败与隐私反例，连同9项迁移检查共10项通过；默认inspect仍0真实操作。未重跑live，真实启动原因待用户提供新诊断，尚不声称已修复实际框架故障。
+
+2026-10-31 00:15 Asia/Shanghai，本会话Codex继续WX-MIG-ALL收尾：用户反馈启动已恢复，随后明确“测试ok，继续”，记录本次单群文字版用户接受。归属AGENTS.md、PROGRESS.md、TASKS.md、README.md、docs/WX-MIG-ALL-REPORT.md、tracks/tasks/WX-MIG-ALL/HANDOFF.md及.gitignore。保留新出现的_temp/与wxauto_logs/本机工件，不读内容、不删除、不提交；仅补忽略。无代码/配置/运行实例改动，无新增验收。
+
+
+本轮收尾验证：检查改动归属、Markdown本地链接、双向入口及git diff --check；仅文档与.gitignore，不重跑业务测试。按现有授权普通提交/push main核远端SHA。

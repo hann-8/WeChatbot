@@ -2,6 +2,10 @@
 
 返回[PROGRESS](../PROGRESS.md) / [HANDOFF](../tracks/tasks/WX-MIG-ALL/HANDOFF.md) / [使用说明](../README.md)。2026-10-30 Asia/Shanghai，唯一任务WX-MIG-ALL，本会话Codex，22:37登记，main基线33c18f0。上轮十份规划成果保留并审阅，同本任务提交。
 
+## 用户接受（当前）
+
+2026-10-31（Asia/Shanghai），用户先反馈“现在可以了”，随后反馈“测试ok，继续”。据此记录指定单群文字版启动恢复、整体试用OK并由用户接受；用户未逐项列出记忆/联网/本机控制结果，不扩写为这些专项全部实测通过，不称服务端ACK或长期稳定性证明。 启动故障已由用户反馈恢复，具体哪个手动动作生效未单独确认；本次收尾不重跑live、不读取群消息或私密工件。下方实施/客户端准备段落为交付时证据，不再表示仍等待换版或首次测试。
+
 ## 已实现
 
 - 只读固定SnowLuma提交42911afc4c1f2bcfbbc3c26afc2647fd21992f08，按映射更新48个共用候选模块，保留未用旧文件。三份codebuddy_vision_guard资产、公开framework四字段、公开capabilities及锁定types齐全。manifest逐文件标来源/本地摘要与差异，74项诚实混合快照；3项本地差异含旧适配及本次runner路径/spawn和精简审阅字段。源项目保持不变，不复制QQ本机配置/凭据/历史/记忆/图库/active/probe。
