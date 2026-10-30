@@ -1,5 +1,5 @@
 {
-  "source_commit": "dd9373029412137023124751d75883824122c784",
+  "source_commit": "42911afc4c1f2bcfbbc3c26afc2647fd21992f08",
   "python": "3.12",
   "node": {
     "path": "runtime/cli/node.exe",
@@ -12,7 +12,9 @@
     "entry": "runtime/cli/codebuddy/bin/codebuddy",
     "headless_sha256": "13e6dd30a22d2f11857675193f909a2ccb935da67a067f580fcfe764e474ff60",
     "model": "deepseek-v4.1-flash",
-    "entry_sha256": "72b3ada2c2107dc16345e3aedbe19424efb6ff4d3645aacceccdb63e3aac8244"
+    "entry_sha256": "72b3ada2c2107dc16345e3aedbe19424efb6ff4d3645aacceccdb63e3aac8244",
+    "types_relative": "types/codebuddy-code.d.ts",
+    "types_sha256": "450476f6346507eb032a00a90c3a90c036e37ef57fbc442b52d5ec725a365a92"
   },
   "artifact_state": "copied_and_hash_verified_not_executed"
 }

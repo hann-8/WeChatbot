@@ -10,6 +10,7 @@ import os
 import tempfile
 import time
 import uuid
+import threading
 
 import yaml
 import psutil
@@ -108,12 +109,28 @@ class GateConfig:
     silence_aliases: tuple = ('肥鱼','大肥鱼','鱼鱼','鲸鱼娘','小鲸鱼','DSH')
     session_queue_timeout_seconds: int = 600
     message_max_chars: int = 2000
+    transport_provider: str = 'napcat'
+    transport_instance_id: str = ''
+    transport_config_digest: str = ''
+    transport_control_port: int = 5098
+    transport_health_ttl: int = 15
+    transport_health_poll: int = 5
+    transport_ready_timeout: int = 180
 
     def __post_init__(self):
+        if type(self.transport_ready_timeout) is not int or not 60<=self.transport_ready_timeout<=240:
+            raise ValueError('Invalid transport ready timeout')
+        if self.transport_provider not in ('napcat','snowluma'):raise ValueError('Invalid transport provider')
+        if (type(self.transport_health_poll) is not int or not 5<=self.transport_health_poll<=10 or
+            type(self.transport_health_ttl) is not int or not 3*self.transport_health_poll<=self.transport_health_ttl<=30 or
+            type(self.transport_control_port) is not int or not 1<=self.transport_control_port<=65535):
+            raise ValueError('Invalid transport health configuration')
         if type(self.silence_enabled) is not bool:raise ValueError('Invalid silence enabled')
         if self.participation_mode not in ('mentions','free'):raise ValueError('Invalid participation mode')
         if not qq_id(self.bot_qq) or not self.allowed_groups or not self.admin_users:
             raise ValueError('Bot, allowed groups and admins must be nonempty')
+        if len(self.admin_users)!=1 or self.bot_qq in self.admin_users or self.admin_users & self.blocked_users:
+            raise ValueError('Exactly one distinct, unblocked operator is required')
         if any(not qq_id(x) for x in self.allowed_groups | self.admin_users | self.blocked_users):
             raise ValueError('Invalid QQ/group ID')
         if self.host != '127.0.0.1' or not 0 < self.port < 65536:
@@ -145,6 +162,8 @@ def normalize_settings(raw):
     data['public_network']=validate_network(data.get('public_network',{}))
     from .web_policy import validate_web
     data['web'] = validate_web(data.get('web', {}))
+    if data['web']['engine']=='codebuddy_cli' and data.get('llm',{}).get('backend')!='codebuddy_cli':
+        raise ValueError('Native web requires codebuddy_cli backend')
     from .bilibili_policy import validate as validate_bilibili
     data['bilibili']=validate_bilibili(data.get('bilibili',{}),data['web'])
     from .participation import validate_participation
@@ -166,6 +185,8 @@ def normalize_settings(raw):
         access[key] = list(dict.fromkeys(qq_id(v) for v in values))
         if key != 'blocked_users' and not access[key]:
             raise ValueError(f'access.{key} must not be empty')
+    if len(access['admin_users'])!=1 or bot['qq'] in access['admin_users'] or set(access['admin_users']) & set(access['blocked_users']):
+        raise ValueError('Exactly one distinct, unblocked operator is required')
     if access.get('private_enabled') is not False:
         raise ValueError('Private messages must be disabled')
     if onebot.get('host') != '127.0.0.1':
@@ -208,7 +229,7 @@ def normalize_settings(raw):
         for key, value in defaults['input_budget'].items():budget.setdefault(key, value)
         if not isinstance(profile['model'], str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}', profile['model']):
             raise ValueError('Invalid profile model')
-        for key, lower, upper in (('context_input_limit_tokens',1024,1048576),('context_overhead_reserve_tokens',0,65536),('output_reserve_tokens',0,65536)):
+        for key, lower, upper in (('context_input_limit_tokens',1024,2**53-1),('context_overhead_reserve_tokens',0,65536),('output_reserve_tokens',0,65536)):
             if type(budget[key]) is not int or not lower <= budget[key] <= upper:raise ValueError('Invalid input_budget '+key)
         if type(profile['run_timeout_seconds']) is not int or not 1 <= profile['run_timeout_seconds'] <= 3600:raise ValueError('Invalid run timeout')
     cli, local = profiles['codebuddy_cli'], profiles['ollama_ssh']
@@ -264,6 +285,10 @@ def normalize_settings(raw):
     secret = data.get('secrets_file')
     if not isinstance(secret, str) or not secret:
         raise ValueError('Missing secrets_file')
+    from .qq_transport import validate_transport
+    if isinstance(data.get('legacy_extensions'), dict) and 'qq_transport' in data['legacy_extensions']:
+        raise ValueError('Legacy qq_transport collision requires review')
+    validate_transport(data)
     return data
 
 
@@ -276,6 +301,8 @@ def read_settings(path, *, root=None):
         raise ValueError('Invalid UTF-8 YAML configuration') from None
     data = normalize_settings(raw)
     root = Path(root).resolve() if root is not None else path.parent.parent
+    from .qq_transport import validate_transport
+    validate_transport(data, root)
     from .ssh_transport import secrets_path
     secrets_path(root,data['llm']['profiles']['ollama_ssh']['access_file'])
     if not (root / data['secrets_file']).resolve().is_relative_to(root / 'secrets'):
@@ -300,7 +327,9 @@ def load_gate_config(path=None, *, root=None, settings=None):
     from .meme_import import admin_token
     admin=admin_token(root)
     from .vision import context_token
-    context=context_token(root) if data['vision']['enabled'] else None
+    from .members import suspend_unverified
+    effective_members=suspend_unverified(data)
+    context=context_token(root) if data['vision']['enabled'] or effective_members['enabled'] else None
     if context and context in list(tokens.values())+[admin]:raise ValueError('Independent context token required')
     if admin and admin in tokens.values():raise ValueError('Independent memes admin token required')
     if data['access'].get('private_enabled') is not False:
@@ -310,6 +339,9 @@ def load_gate_config(path=None, *, root=None, settings=None):
         raise ValueError('Groups/admins must be explicit lists')
     from .meme_catalog import MemeCatalog
     from .members import suspend_unverified
+    from .qq_transport import resolve_transport
+    from .config_files import canonical, sha
+    transport = resolve_transport(data)
     return GateConfig(
         bot_qq=data['bot']['qq'], allowed_groups=frozenset(groups), admin_users=frozenset(admins),
         inbound_token=tokens['onebot_inbound'], upstream_token=tokens['onebot_upstream'],
@@ -323,12 +355,26 @@ def load_gate_config(path=None, *, root=None, settings=None):
         message_max_chars=data['participation']['message_max_chars'],
         vision_enabled=data['vision']['enabled'],
         ingress_diagnostics=data['vision']['ingress_diagnostics'],
-        members_enabled=False,
-        members_config=suspend_unverified(data),
+        members_enabled=effective_members['enabled'],
+        members_config=effective_members,
         public_network=data['public_network'],
         attention_enabled=data['participation']['mode']=='free' and data['participation']['attention']['enabled'],
         media_catalog=MemeCatalog(root,data['memes']) if data['memes']['enabled'] else None,
+        transport_provider=transport['provider'], transport_instance_id=os.environ.get('QQBOT_INSTANCE_ID',''),
+        transport_config_digest=sha(canonical(data)), transport_control_port=transport['snowluma']['control_port'],
+        transport_health_ttl=transport['snowluma']['health_ttl_seconds'], transport_health_poll=transport['snowluma']['health_poll_seconds'],
+        transport_ready_timeout=transport['snowluma']['ready_timeout_seconds'],
     )
+
+
+_configuration_leases = {}
+
+
+def require_configuration_lease(root, lease):
+    """Writer capability is valid only in the current OS-lock scope/thread."""
+    key = str(Path(root).resolve())
+    if _configuration_leases.get((key, threading.get_ident())) is not lease or lease is None:
+        raise ValueError('TRANSPORT_WRITER_LOCK_REQUIRED')
 
 
 @contextmanager
@@ -353,9 +399,13 @@ def configuration_lock(root):
                 fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except OSError:
             raise ValueError('Configuration/start/stop operation already in progress') from None
+        lease = object()
+        lease_key = (str(root), threading.get_ident())
+        _configuration_leases[lease_key] = lease
         try:
-            yield
+            yield lease
         finally:
+            _configuration_leases.pop(lease_key, None)
             stream.seek(0)
             if os.name == 'nt':
                 msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)

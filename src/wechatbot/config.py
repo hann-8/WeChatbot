@@ -2,6 +2,7 @@
 from copy import deepcopy
 import hashlib
 import json
+import re
 from pathlib import Path
 import yaml
 from .contracts import opaque
@@ -47,6 +48,8 @@ def local_path(root, relative):
 
 
 def _shape(value, example):
+    if example is None and isinstance(value, str):
+        return  # Nullable model digest; field-specific validation below.
     if type(value) is not type(example):
         raise ValueError('config_type')
     if isinstance(example, dict):
@@ -101,8 +104,14 @@ def load_config(root=ROOT, *, directory='config/examples'):
         raise ValueError('history_turns')
     if c['direct']['allowed_conversations'] and not c['direct']['allowed_users']:
         raise ValueError('direct_binding')
-    if any(item['enabled'] for item in f.values()):
+    if any(f[name]['enabled'] for name in ('vision', 'memes', 'members', 'bilibili')):
         raise ValueError('feature_unimplemented')
+    from qqbot_gateway.group_memory import validate_config as validate_memory
+    validate_memory(f['memory'])
+    web = f['web']
+    if (web['engine'] != 'codebuddy_cli' or not 1 <= web['cli_max_tool_calls'] <= 3 or
+            not 1 <= web['cli_max_turns'] <= 4 or not 1 <= web['cli_tool_result_bytes'] <= 8000):
+        raise ValueError('web_limits')
     if (r['host'] != '127.0.0.1' or not 1024 <= r['health_port'] <= 65535 or
             r['health_port'] in (8765, 8766) or r['raw_message_logging'] or r['auto_start'] or
             r['ui_observation']['enabled']):
@@ -111,7 +120,9 @@ def load_config(root=ROOT, *, directory='config/examples'):
     if llm['backend'] not in ('codebuddy_cli', 'ollama_ssh') or llm['max_concurrency'] != 1 or not 1 <= llm['queue_limit'] <= 32:
         raise ValueError('model_queue')
     cli, ollama = (llm['profiles'][n] for n in ('codebuddy_cli', 'ollama_ssh'))
-    if ollama['access_file'] != 'secrets/home-5070-runtime.local.json' or ollama['expected_digest'] is not None:
+    if (ollama['access_file'] != 'secrets/home-5070-runtime.local.json' or
+            (ollama['expected_digest'] is not None and
+             not re.fullmatch(r'(sha256:)?[a-f0-9]{64}', ollama['expected_digest']))):
         raise ValueError('unconfigured_home_profile')
     if not 1024 <= ollama['num_ctx'] <= 32768 or not 1 <= ollama['num_predict'] <= 4096 or ollama['think']:
         raise ValueError('native_profile')
@@ -123,7 +134,7 @@ def load_config(root=ROOT, *, directory='config/examples'):
         if not 1 <= profile['run_timeout_seconds'] <= 300 or not 1 <= profile['cleanup_seconds'] <= 30:
             raise ValueError('model_timeout')
         budget = profile['input_budget']
-        if any(not 1 <= v <= 131072 for v in budget.values()):
+        if any(type(v) is not int or v < 1 for v in budget.values()):
             raise ValueError('budget')
         if budget['context_input_limit_tokens'] <= budget['context_overhead_reserve_tokens']:
             raise ValueError('budget')

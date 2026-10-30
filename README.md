@@ -1,68 +1,69 @@
-# WeChatbot 离线核心
+# WeChatbot 文字版
 
-独立 Python 3.12 项目，当前完成 **WX-01 核心及 WX-02 代码/离线验证**。入口见 [PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-01/HANDOFF.md)、[离线报告](docs/WX-01-OFFLINE-REPORT.md)。微信身份、真实 @、发送确认、图片、登录及长期运行全部未验。
+WX-MIG-ALL 已实现，等待用户在一个指定群实测。入口：[PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md)、[检查报告](docs/WX-MIG-ALL-REPORT.md)。真实微信兼容、模型效果、原生联网服务与群发送均未由 agent 验收。
 
-默认 `transport=mock`、`enabled=false`、`sends_enabled=false`、授权群空、私聊关闭、`mentions`、`single`，媒体/联网/长期记忆等均关闭。旧核心没有真实传输实现；修改开关不能产生生产资格。独立人工监督试用入口见下文。命令行提供只读 `inspect` 和 `probe` 的inspect/mock模式，旧入口没有启动真实通道、登录、发消息或真实生成命令。不自动进入 WX-03；WX-02真实provider未接线。
+微信 → wxauto4 免费公开接口 → 单群会话 → 已有 CodeBuddy CLI/家庭 Ollama 业务。支持人设、单条自然纯文本、8轮RAM上下文、本机控制、CLI WebSearch/WebFetch、schema2会话独立全文记忆。媒体、成员、真实@和QQ式free关闭。
 
-## 本地准备与检查
+## 本机首次使用
 
-在本项目目录用已有 Python 3.12 和 uv 创建独立环境：
+本机 Python3.12、wxauto4 41.1.7及独立CLI工件已准备；config/local五份配置与secrets/wxauto4-chat.local.json空模板已建立。真实群名、昵称只填本机绑定，不提交Git。
+
+1. 由你退出当前微信，正常安装兼容版本并登录。官方免费版支持说明目前到[微信4.1.8.107](https://docs.wxauto.org/docs/install.html)；当前4.2.0.11不在说明内，实际兼容未测试。
+2. 已有安装包：`C:/Users/yutha/AppData/Local/Temp/WeChatbot-WX-WXA-02/weixin_4.1.8.107.exe`。233506664字节，SHA-256 `b79aa3fdfd208d64f38fcc354684f9af213c05993c6f603521f2813930362b90`；Tencent签名Valid。安装器文件/产品元数据为4.1.8.1000/4.1.8.0，安装后看客户端版本和实际API表现，这个差异不作为永久阻断。安装包未运行。正常安装保留原数据；若旧版登录或安装遇到限制，记录具体提示，不自动绕过。
+3. 编辑[本机绑定](secrets/wxauto4-chat.local.json)，填chat_name、allowed_senders数组（精确显示昵称），必要时填blacklist。account_alias和conversation_key是自定的本地持久别名，保持不变才能继续同一份记忆；不是微信服务端身份。改昵称后人工重绑。
+4. 手动打开这个群，保持消息区域在最新位置。先运行只读检查，再显式启动live：
 
 ```powershell
-uv sync --locked --python <本机Python3.12路径>
-.venv\Scripts\python.exe -m wechatbot inspect
+cd E:\CodexWS\WeChatbot
+.\Start-WeChatbot.ps1
+.\Start-WeChatbot.ps1 -Live
 ```
 
-`uv.lock` 仅锁本项目依赖，editable 的 `.` 是本项目自身；没有 QQ editable、软链或 QQ 服务端口依赖。没有安装 pyweixin/pywechat、OpenClaw 或 AstrBot。aiohttp/Pillow 是固定 runner 的模块导入依赖，当前图片/联网路径均关闭。
+默认命令仅inspect：0微信构造、0模型生成、0发送。-Live是本次会话的显式启动授权，无需再改旧mock总开关。看见baseline_ready后，让允许发送者发新文字，如 `bot 你好`。启动可见文字不回放。前缀只是文本规则，不是真实@；可在绑定文件显式选all_allowed_text，仍仅本群与允许名单，不默认全群回复。
 
-原 CLI 构造器先核验工件，离线测试也保留这项检查。本机已将 SHA-256 匹配的 Node、CLI 入口和 headless bundle 独立复制到被忽略的 `runtime/cli`，没有执行这些工件，也没有全局重装。新检出需从操作者已有、与锁匹配的本机安装显式准备：
+同名昵称无法区分真实个人，首试只用你确认不混淆的发送者。运行中不切群、滚到旧历史或改绑定；切群/窗口变化会暂停，返回目标群后在本机输入resume重建基线。绑定文件变更需停止后重启。
+
+## 本机控制与实测
+
+在启动脚本的本机控制台输入以下命令，群文字和模型输出均不能执行它们。
+
+| 命令 | 行为 |
+| --- | --- |
+| status | 状态、队列、未决ID；0生成 |
+| pause / resume | 暂停 / 复核目标并重建基线；旧生成结果失效 |
+| reset | 清RAM和队列，长期记忆保留；不回放旧文字 |
+| memory-status | 条数、字符、容量和最近保存结果，不显示正文 |
+| stop | 停本项目及其创建的模型任务，不退出/注销微信 |
+| confirm-sent [ID] / mark-not-sent [ID] | 你核实unknown后仅标记该记录；省略ID取首条，不补发，然后resume |
+
+明确框架成功只记local_reported并继续，不逐条要人工ACK，不称服务端确认。发送异常/超时/不明返回记unknown，暂停该会话；记录保留，不重试、不清账。
+
+按自己的节奏试普通文字和第二轮承接，再试pause/resume/reset、“记住一个自造称呼→reset→再问称呼”和一个联网问题/公开URL。实际原子写结果生成保存回执；已保存后发送失败不撤销记忆。正常就接受，不增加媒体或长稳验收轮次。
+
+## 配置和隔离
+
+唯一运行配置入口为config/local五份YAML，[字段说明](config/README.md)。微信自己的[persona.md](config/persona.md)保留，可直接编辑；不再有独立8000字符角色门槛，按最终输入预算校验，不擅自删人设。
+
+默认CLI deepseek-v4.1-flash、effort=low、子进程alwaysThinkingEnabled=false；524288可见UTF-8字节政策，overhead/output各2048，context_window_tokens=null。它不是原生token窗口或免费额度保证。只裁完整旧历史，不截当前请求/全文记忆；最终wire/插件继续校验实际预算。
+
+后端由操作者选择，本次保留实际后端/模型与账号。若选择家庭Ollama，沿原连接文件使用，不自动切CLI；原生工具仅CLI可用。inspect/健康检查0生成，每条文字一个模型任务，不自动修复/重试、切后端/账号或加付费API。
+
+web准备true，最多3工具调用/4步骤/90秒，单结果8000/合计12000字节；仅WebSearch/WebFetch，MCP空，其余工具关闭。只附最多两个当次成功证明的公开URL，失败如实说明；工具材料不学进记忆。
+
+memory/learning准备true，每会话50000 Unicode字符、单文件1048576/总8388608字节，均可配置扩大。使用源MemoryStore schema2全文与同次增改删，不用旧关键词/小候选方案。密钥只在微信secrets，库只在微信state/group-memory，按账号别名＋会话别名隔离。坏库/容量/保存失败保留原件，关闭该会话增强并提示一次，基本文字继续。日志/发送记录只有封闭元数据；原始聊天仅用于本轮模型/RAM，不写聊天日志。
+
+## 新检出准备与必要检查
 
 ```powershell
-.venv\Scripts\python.exe scripts/prepare_cli.py --node <node.exe路径> --entry <CodeBuddy包内bin/codebuddy路径>
+uv sync --locked --extra wxauto4 --python <Python3.12路径>
+New-Item -ItemType Directory -Force config/local, secrets
+Copy-Item config/examples/*.yaml config/local/
+Copy-Item config/examples/wxauto4-chat.example.json secrets/wxauto4-chat.local.json
+.venv\Scripts\python.exe scripts/prepare_cli.py --node <匹配node.exe> --entry <匹配CLI包内bin/codebuddy>
 .venv\Scripts\python.exe scripts/check_snapshot.py
-.venv\Scripts\python.exe -m unittest discover -s tests -v
+.venv\Scripts\python.exe -m unittest tests.test_chat_migration tests.test_native_guard -q
 ```
 
-版本/hash 不匹配会拒绝，不能用改 hash 或自动下载其他版本绕过。准备脚本只读显式输入工件并复制到新 root，不读 CLI 账号/设置/凭据，不运行 Node/CLI。这仅证明离线工件可加载，不证明复制出的 CLI 能真实生成；真实执行及其运行依赖仍须后续明确授权。
+复制模板仅用于新检出；已有local不用模板覆盖。prepare_cli仅复制并核对Node、entry、bundle、types，不执行CLI，不复制账号/凭据。[manifest](vendor/qq-core-manifest.json)为诚实混合快照：所需文件固定42911af，未用旧文件保留原提交；微信路径/spawn差异逐项登记。无源目录运行依赖，不启动QQ服务，不改第三方核心。
 
-## 配置与接口
-
-五份中文逐参数模板见 [config/README](config/README.md)。loader 按代码拥有的封闭 schema 验证，拒绝未知/重复字段、YAML alias、错误类型和值、越界路径。一次加载产生固定快照和摘要，保存后下次手动构造实例生效；不热更、不读 QQ 配置。`inspect --config-dir config/local` 要求五份完整本地文件，不做隐式混合回退。状态输出只有封闭元数据，不显示私密身份/正文/路径。
-
-核心顺序为 `NormalizedEvent → Gate → 有界队列/当前目标复核 → InputBudget → 固定 runner 一次调用 → 投递状态机 → mock ACK → 有限历史`。传输/可信身份、黑名单、授权会话检查均在窗口/模型/材料/历史之前。正文 @ 和显示名不提供可信 @ 或身份。私聊需独立开关且发送者、会话两个名单都满足；历史按账号/类型/会话/发送者隔离。
-
-`ModelFacade` 在本阶段强制要求显式离线进程/传输替身；不会默认调用真实模型。CodeBuddy 复用原 runner 的 tools 空、空 MCP、工具拒绝、无 session persistence、一次尝试和 `CleanupOwner`。Ollama 复用原生 payload/单次调用/unknown marker，但只测试了假传输；没有家庭连接文件，也没有 SSH。
-
-`reasoning_effort=auto` 不传 effort；显式 effort 仍由原 runner 在唯一用户输入前检查当前控制握手，不凭旧快照宣称实际生效。CLI 原生窗口必须 null；输入预算是保守 UTF-8 wire 计量，不是实测 tokenizer 或免费额度保证。Ollama 的 `num_ctx/think/num_predict` 是原生请求字段；没有真实效果证据。
-
-## 台账、恢复与限制
-
-项目独占 `state/core-owner.lock`，第二 owner 拒绝。SQLite 在模型前持久化 prepared，在发送前持久化 submitted；接受结果和 assistant 历史在同一事务提交。启动时 prepared/submitted 转 unknown，只恢复状态，不重放事件/请求。unknown 阻断对应目标；模型清理 unknown 阻断后续模型。不提供自动清账/补发。默认单气泡、最多 8000 字符、一次提交，不拆分、不自动 @ 或引用。
-
-`api_accepted`、`ui_observed`、`none` 分开记录；当前测试中的 api_accepted 只是 mock 的合成关联确认。真实 UI 按键返回不会被此实现证明为 accepted。目标/账号/代际或停言栅栏变化会作废输出；提交后无法确认则 unknown、不入 assistant 历史。群明确停言无确认回复；同条停言优先，后续可信新 @ 恢复，重连保留停言、owner 重启复位。
-
-每发送者历史默认 8 个完整轮次；每 RAM 窗口最多 32 条、最多 256 个 scope。持久 seen 上限 100000、attempts 上限 10000，历史 scope 上限 256；容量满拒绝继续，不挤掉 unknown 或靠清账恢复。历史/台账是必要本机状态，全部 Git 忽略；当前没有自动保留期清理。
-
-健康服务只有显式构造的 `make_health_server` 操作骨架，固定 `127.0.0.1:8875`，`GET /health` 返回只读元数据。无开机自启或默认监听；端口冲突拒启，不自动改端口。测试只做本机临时端口冲突，不访问微信或 QQ。
-
-回滚保持真实通道关闭，退出本项目 owner 即可；保留 pending/unknown 状态，恢复旧代码必须配对配置和 manifest。不退出/注销/结束日常微信，不按进程名清理，不操作 QQ。源码快照中未接入的 QQ 入口和功能只供溯源，禁止作为本项目启动入口。
-
-Git 当前仅本地 `codex/bootstrap` 检查点，没有 remote。后续需用户提供新项目远端和发布授权。
-
-## WX-02 候选探针
-
-[能力报告](docs/WX-02-CAPABILITY-REPORT.md) / [交接](tracks/tasks/WX-02/HANDOFF.md) / [固定来源与许可](vendor/pyweixin/README.md)。固定上游 `8589baa049bb91d3a500602c167f07b2f8397a13`，声明分发名pywechat127 1.9.8，模块pyweixin。整包初始化/监听有额外副作用，因此不安装/导入，不使用其AutoReply或Monitor。可选UI原语wheel锁及实际许可已单独保存，未加入默认环境；不随latest升级。
-
-```powershell
-.venv\Scripts\python.exe -m wechatbot probe
-.venv\Scripts\python.exe -m wechatbot probe --mode mock
-.venv\Scripts\python.exe scripts/check_pyweixin_source.py
-```
-
-默认probe核对惰性本地审阅证据，不访问微信；mock只运行内置自造runtime元数据。窗口原语通过显式注入替身验证，仅读绑定消息列表的runtime/class，读前后校验目标；没有真实provider。UI显示名/临时runtime_id/按键返回分别报告，稳定账号/会话/发送者/消息ID均unverified，真实@为mention_unverified，发送为delivery_unverified，当前图pixels=unsupported/source=none。普通@、昵称hash和图计数均不升级能力。
-
-真实观察入口继续关闭；CLI不接受observe，API即使显式声明也拒绝执行。还需后续明确授权、指定账号/已打开单会话窗口/120秒最多10条自造样本，并补证硬时限/窗口绑定provider。此次0真实UI/0模型/0发送，不读真实历史/数据库、不截图落盘。门槛缺口回sol/max决定，不降低黑名单或改全回复。
-
-## wxauto4 人工监督试用工具
-
-WX-WXA-01 提供独立试用入口，默认核心路径不变；安装额外依赖可用 `uv sync --locked --extra wxauto4`。`python -m wechatbot.wxauto4_trial inspect` 和 `mock` 不导入 wxauto4，mock 使用合成替身。真实运行与人工观察命令、绑定及限制见 [试用报告](docs/WX-WXA-01-REPORT.md)；真实试验须另行明确授权。发送后即使框架报告成功也保留未决，只有操作者确实观察后才记人工观察，不称服务端 ACK。
+旧严格核心 `python -m wechatbot inspect/probe`、[wxauto4挑战工具](docs/WX-WXA-01-REPORT.md)和各自台账保留，不因新入口升级为真实微信能力。历史见[WX-01](docs/WX-01-OFFLINE-REPORT.md)、[WX-02](docs/WX-02-CAPABILITY-REPORT.md)。Git只用本项目main和origin，不借QQ远端。

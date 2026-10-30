@@ -14,7 +14,8 @@ def sha(path):
 def check(root=ROOT):
     from wechatbot.config import local_path
     manifest = json.loads((root / 'vendor/qq-core-manifest.json').read_text(encoding='utf-8'))
-    assert manifest['source_commit'] == 'dd9373029412137023124751d75883824122c784'
+    assert len({r['path'] for r in manifest['files']}) == len(manifest['files']), 'duplicate_snapshot_path'
+    assert all(len(row.get('source_commit', manifest['source_commit'])) == 40 for row in manifest['files'])
     expected = set()
     for row in manifest['files']:
         path = local_path(root, row['path'])
@@ -31,6 +32,7 @@ def check(root=ROOT):
     assert sha(node) == lock['node']['sha256'], 'node_integrity'
     assert sha(entry) == lock['cli']['entry_sha256'], 'entry_integrity'
     assert sha(bundle) == lock['cli']['headless_sha256'], 'bundle_integrity'
+    assert sha(entry.parent.parent / lock['cli']['types_relative']) == lock['cli']['types_sha256'], 'types_integrity'
     assert json.loads((root / 'config/mcp-empty.json').read_text()) == {'mcpServers': {}}
     return dict(snapshot_files=len(expected), locally_changed=sum(bool(r['local_changes']) for r in manifest['files']),
                 artifact_hashes='verified', executed_artifacts=False)

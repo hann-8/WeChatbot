@@ -13,6 +13,23 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES = tuple(f'IQ-{i:02}' for i in range(1, 7))
 
 
+def managed_cli_input_review(root, settings):
+    """Selected-path diagnostics; support, source review and quality stay separate."""
+    from .backends import resolve_backend
+    from .token_budget import known_models
+    cfg=resolve_backend(settings)
+    if cfg['backend']!='codebuddy_cli':raise ValueError('MANAGED_CLI_REQUIRED')
+    identity=runtime_identity(Path(root),settings)
+    record=selected_record(settings)
+    missing=static_diagnostics(settings,identity)
+    model=known_models().get(cfg['model'],{})
+    return dict(runtime=identity,model=cfg['model'],reasoning_effort=cfg['reasoning_effort'],
+        rule_kind=record.get('kind','legacy_local') if record else None,
+        native_input_contract='stream-json:user.content[text,image.base64]',
+        advertised_max_input=model.get('maxInputTokens'),advertised_max_output=model.get('maxOutputTokens'),
+        missing=missing,permits_native_iq=not missing)
+
+
 def runtime_identity(root,settings):
     """Local facts only. No copying expected processor facts into observations."""
     from .backends import resolve_backend
@@ -48,6 +65,10 @@ def registry():
 
 def reviewed(record):
     """Strict supported proof language, no runtime-supplied arbitrary formulas."""
+    if isinstance(record,dict) and 'kind' in record:
+        from .hosted_cli_budget import KIND, reviewed as hosted_reviewed
+        if record['kind']!=KIND:raise ValueError('UNKNOWN_VISION_RULE_KIND')
+        return hosted_reviewed(record)
     keys = {'backend', 'model', 'runtime', 'vision_supported', 'sources', 'bounds'}
     if not isinstance(record, dict) or set(record) != keys or type(record['vision_supported']) is not bool:
         raise ValueError('REVIEW_RECORD_INVALID')
@@ -82,7 +103,7 @@ def visual_upper(record, width, height):
     if (type(width) is not int or type(height) is not int or not 0 < width <= bounds['max_width'] or
         not 0 < height <= bounds['max_height'] or width*height > bounds['max_pixels']):
         raise ValueError('IMAGE_OUTSIDE_REVIEW')
-    return bounds['visual_max_tokens'] + bounds['image_marker_tokens']
+    return bounds['visual_max_tokens'] + bounds.get('image_marker_tokens',0)
 
 
 def selected_record(settings, table=None):
@@ -95,14 +116,15 @@ def selected_record(settings, table=None):
     return reviewed(rows[0])
 
 
-def production_diagnostics(settings, evidence, runtime, *, table=None):
+def static_diagnostics(settings, runtime, *, table=None):
     from .backends import resolve_backend
-    from .vision import binding
-    cfg = resolve_backend(settings)
-    missing = []
-    record = selected_record(settings, table)
-    if record is None:
-        return ['SELECTED_COMBINATION_UNREVIEWED', 'VISION_SUPPORT_UNVERIFIED', 'VISUAL_TEMPLATE_TOKEN_BOUNDS_UNVERIFIED']
+    from .token_budget import known_models
+    cfg=resolve_backend(settings);missing=[]
+    record=selected_record(settings,table)
+    if record is None:return ['SELECTED_COMBINATION_UNREVIEWED']
+    if record.get('kind'):
+        from .hosted_cli_budget import static_diagnostics as hosted_static
+        return hosted_static(settings,runtime,known_models().get(cfg['model'],{}),record)
     if record['vision_supported'] is not True:
         missing.append('SELECTED_MODEL_VISION_UNSUPPORTED')
     if runtime != record['runtime']:
@@ -118,11 +140,52 @@ def production_diagnostics(settings, evidence, runtime, *, table=None):
         missing.append('NATIVE_CAPACITY_UNPROVEN')
     if cfg.get('num_predict', 0) > policy['output_reserve_tokens']:
         missing.append('OUTPUT_RESERVE_INSUFFICIENT')
+    return missing
+
+
+def offline_path(settings):
+    record=selected_record(settings)
+    return ROOT/('reports/lap-42-vision-offline.json' if record and record.get('kind') else 'reports/lap-28-C-offline.json')
+
+
+def offline_valid(settings):
+    from .vision import adapter_signature
+    try:
+        value=read_json(offline_path(settings))
+        if value.get('passed') is not True or value.get('adapter_signature')!=adapter_signature():return False
+        record=selected_record(settings)
+        if record and record.get('kind'):
+            verifier=ROOT/'scripts/verify_lap42_vision.py'
+            tests=ROOT/'tests/test_lap42_vision.py'
+            if (value.get('rule_hash')!=digest(record) or
+                value.get('verifier_sha256')!=hashlib.sha256(verifier.read_bytes()).hexdigest() or
+                value.get('tests_sha256')!=hashlib.sha256(tests.read_bytes()).hexdigest() or
+                value.get('source_audit_sha256')!=hashlib.sha256((ROOT/'reports/lap-42-vision-closure-sources.json').read_bytes()).hexdigest()):return False
+        return True
+    except (OSError,ValueError,TypeError,KeyError):return False
+
+
+def production_diagnostics(settings, evidence, runtime, *, table=None):
+    from .backends import resolve_backend
+    from .vision import binding
+    cfg = resolve_backend(settings)
+    missing = []
+    record = selected_record(settings, table)
+    if record is None:
+        return ['SELECTED_COMBINATION_UNREVIEWED', 'VISION_SUPPORT_UNVERIFIED', 'VISUAL_TEMPLATE_TOKEN_BOUNDS_UNVERIFIED']
+    missing.extend(static_diagnostics(settings,runtime,table=table))
     expected = binding(settings, runtime)
     if not isinstance(evidence, dict) or evidence.get('binding') != expected or evidence.get('record_hash') != digest(record):
         return missing + ['OBSERVATION_BINDING_MISMATCH']
     if evidence.get('offline_passed') is not True or evidence.get('ingress_decoded') is not True:
         missing.append('OFFLINE_OR_INGRESS_UNVERIFIED')
+    if evidence.get('acceptance_mode')=='lap43_operator_trial':
+        from .vision_trial import diagnostics
+        return missing+diagnostics(evidence.get('operator_trial'),expected,runtime,digest(record))
+    if evidence.get('acceptance_mode')=='lap42_first_plus_large_operator_acceptance':
+        if not record.get('kind'):return missing+['OPERATOR_ACCEPTANCE_BACKEND_INVALID']
+        from .vision_operator_review import diagnostics
+        return missing+diagnostics(evidence.get('operator_review'),expected)
     batch = evidence.get('batch', {})
     if not isinstance(batch,dict):return missing+['FIXED_IQ_BATCH_INVALID']
     rows = batch.get('cases', {})
@@ -136,6 +199,13 @@ def production_diagnostics(settings, evidence, runtime, *, table=None):
         if (not isinstance(row,dict) or row.get('state') != 'scored' or type(row.get('attempts')) is not int or
             row.get('attempts') != 1 or any(row.get(k) is not True for k in checks)):
             missing.append(case+'_UNVERIFIED')
+        if record.get('kind'):
+            human=row.get('human_review',{}) if isinstance(row,dict) else {}
+            if (not isinstance(human,dict) or human.get('source') not in
+                ('operator_tty_explicit','conversation_explicit_feedback') or human.get('case')!=case or
+                type(human.get('timestamp')) not in (int,float) or
+                not isinstance(human.get('answer_sha256'),str) or not re.fullmatch('[a-f0-9]{64}',human['answer_sha256'])):
+                missing.append(case+'_HUMAN_REVIEW_MISSING')
     if evidence.get('unresolved_attempts', True) is not False:
         missing.append('FAILED_OR_UNKNOWN_ATTEMPTS')
     return missing
@@ -149,10 +219,15 @@ def load_production(settings, root=None):
         return None, ['ACTIVE_OBSERVATION_MISSING']+production_diagnostics(settings,{}, {})
     if not path.resolve().is_relative_to((root/'state').resolve()):
         raise ValueError('VISION_EVIDENCE_PATH_INVALID')
-    evidence = read_json(path)
+    return validate_production_evidence(settings, read_json(path), root)
+
+
+def validate_production_evidence(settings, evidence, root=None):
+    """Same complete validation for private candidates and saved active evidence."""
+    root = Path(root) if root is not None else ROOT
     runtime = evidence.get('runtime', {})
     missing = production_diagnostics(settings, evidence, runtime)
-    for marker in ('state/cli-cleanup/unresolved.json','state/ollama-remote-result-unknown.json'):
+    for marker in ('state/cli-cleanup/unresolved.json','state/ollama-remote-result-unknown.json','state/lap43-vision-trial/probe-unknown.json'):
         if (root/marker).exists():missing.append('MODEL_CLEANUP_OR_REMOTE_UNKNOWN')
     ingress=evidence.get('ingress_instance','')
     if not isinstance(ingress,str) or not re.fullmatch('[a-f0-9]{32}',ingress):
@@ -171,7 +246,14 @@ def load_production(settings, root=None):
     from .vision_quality import BatchLedger
     from .vision import adapter_signature
     ledger_path=root/'state/vision-evidence/iq-batches.sqlite3'
-    if not ledger_path.is_file():
+    trial=evidence.get('acceptance_mode')=='lap43_operator_trial'
+    if trial:
+        from .vision_trial import durable_diagnostics
+        missing.extend(durable_diagnostics(root,evidence,settings))
+    elif evidence.get('acceptance_mode')=='lap42_first_plus_large_operator_acceptance':
+        from .vision_operator_review import durable_diagnostics
+        missing.extend(durable_diagnostics(root,evidence.get('operator_review'),evidence.get('binding')))
+    elif not ledger_path.is_file():
         missing.append('DURABLE_IQ_LEDGER_MISSING')
     else:
         ledger=BatchLedger(ledger_path)
@@ -180,9 +262,12 @@ def load_production(settings, root=None):
                 missing.append('DURABLE_IQ_LEDGER_MISMATCH')
             if ledger.unresolved(evidence['binding']):missing.append('FAILED_OR_UNKNOWN_ATTEMPTS')
         except (ValueError,KeyError):missing.append('DURABLE_IQ_LEDGER_INVALID')
-    offline=ROOT/'reports/lap-28-C-offline.json'
-    if not offline.exists() or read_json(offline).get('adapter_signature')!=adapter_signature() or read_json(offline).get('passed') is not True:
+    if not trial and not offline_valid(settings):
         missing.append('CURRENT_OFFLINE_PROOF_MISSING')
+    record=selected_record(settings)
+    if not trial and record and record.get('kind'):
+        from .vision_mod_guard import probe_valid
+        if not probe_valid(root,settings):missing.append('CURRENT_CLI_PROBE_MISSING')
     # Configured digest must still match the reviewed, observed selected model.
     from .backends import resolve_backend
     cfg = resolve_backend(settings)
@@ -195,6 +280,10 @@ def load_production(settings, root=None):
 
 
 def final_budget(record, budget, system, prompt, width, height):
+    if record.get('kind'):
+        from .hosted_cli_budget import final_budget as hosted_final
+        from .token_budget import known_models
+        return hosted_final(record,budget,system,prompt,width,height,known_models().get(record['model'],{}))
     v = visual_upper(record, width, height)
     b = record['bounds']
     budget.check(system, prompt)

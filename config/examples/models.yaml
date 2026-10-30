@@ -1,4 +1,4 @@
-# 仅显式选择一个后端，无自动切换；WX-01 只执行底层替身。
+# 仅显式选择一个后端，无自动切换；真实运行只由启动入口-Live开启。
 llm:
   # 默认 CodeBuddy 路线；不承诺免费。
   backend: codebuddy_cli
@@ -8,12 +8,12 @@ llm:
   queue_limit: 5
   # 两路线公开配置，无家庭连接资料。
   profiles:
-    # CLI 参数由固定 runner 构造，工具及 MCP 禁用。
+    # CLI固定runner；原生联网仅WebSearch/WebFetch，其他工具及MCP禁用。
     codebuddy_cli:
       # 公开能力快照中的模型名。
       model: deepseek-v4.1-flash
       # auto 不传 effort；显式档位须当前控制握手支持。
-      reasoning_effort: auto
+      reasoning_effort: low
       # 原生窗口未验证，必须 null；不等于输入预算。
       context_window_tokens: null
       # 一次调用超时（秒）。
@@ -23,16 +23,16 @@ llm:
       # 保守 UTF-8 wire 预算，不是 tokenizer 实测值。
       input_budget:
         # 输入总预算。
-        context_input_limit_tokens: 16384
+        context_input_limit_tokens: 524288
         # 协议额外保留。
         context_overhead_reserve_tokens: 2048
         # 输出预算保留；不伪称 CLI 原生限制。
         output_reserve_tokens: 2048
-    # 家庭路线只保留模板；WX-01 不读连接文件、不 SSH。
+    # 家庭路线仅操作者显式选择，使用微信独立连接文件。
     ollama_ssh:
       # 已知模型标签，无有效性宣称。
       model: qwen3.5:9b-q4_K_M
-      # 未核验 digest；真实启用前必须另批补齐。
+      # 操作者从自己的家庭模型元数据填digest，未填不生成；不自动切后端。
       expected_digest: null
       # 本项目忽略文件，当前不存在。
       access_file: secrets/home-5070-runtime.local.json

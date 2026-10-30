@@ -1,17 +1,19 @@
 # 配置索引
 
-返回[README](../README.md)。公开默认值逐参数中文说明位于：
+返回[README](../README.md)。运行读取config/local五份完整YAML，绑定只放忽略的secrets/wxauto4-chat.local.json；[模板](examples/wxauto4-chat.example.json)。本机已建空模板，不含真实群名/昵称。
 
-| 模板 | 作用 |
+| 文件 | 作用 |
 | --- | --- |
-| [bot.yaml](examples/bot.yaml) | 平台、真实通道总开关、候选 transport、未来账号绑定、授权群和黑名单 |
-| [chat.yaml](examples/chat.yaml) | 微信独立私聊双名单、mentions、停言、有限历史、single |
-| [models.yaml](examples/models.yaml) | 显式选定 CLI/Ollama、单并发队列、预算/超时/原生参数 |
-| [features.yaml](examples/features.yaml) | 首期全部关闭的媒体/联网/记忆/成员功能 |
-| [runtime.yaml](examples/runtime.yaml) | 独立回环健康端口、UI/发送/日志/自启边界 |
+| [bot.yaml](examples/bot.yaml) | 旧严格mock平台/开关，默认关闭 |
+| [chat.yaml](examples/chat.yaml) | 8轮历史，single；旧严格私聊/mentions保留，不给新入口伪造真实@ |
+| [models.yaml](examples/models.yaml) | CLI/Ollama显式选择，单并发队列5；CLI 524288字节、low、overhead/output各2048、原生窗口null |
+| [features.yaml](examples/features.yaml) | web/schema2全文记忆准备true，媒体/成员关闭 |
+| [runtime.yaml](examples/runtime.yaml) | 旧发送/自启默认false，不记录正文；新入口仅显式-Live启动 |
 
-[persona.md](persona.md) 是独立中性正文，不复制 QQ 人设，不授予工具和真实收发能力。
+web engine固定codebuddy_cli，最多3工具/4步骤、单结果8000/总12000字节，90秒由原任务/插件限制；仅WebSearch/WebFetch，MCP空。关闭web不关闭文字；选Ollama不自动切CLI。
 
-`config/local/`、`secrets/`、`state/`、`runtime/`、`logs/`、`cache/` 全部忽略。本机配置若需要，操作者自行建立五份完整文件；WX-01 没有生成真实账号/群/家庭连接资料。`allowed_users` 和 `allowed_conversations` 分别绑定可信发送者与会话；这项补充名单是严格私聊绑定所需，不用显示名填充。
+memory enabled/learning_enabled为true，max_chars_per_group=50000、max_group_file_bytes=1048576、max_total_bytes=8388608、max_groups=16，可扩大。无关键词候选条数/240字节政策。reset不清长期记忆；库/密钥独立在微信state/secrets。
 
-`versions.lock.json` 只保留固定 CLI 文本路线的公开版本与 hash；Node/入口/bundle 路径均是本项目 `runtime/cli` 相对路径。`cli-capabilities.json` 是来源快照，native_window_effective_verified=false，不能当微信或本次模型真实验收；`cli-tools-denied.json` 与 `mcp-empty.json` 是隔离策略。逐文件来源和两项本地差异见 [manifest](../vendor/qq-core-manifest.json)。Python 依赖另锁于 [uv.lock](../uv.lock)。
+[persona.md](persona.md)本次保留。最终预算包含角色、当前请求和全文记忆；只裁完整旧历史，仍超限就本地失败，不删除角色、不截当前请求/记忆、不重试模型。
+
+[versions.lock.json](versions.lock.json)锁相对Node/CLI路径、bundle/types摘要；[cli-capabilities.json](cli-capabilities.json)为公开静态模型资料，不代表真实验收。工件准备见根README。config/local、secrets、state、runtime、logs、cache均忽略，不复制QQ私密配置或家庭资料。

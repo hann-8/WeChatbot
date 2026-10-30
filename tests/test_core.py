@@ -22,6 +22,16 @@ from qqbot_gateway.errors import GatewayError
 from qqbot_gateway.workbuddy_cli_runner import ResultParser
 
 
+def wire_dialog(process):
+    # low effort now uses a control handshake then exactly one stream-json user frame.
+    frames = [json.loads(line) for line in process.stdin.data.splitlines()]
+    users = [frame for frame in frames if isinstance(frame, dict) and frame.get('type') == 'user']
+    if users:
+        assert len(users) == 1
+        return json.loads(users[0]['message']['content'])
+    return json.loads(process.stdin.data)
+
+
 class CoreTests(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
@@ -156,7 +166,7 @@ class CoreTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(await self.handle(), 'accepted')
         e = self.event(sender_id='other-user', text='另一位自造用户')
         self.assertEqual(await self.handle(e), 'accepted')
-        payload = json.loads(self.spawn.processes[-1].stdin.data)
+        payload = wire_dialog(self.spawn.processes[-1])
         self.assertEqual(payload, [dict(role='user', content=e.text)])
         self.assertEqual(len(self.store.history(self.event())), 4)
 
@@ -387,7 +397,7 @@ class CoreTests(unittest.IsolatedAsyncioTestCase):
         self.adapter.current_target = self.event().target
         results = await asyncio.gather(*(self.router.handle(self.event()) for _ in range(3)))
         self.assertEqual(results, ['accepted'] * 3)
-        self.assertEqual([len(json.loads(p.stdin.data)) for p in self.spawn.processes], [1, 3, 5])
+        self.assertEqual([len(wire_dialog(p)) for p in self.spawn.processes], [1, 3, 5])
         self.assertEqual(self.router.waiting, 0)
 
     async def test_no_image_context_can_cross_into_text_runner(self):
@@ -395,7 +405,7 @@ class CoreTests(unittest.IsolatedAsyncioTestCase):
         token = CURRENT.set(object())
         try:
             self.assertEqual(await self.handle(self.event(first_image_handle='not-redeemed')), 'accepted')
-            payload = json.loads(self.spawn.processes[0].stdin.data)
+            payload = wire_dialog(self.spawn.processes[0])
             self.assertIsInstance(payload[-1]['content'], str)
         finally:
             CURRENT.reset(token)

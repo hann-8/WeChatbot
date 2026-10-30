@@ -32,6 +32,7 @@ class BackendResult:
     web_expired: bool = False
     response_to_seq: int | None = None
     memory_proposals: tuple = ()
+    memory_aux: dict = field(default_factory=dict)
     web_evidence: tuple = ()
 
 
@@ -50,5 +51,8 @@ def create_runner(root, settings, budget):
     else:
         from .ollama_ssh_runner import OllamaSSHRunner
         runner = OllamaSSHRunner(root,cfg,budget,settings['output'])
+    runner.native_web=cfg['backend']=='codebuddy_cli' and settings.get('web',{}).get('engine')=='codebuddy_cli'
+    runner.web_config=deepcopy(settings.get('web',{}))
+    runner.web_private_ids=[settings['bot']['qq']]+sum((settings['access'][k] for k in ('allowed_groups','admin_users','blocked_users')),[]) if runner.native_web else []
     runner.vision_settings = deepcopy(settings)
     return runner

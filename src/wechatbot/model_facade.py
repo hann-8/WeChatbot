@@ -28,8 +28,6 @@ class ModelFacade:
         else:
             self.runner.factory = offline_transport_factory
         self.system = local_path(config.root, 'config/persona.md').read_text(encoding='utf-8')
-        if len(self.system) > 8000:
-            raise ValueError('persona_size')
         self.lock = asyncio.Lock()
 
     async def generate(self, event, history, trace):

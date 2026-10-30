@@ -1,24 +1,23 @@
-# 联网能力，首期不可启用。
-web:
-  # 不取 URL，不运行检索。
-  enabled: false
-# 图片理解；与出站媒体不同，均未验。
-vision:
-  # 不兑换或下载任何图片句柄。
-  enabled: false
-# 受控表情能力尚未实现。
-memes:
-  # 不出站媒体。
-  enabled: false
-# 长期记忆尚未接入。
-memory:
-  # 与必要有限对话历史不同。
-  enabled: false
-# 群成员工具禁用。
-members:
-  # 不读联系人或成员表。
-  enabled: false
-# B 站访问禁用。
+# Native web and schema2 memory are prepared; only explicit live starts them.
 bilibili:
-  # 不请求外站。
   enabled: false
+members:
+  enabled: false
+memes:
+  enabled: false
+memory:
+  enabled: true
+  learning_enabled: true
+  max_chars_per_group: 50000
+  max_group_file_bytes: 1048576
+  max_groups: 16
+  max_total_bytes: 8388608
+vision:
+  enabled: false
+web:
+  enabled: true
+  engine: codebuddy_cli
+  search_enabled: true
+  cli_max_tool_calls: 3
+  cli_max_turns: 4
+  cli_tool_result_bytes: 8000

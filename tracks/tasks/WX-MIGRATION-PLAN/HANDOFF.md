@@ -1,33 +1,35 @@
-# WX-MIGRATION-PLAN：QQ业务向微信的功能迁移规划
+# WX-MIGRATION-PLAN：统一微信迁移规划交接
 
-返回[PROGRESS](../../../PROGRESS.md) / [TASKS](../../../TASKS.md) / [详细计划](../../../docs/QQ-TO-WECHAT-MIGRATION-PLAN.md) / [实施指令](../../../docs/IMPLEMENTATION_GUIDE.md)。继承根AGENTS；WX-WXA-02真实试用的旧归属与阻塞保留。
+返回[PROGRESS](../../../PROGRESS.md) / [TASKS](../../../TASKS.md) / [统一计划](../../../docs/QQ-TO-WECHAT-MIGRATION-PLAN.md) / [medium指令](MEDIUM_START.md)。继承根AGENTS。
 
-## 当前状态
+## 后续实施已交付
 
-completed，仅详细规划；代码未实施、业务测试未运行。2026-10-28 14:06（Asia/Shanghai）登记，session `WX-FEATURE-MIGRATION-PLAN-20261028`。用户追加明确：本轮commit/push可直接推主线，后续全部gpt-6.1-sol/medium；预算无更低硬限制时可48000。
+2026-10-30 WX-MIG-ALL已完成实现和必要检查，当前入口转[实施交接](../WX-MIG-ALL/HANDOFF.md)。以下为上轮规划的历史证据，不再表示代码尚未实施。
 
-## 基线与归属
+## 规划交付时状态（历史）
 
-- QQ main：`52866fe10cc654d2e12c5520f7afc5aa8bbe0179`。
-- 微信试用基线：`29240978a298e3fd5a47a21af7eb10a670d48994`，原默认codex/bootstrap为`8ad1334a66ee9d3ff7cedc70b51ce4fa3dc085ac`，试用仅多两个已有提交。
-- 六份文档：AGENTS/PROGRESS/TASKS、docs/IMPLEMENTATION_GUIDE.md、docs/QQ-TO-WECHAT-MIGRATION-PLAN.md、本HANDOFF。
-- 初始临时规划分支仅作准备指针；用户随后要求直接主线，最终按普通快进codex/bootstrap交付，不force、不改默认名称，保留两个试用提交原作者/历史。
-- 本机没有实际E:/CodexWS/WeChatbot；用GitHub固定提交及本地文档覆层审阅，不触碰另一台电脑未提交内容。初始TASKS与本HANDOFF已先登记并重读。用户随后要求本笔记本不留项目文件，远端核对后删除本轮本地覆层；云端环境单独创建，代码根以云端checkout为准。
+2026-10-30规划续作completed，session `WX-MIGRATION-CLARIFY-20261030`，21:53（Asia/Shanghai）起，负责人本会话Codex。统一计划、medium指令及源码映射已写入并通过文档/归属检查；**未领取实施、未改业务代码/运行配置、未操作微信/模型、未commit/push**。起点main=`33c18f0`，初始工作区干净；当前十份归属文档见TASKS，均为本会话规划修改。
 
-## 已完成与决定
+用户确认禁止过度防御性编程，先能用；希望一次规划、一次medium批量迁移后自己实测。自报已登录微信4.2.0.11，首试一个指定群，接受更换兼容版本。账号阻塞已解除；当前免费公开配套按41.1.7＋微信4.1.8.107准备，实际收发仍未验。
 
-18个共享模块按Git blob比较，12个相同、6个不同；微信已有固定快照，不重新全量复制。首推WX-MIG-01人设/自然纯文本/监督模型接点，再02短期RAM与本机控制，后03显式单URL读取；adaptive、长期记忆/free/媒体/成员与搜索延后。
+## 已完成决定与证据
 
-微信16384是当前输入政策值，配置可至131072；固定能力记录为CLI2.168.0/DeepSeek maxInputTokens1000000，原生有效窗口仍未实测。推荐代码准备采用48000可见UTF-8字节政策，各reserve2048，模型/auto/null保留。QQ角色正文19256字节/9585字符会被现有8000字符校验拒绝，计划同时改为最终预算校验，不强制删角色段落。
+- 最小路线为微信↔wxauto4↔薄适配/绑定会话↔共用业务；框架对客户端的内部接口不重写。当前ModelFacade已经导入QQ runner/预算/文本处理，但只支持离线替身；wxauto4公开封装仅ChatInfo/GetAllMessage/SendMsg。
+- 源只读根为E:/CodexWS/QQbot_Snowluma，本地与fetch后实时origin/main均42911afc4c1f2bcfbbc3c26afc2647fd21992f08、干净。先读该根AGENTS/PROGRESS/主线HANDOFF/TASKS及LAP-43/44交接；未读取实际群消息/记忆/local/persona覆盖层，也未启停源实例。LAP-43 native联网修复/thinking=false和LAP-44 schema2记忆已在源码；源报告的部署/离线不能当微信验收。
+- 微信快照仍为dd9373029412137023124751d75883824122c784、63登记文件。静态导入候选48个：19相同、22需刷新、7需新增；另有三份CLI插件资产、公开framework审阅字段和匹配types文件。完整路径/源SHA在docs/WX-MIGRATION-SOURCE-MAP.json；它只是取源码的辅助清单，不增加运行资格门槛。保留微信的相对工件路径和spawn替身接点，不直接覆盖源工厂中的QQ字段。
+- 将旧WX-MIG-01/02/03合成一个**WX-MIG-ALL**，同轮交付单群连续收发、人设/纯文本、模型/预算、短期上下文、本机控制、原生两工具联网和schema2全文记忆、配置/启动入口；媒体、成员、真实@和QQ式free延期。WXA-02/03的实现/实测接点并入，不要求先单独完成两轮挑战。
+- 新连续入口允许明确框架成功记local_reported并继续，unknown才暂停，不逐条人工确认或伪造服务端ACK。记忆按本机会话别名隔离，不因缺服务端身份一律否决受控试用；保存前实际绑定检查、原子写和真实回执保留。
+- 推荐源当前524288字节政策/low/thinking=false、50000 Unicode字符记忆，web3调用/4步骤/90秒/8000单结果/12000总结果；新实施不以旧48000或8000角色字符限制封死。模板可准备增强，真实通道默认关闭，用户启动live才实际运行。
+- 官方安装页/PyPI已于30日复核：免费wxauto4=41.1.7、公开支持微信到4.1.8.107，当前4.2.0.11不在说明范围。旧安装器文件4.1.8.1000/产品4.1.8.0不能独立证明客户端不可用；正常换版/登录由用户完成，不自动删数据/改日常微信。实际版本/登录和公开API兼容以用户后续试用为准。
 
-MIG-01代码准备可先于WXA-02真实通过；不关闭旧real_model_closed、不伪造NormalizedEvent/能力资格，不接真实GUI/模型。后续统一Sol/medium，旧Terra选择仅历史。详细字段、生效/回滚、文件和接续指令见计划。
+## 验证与交付边界
 
-## 验证与边界
+本轮只查源码/静态导入、Git/工件锁公开元数据、安装文档及规划文件；业务测试、wxauto导入/构造/UI、CLI生成、联网工具服务、发送和SSH均未执行。AGENTS从9581字节精简到约4KB，去掉重复历史，保留必要权限/数据/额度/unknown边界。
 
-只做两仓库源码/固定能力/分支关系读取、文档本地链接/围栏/任务ID/UTF-8 LF/差异与归属检查。业务测试、inspect/mock、客户端、登录、收发、模型、公共HTTP和SSH均未执行。历史80项不作为本轮验证数。
+检查结果：十份归属文件（九Markdown/一JSON）、75个本地链接、围栏/UTF-8无BOM/LF、所有HANDOFF双向入口和diff归属通过；源码映射的48共用文件＋3插件资产＋1公开审阅报告共52个固定Git blob摘要匹配。AGENTS为4001字节/30行。复核微信实时远端main仍33c18f01769b956d2dce1e0f83f773e64164e6f1、Snow根HEAD42911af且干净，未暂存。本轮无新的Git发布授权，文件保留为main上的本地可审阅差异；Snow源仍只读。
 
-本轮新增提交仅六份Markdown，实际业务代码/local/persona/运行数据无变更；主线快进还包含两个既有试用提交，不能把它们称为本轮新实现。提交/远端SHA在会话交付中核对，不把本回执自身SHA写回造成自引用。
+## 历史与接续
 
-## 剩余与第一步
+28日详细规划c2bc5fa已交付，原源main=52866fe、微信试用2924097；当时三阶段/旧48000预算/长期记忆延后现由30日计划覆盖。27日80项离线和WXA-02安装器/账号未准备记录保留为当时证据，不改写为已真实通过。28日main整理33c18f0保留。
 
-没有已领取的实施session。用户后续选Sol/medium时，只领取WX-MIG-01，先按真实项目PROGRESS/AGENTS/TASKS与本计划重查最新主线和工作区、登记精确归属，完成该项后停止。WXA-02账号和客户端版本证据仍待另定时段；不把阻塞转为本轮新任务，不自动开展测试。
+下一步：用户选择sol/medium并提交本目录MEDIUM_START.md，只领取WX-MIG-ALL；同轮实现、必要检查、配置及启动入口后交用户实测，不自动另做规划或分阶段索权。真实群名/允许发送者以后只写secrets，不放Git/报告。具体客户端动作由用户正常完成；任何实际阻断只报告具体问题，其他成果同轮交付。

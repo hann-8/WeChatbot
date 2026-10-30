@@ -10,6 +10,16 @@ class _Input:
 
     def write(self, value):
         self.data.extend(value)
+        # New pinned runner checks capabilities before sending its only user turn.
+        try:
+            event = json.loads(value)
+        except (ValueError, TypeError):
+            return
+        if isinstance(event, dict) and event.get('type') == 'control_request':
+            from qqbot_gateway.token_budget import known_models
+            response = dict(type='control_response', response=dict(subtype='success',
+                request_id=event['request_id'], response=dict(rawModels=list(known_models().values()))))
+            self.process.stdout.feed_data((json.dumps(response)+'\n').encode())
 
     async def drain(self):
         await asyncio.sleep(0)

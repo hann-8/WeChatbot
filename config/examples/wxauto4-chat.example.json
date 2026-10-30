@@ -1,0 +1,10 @@
+{
+  "account_alias": "wechat_personal",
+  "conversation_key": "first_group",
+  "chat_type": "group",
+  "chat_name": "",
+  "allowed_senders": [],
+  "blacklist": [],
+  "trigger_mode": "text_prefix",
+  "prefix": "bot "
+}

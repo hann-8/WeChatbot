@@ -18,7 +18,9 @@ def main():
     bundle = args.entry.parent.parent / 'dist/codebuddy-headless.js'
     artifacts = [(args.node, lock['node']['path'], lock['node']['sha256']),
                  (args.entry, lock['cli']['entry'], lock['cli']['entry_sha256']),
-                 (bundle, 'runtime/cli/codebuddy/dist/codebuddy-headless.js', lock['cli']['headless_sha256'])]
+                 (bundle, 'runtime/cli/codebuddy/dist/codebuddy-headless.js', lock['cli']['headless_sha256']),
+                 (args.entry.parent.parent / lock['cli']['types_relative'],
+                  'runtime/cli/codebuddy/' + lock['cli']['types_relative'], lock['cli']['types_sha256'])]
     # Validate all inputs before writing any artifact; no credentials/account reads.
     for source, _, expected in artifacts:
         if not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != expected:
