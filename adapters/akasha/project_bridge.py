@@ -37,7 +37,7 @@ class Protocol:
         self.status_path.parent.mkdir(parents=True,exist_ok=True)
         value=dict(boot=self.boot, sse=self.sse, astrbot_ws=self.ws, real_reply=False,
                    local_reported=self.replies, paused=self.flags, generations=self.generations,
-                   unknown=self.unknown, pid=os.getpid(),user_acceptance='pending')
+                   unknown=self.unknown, pid=os.getpid(),user_acceptance='pending',uia_initialized=getattr(self.sender,'_ready',None))
         tmp=self.status_path.with_suffix('.tmp')
         with self.lock:
             tmp.write_text(json.dumps(value),encoding='utf-8');tmp.replace(self.status_path)

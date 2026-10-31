@@ -2,7 +2,7 @@
 
 返回[PROGRESS](../../../PROGRESS.md) / [TASKS](../../../TASKS.md)，继承根AGENTS。总报告见[实施报告](../../../docs/WX-AKASHA-ALL-REPORT.md)，使用见[README](../../../README.md)。对应[QQ交接](E:/CodexWS/QQbot_Snowluma/tracks/laptop-workbuddy/tasks/WX-AKASHA-ALL/HANDOFF.md)。
 
-状态：active，等待本次操作者账号向导/真实映射，完成后同任务继续；不是另一轮规划或已完成微信验收。负责人本会话Codex，session WX-AKASHA-ALL-20261031，开始2026-10-31T10:25:51+08:00。只领取WX-AKASHA-ALL，未派代理。
+状态：ready_for_user_test，实施/必要检查/受管部署完成，实际SSE/WS连接正常，交用户在已选群自然实测；具体故障继续本任务。不是质量已验收。负责人本会话Codex，session WX-AKASHA-ALL-20261031，开始2026-10-31T10:25:51+08:00。只领取WX-AKASHA-ALL，未派代理。
 
 ## 已完成与证据
 
@@ -17,15 +17,16 @@
 
 ## 当前运行/Git
 
-QQ实现从codex/wx-akasha-all普通快进main，当前已push并核远端42a145fc9b3420ce67008dba0a3ecdf864ba2862；QQ工作区干净。精确配置/插件备份、保护摘要、技术配对与加载回执在QQ忽略的state/akasha-deployment。微信实施及已知规划正在main审阅提交；不发布本机数据。
+QQ实现从codex/wx-akasha-all普通快进main，实施及当轮配对已交付，最终文档回执另行提交并核远端；QQ原平台/provider/preferences、config/local/persona保护检查通过，connected/online/channel_ready、router_ready=true，current_error=null。当前配置实际free/adaptive/vision/memes/memory均启用。精确备份和加载回执在QQ忽略的state/akasha-deployment。
 
-WeFlow setup(18108)和本机panel(18766)已按创建身份运行；桌面API/bridge尚未启动，未读库/收发。用户问“哪有向导，是URL吗”，已回复http://127.0.0.1:18766点击“打开带本机授权的WeFlow向导”，/setup会302到18108并自动携带本机令牌，不输出token。实际检查页面/配置路由200，跳转302。尚未检测到WeFlow保存的config.json。
+用户通过18108向导保存所选机器人账号/数据库与图片密钥，已通过公开API唯一匹配原授权群（1个），保持私聊关闭；随后用户在18766明确保存facts_only及1条actor_link并回复“配对已保存”。实际ID/密钥只留忽略配置。5031连库/API及SSE端点200；Start已加载当前配置摘要并受管部署WeFlow与bridge，实际SSE=true、AstrBot WS=true、UIA初始化true、模型元数据零生成证明有效、gateway_ready=true；共享MemoryStore检查200，当前0条，未填造事实。启动检查时local_reported=0、unknown为空。
 
-## 剩余同任务动作
+微信main已提交首个实现2422174，最终管理/选择与运行报告改动同轮审阅提交推送；两处最终SHA以会话回执为准，不在文档自引用。11份Markdown/104个本地链接、相关compile、依赖pip check、diff检查通过；真实适配类替身套件最终再次3通过。
 
-1. 等用户在现成WeFlow向导选择机器人账号/目录并取钥保存，必要退出/登录/系统授权由其操作；只问具体错误，不重问读库意愿。不要打印config/key/token或原始亲友消息。
-2. 同home切到5031桌面API，通过公开会话元数据定位原已授权群；用户在本机选一次实际QQ会话配对及scope/actor_links，不凭同名合并，实际ID只存忽略配置。未配对也可独立聊天。
-3. 配置保存后以Start加载当前配置摘要；脚本会复用或受管重启当前AstrBot，不另开第二份。核对WeFlow连库/SSE/11229 WS/受管UIA状态、真实加载的profile与0生成元数据；只交用户自然群测，不造真实生成/发送样本。
-4. 更新报告/PROGRESS/TASKS与两根Git/部署回执。真实连接可交用户实测；正常反馈就接受，有具体故障继续本任务修。
+## 用户实测与接续
 
-当前全部归属：原九份规划文档＋本交接/报告，Start-Akasha.ps1、adapters/akasha/{source.json,project_bridge.py,project_entry.py}、scripts/akasha.py、config/examples/akasha.json、tests/test_akasha_all.py；QQ实际文件见对应交接/提交。所有后续修改保留用户差异，不恢复空库或退出微信。
+直接在原选定群自然聊、问需要联网的问题、发当前图片、按需要要表情、记住自造称呼后reset再问；跨平台记忆按已选事实scope在另一端问。正常反馈就接受，具体故障在WX-AKASHA-ALL续修，不再规划/索部署授权。未主动执行真实模型生成/工具服务/发送样本；连接与零生成证明不代表模型已实际回答或用户已看见。
+
+入口：Start-Akasha.ps1 start / stop / status，管理http://127.0.0.1:18766，单配置config/local/akasha.json。prepare/inspect/setup/api/pause/resume/reset/memory-status/resolve-unknown仍可用；Stop不退出微信或QQ，只管理有创建身份的微信项目进程。原生@关闭、GIF首帧、不支持媒体准确提示。不要自动重发unknown、复制库/key、清QQ记忆或回滚其他用户差异。
+
+当前全部归属：原九份规划文档＋本交接/报告，Start-Akasha.ps1、adapters/akasha/{source.json,project_bridge.py,project_entry.py}、scripts/akasha.py、config/examples/akasha.json、tests/test_akasha_all.py；QQ实际文件见对应交接/提交。

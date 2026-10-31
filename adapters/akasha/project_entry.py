@@ -24,7 +24,7 @@ class Panel(BaseHTTPRequestHandler):
         if self.path=='/config':
             value=load_config();value['weflow']['token']='';body=json.dumps(value,ensure_ascii=False).encode();kind='application/json'
         elif self.path=='/choices':
-            value=dict(sessions=[],qq_sessions=[],account='')
+            value=dict(sessions=[],qq_sessions=[],account='',members=[])
             try:
                 result=protocol.api('/api/v1/sessions',limit=1000)
                 value['sessions']=[dict(id=s.get('username') or s.get('sessionId'),name=s.get('displayName') or s.get('name') or s.get('nickname')) for s in result.get('sessions',[])]
@@ -33,9 +33,12 @@ class Panel(BaseHTTPRequestHandler):
                 if result.returncode==0:
                     d=json.loads(result.stdout);d=d.get('data',d);value['account']=d.get('value',d.get('wxid','')) if isinstance(d,dict) else d
                 qroot=Path(cfg['astrbot']['root'])
-                sys.path.insert(0,str(qroot/'src'))
-                from qqbot_gateway.config_files import load_consumer
-                value['qq_sessions']=load_consumer(qroot)['access']['allowed_groups']
+                code="import sys,json;sys.path.insert(0,'src');from qqbot_gateway.config_files import load_consumer;from pathlib import Path;s=load_consumer(Path('.').resolve());print(json.dumps(s['access']['allowed_groups']))"
+                result=subprocess.run([str(qroot/'.venv/Scripts/python.exe'),'-X','utf8','-c',code],cwd=qroot,capture_output=True,creationflags=subprocess.CREATE_NO_WINDOW)
+                if result.returncode==0:value['qq_sessions']=json.loads(result.stdout)
+                for room in load_config()['bridge']['sessions']:
+                    roster=protocol.api('/api/v1/group-members',chatroomId=room['id'])
+                    value['members'] += [dict(session=room['id'],wxid=m.get('wxid'),name=m.get('groupNickname') or m.get('displayName') or m.get('nickname')) for m in roster.get('members',[])]
             except Exception:value['error']='API_NOT_READY_OR_ACCOUNT_NOT_SAVED'
             body=json.dumps(value,ensure_ascii=False).encode();kind='application/json'
         elif self.path=='/status':
@@ -46,6 +49,12 @@ class Panel(BaseHTTPRequestHandler):
 <a href="/setup" target="_blank">打开带本机授权的 WeFlow 向导</a>
 <button onclick="control('api')">向导保存后：切到桌面API</button><button onclick="choices()">读取账号/会话选项</button>
 <pre id="choices"></pre><textarea id="config" style="width:95%;height:400px"></textarea><button onclick="save()">保存本机配置</button>
+<h2>一次选择实际记忆配对</h2><button onclick="loadPairing()">载入本机会话选项</button><br>
+<label>微信群 <select id="wxRoom"></select></label><label>QQ会话 <select id="qqRoom"><option value="">请选择</option></select></label>
+<label>共享范围 <select id="scope"><option value="facts_only">仅长期事实，短期独立</option><option value="shared_context">长期事实和短期上下文</option></select></label><br>
+<label>可选同一人映射 <select id="wxActor"><option value="">不合并人物</option></select></label><input id="qqActor" placeholder="明确对应的QQ用户ID（可留空）"><button onclick="savePairing()">保存本次配对选择</button>
+<p>群名/成员同名不会自动合并；只有你在本机明确选择的会话和人物才共用记忆。</p>
+<script>function opt(select,value,label){let o=document.createElement('option');o.value=value;o.textContent=label;select.append(o);}async function loadPairing(){let c=await(await fetch('/config')).json(),x=await(await fetch('/choices')).json();wxRoom.replaceChildren();for(let s of c.bridge.sessions)opt(wxRoom,s.id,s.name);qqRoom.replaceChildren();opt(qqRoom,'','请选择一个QQ会话');for(let [i,id]of x.qq_sessions.entries())opt(qqRoom,id,`${i+1} · ${id}`);opt(qqRoom,'__independent__','保持独立空间，不配对');wxActor.replaceChildren();opt(wxActor,'','不合并人物');for(let m of x.members)opt(wxActor,m.wxid,`${m.name} · ${m.wxid}`);}async function savePairing(){if(!wxRoom.value||!qqRoom.value){alert('先选择会话');return;}let c=await(await fetch('/config')).json();c.pairings=c.pairings.filter(p=>p.wechat_session!==wxRoom.value);if(qqRoom.value!=='__independent__'){let links={};if(wxActor.value&&qqActor.value.trim())links[wxActor.value]=qqActor.value.trim();c.pairings.push({wechat_session:wxRoom.value,qq_session:qqRoom.value,scope:scope.value,actor_links:links});}c.operator_pairing_reviewed=true;let r=await fetch('/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(c)});let x=await r.json();alert(x.saved?'已保存，本任务继续加载。':JSON.stringify(x));config.value=JSON.stringify(c,null,2);}</script>
 <button onclick="location.reload()">刷新</button><pre id="s"></pre>
 <button onclick="control('pause')">暂停</button><button onclick="control('resume')">恢复</button><button onclick="control('reset')">重置短期</button>
 <h2>本机记忆</h2><input id="room" placeholder="所选会话sessionId；检查可留空"><button onclick="memory('memory-status')">查看计数/容量</button><button onclick="memory('memory-export')">导出到本机</button><input id="record" placeholder="要删除的记忆record_id"><button onclick="memory('memory-delete')">删除该条</button><button onclick="memory('memory-clear')">清除此所选空间</button><pre id="memoryResult"></pre>

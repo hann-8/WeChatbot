@@ -1,6 +1,6 @@
 # WeChatbot：Akasha主线
 
-当前主线 **WeFlow → Akasha-WeChat → 现有 AstrBot**。WX-AKASHA-ALL 正在实施和受管部署；基础及增强接线、必要替身检查已完成，账号向导/真实绑定仍待操作者完成，尚未宣称真实微信聊天通过。[项目进度](PROGRESS.md) · [实施交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md) · [实施报告](docs/WX-AKASHA-ALL-REPORT.md)。
+当前主线 **WeFlow → Akasha-WeChat → 现有 AstrBot**。WX-AKASHA-ALL 实施和受管部署完成，机器人账号/密钥及显式配对已由用户保存，实际连库/SSE/11229 WS正常，交用户在原选定群自然实测。连接检查不冒充真实聊天验收。[项目进度](PROGRESS.md) · [实施交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md) · [实施报告](docs/WX-AKASHA-ALL-REPORT.md)。
 
 现有 QQ 功能/凭据保持，模型与人设同源；记忆按本机显式会话/人物配对共享，未配对独立。原 wxauto/CLI 保留为历史，不参与 Akasha 主启动。
 
@@ -19,7 +19,7 @@ cd E:\CodexWS\WeChatbot
 
 单一配置为忽略的 `config/local/akasha.json`，管理页可读取/保存，令牌不回显。`bridge.bot_wxid` 填已选机器人账号；`bridge.sessions` 填所选群的 `{"id":"所选sessionId","name":"微信中唯一可搜索的群名"}`。同名群需先在微信中改成可唯一搜索的名称。群内全体非黑名单成员可按规则触发，不设发送者白名单。`mode=all` 仅指入站，回复由同源 free/叫名/续聊策略决定；`mention` 只收文本唤醒，`batch` 保留合并前的每条消息/成员来源。私聊独立开关默认关闭，开启需单独填 `private_sessions`。
 
-共享记忆只在 `pairings` 明确选择：`{"wechat_session":"所选微信群ID","qq_session":"已授权QQ会话ID","scope":"facts_only","actor_links":{"可信微信wxid":"对应真实QQ用户ID"}}`；两端 ID 只填本机。`facts_only` 共用 schema2 事实、短期独立；`shared_context` 同时共用所选会话 RAM。未配对、未链接人物均独立，不凭昵称自动合并。取消配对不会删除旧记忆。
+共享记忆可在本机面板“一次选择实际记忆配对”载入选项后保存，当前操作者已选择 `facts_only` 及1条明确人物映射。配置格式为 `{"wechat_session":"所选微信群ID","qq_session":"已授权QQ会话ID","scope":"facts_only","actor_links":{"可信微信wxid":"对应真实QQ用户ID"}}`；两端 ID 只填本机。`facts_only` 共用 schema2 事实、短期独立；`shared_context` 同时共用所选会话 RAM。未配对、未链接人物均独立，不凭昵称自动合并。取消配对不会删除旧记忆。
 
 保存配置后运行 `start`；会复用现有 AstrBot/gateway，必要时仅调用该项目受管启停入口加载微信平台，不运行旧的全量 AstrBot 配置重建。原 QQ 6199 保留，微信独立 11229，管理 18766，WeFlow 向导 18108/桌面 API 5031 共用专属 home。普通 SSE/WS 断连由原桥接重连，不回放启动前历史。
 

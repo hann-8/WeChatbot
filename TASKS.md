@@ -1,6 +1,6 @@
 # WeChatbot任务台账
 
-当前唯一实施：**WX-AKASHA-ALL active**，负责人本会话Codex，2026-10-31T10:25:51+08:00起。全部代码接线/40项当前组合检查及QQ受管部署完成；机器人账号向导、实际群/actor映射待操作者，同任务继续。精确归属/验证/Git见[实施交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)。以下规划/旧路线登记为历史，保留原事实。
+当前唯一实施：**WX-AKASHA-ALL ready_for_user_test**，负责人本会话Codex，2026-10-31T10:25:51+08:00起。全部代码接线/40项当前组合检查/零生成握手与两侧受管部署完成；用户已保存账号/密钥和facts_only＋1 actor_link，原指定群实际SSE/WS已连，交用户自然实测；具体故障继续同任务。精确归属/验证/Git见[实施交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)。以下规划/旧路线登记为历史，保留原事实。
 
 本轮规划：2026-10-31 `WX-AKASHA-01`，负责人本会话Codex，用户明确改用现成Akasha接现有AstrBot、以此作为main，并在00:51前后追加“本轮只做一次详细规划，基础与其他可迁功能全放同一方案/sol-medium指令，用户自行提交实施，严禁过度防御”；用户已睡，继续规划。先前源码/独立环境/WeFlow二进制准备保留，停止本会话创建的首次配置服务，不再实施。用户已明确允许WeFlow读库，未安装；当前未读数据库/密钥、未真实收发。起点main=938187c；保留本会话已知的故障登记/新路线差异。归属：AGENTS.md、PROGRESS.md、TASKS.md、docs/AKASHA-IMPLEMENTATION-PLAN.md、tracks/tasks/WX-AKASHA-01/HANDOFF.md、tracks/tasks/WX-AKASHA-01/MEDIUM_START.md、README.md、docs/IMPLEMENTATION_GUIDE.md、原ALL交接及必要路线说明。QQ/Snow现有代码/配置/运行实例本轮只读；完整规划须覆盖同轮所需的跨项目精确归属，不留后续再规划的必需接线。5h剩余低于5%时保存检查点，按北京时间2026-10-31 06:30继续；00:51实时读数剩余13%，未触发。
 
@@ -85,3 +85,5 @@ WX-02复核轮（2026-10-23）：session `WX-02-gap-review-plan-20261023`，20:0
 2026-10-31 00:15 Asia/Shanghai，本会话Codex继续WX-MIG-ALL收尾：用户反馈启动已恢复，随后明确“测试ok，继续”，记录本次单群文字版用户接受。归属AGENTS.md、PROGRESS.md、TASKS.md、README.md、docs/WX-MIG-ALL-REPORT.md、tracks/tasks/WX-MIG-ALL/HANDOFF.md及.gitignore。保留新出现的_temp/与wxauto_logs/本机工件，不读内容、不删除、不提交；仅补忽略。无代码/配置/运行实例改动，无新增验收。
 
 2026-10-31T10:25:51.763167+08:00：唯一任务 **WX-AKASHA-ALL**，负责人本会话Codex，session WX-AKASHA-ALL-20261031。起点WeChatbot main=938187c。归属：adapters/akasha/**、scripts/*Akasha*及akasha管理脚本、config/examples/akasha*、tests/test_akasha*、README/docs/报告与当前9份规划、PROGRESS/TASKS/实施HANDOFF。完整执行微信计划；已有微信9份规划差异保留，QQ开工干净。不操作旧NapCat根。只管理有创建身份的项目进程；授权受管部署/检查/提交普通push，真实聊天交用户。
+
+2026-10-31T11:05:04.308079+08:00：WX-AKASHA-ALL交用户实测。WeFlow桌面API/bridge受管运行，18766面板、11229独立WS正常；QQ connected/ready且保护检查不变。用户明确回复配对已保存；实际ID/密钥仅本机忽略配置。未主动真实生成/群发样本。

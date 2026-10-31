@@ -161,9 +161,26 @@ def main():
         print('WeFlow desktop API requested on 5031.')
     elif args.action=='start':
         if not cfg['bridge']['sessions'] or not cfg['bridge']['bot_wxid']: raise SystemExit('Select the robot account and target session in local config first.')
-        ensure_astrbot(cfg)
-        stop('setup');stop('panel');dest=prepare(cfg)
+        stop('setup');dest=prepare(cfg)
         launch('weflow',[str(EXE),'serve','--desktop','--message-push','--host','127.0.0.1','--port','5031'],cfg)
+        import requests
+        sessions=None
+        for attempt in range(20):
+            try:
+                response=requests.get(cfg['weflow']['url']+'/api/v1/sessions',headers={'Authorization':'Bearer '+cfg['weflow']['token']},timeout=3)
+                response.raise_for_status();value=response.json()
+                if value.get('success') is True:sessions=value.get('sessions',[]);break
+            except requests.RequestException:pass
+            time.sleep(.5)
+        if sessions is None:raise RuntimeError('WeFlow database/API not ready; open local setup.')
+        chosen=cfg['bridge']['sessions']+(cfg['bridge']['private_sessions'] if cfg['bridge']['private_enabled'] else [])
+        for binding in chosen:
+            same=[s for s in sessions if s.get('displayName')==binding['name']]
+            if len(same)!=1 or same[0].get('username')!=binding['id']:
+                raise RuntimeError('Selected session name changed or is ambiguous; choose a unique local search name.')
+        ensure_astrbot(cfg)
+        stop('bridge')
+        stop('panel')
         launch('bridge',[str(BASE/'venv/Scripts/python.exe'),str(dest/'project_entry.py')],cfg,dest)
         print(json.dumps(status(cfg), ensure_ascii=False))
     elif args.action=='stop':

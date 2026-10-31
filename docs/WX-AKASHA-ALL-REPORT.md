@@ -1,6 +1,6 @@
 # WX-AKASHA-ALL 实施与部署报告
 
-2026-10-31，负责人本会话 Codex。返回 [PROGRESS](../PROGRESS.md) / [实施交接](../tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)。状态 active；账号/密钥和真实映射待操作者向导，不能称已完成真实聊天。
+2026-10-31，负责人本会话 Codex。返回 [PROGRESS](../PROGRESS.md) / [实施交接](../tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)。状态 ready_for_user_test：全部接线/必要检查/受管部署完成，实际SSE/WS正常，交用户自然实测；尚未把连接正常当真实聊天验收。
 
 ## 实现
 
@@ -34,8 +34,10 @@ QQ开工本地/实时远端main=42911af；微信=938187c。QQ隔离 codex/wx-aka
 
 受管停止/当前配对后增量注册微信平台，保留QQ6199/provider/账号/权限。Akasha存在时停止重跑旧AstrBot全量配置生成器，仅同步自有插件和新增平台。精确配置/插件备份和保护摘要在QQ忽略的 state/akasha-deployment；微信身份记录在 state/akasha-wechat。普通 Start 必要时调用既有受管QQ启动入口，不按进程名结束服务；Stop不退出微信，不结束外部手动进程。
 
-当前需要操作者完成 WeFlow 机器人账号/正常授权取钥保存和一次实际会话/记忆映射。此动作完成后，本任务继续真实 API/SSE/WS 核对，交由用户在选定群自然实测。当前未把环境/检查通过写成真实聊天通过。
+用户已完成所选机器人账号/数据库与图片密钥保存；公开API唯一定位原指定群，未扩大范围，私聊保持关闭。用户明确保存 facts_only 配对及1条actor_link，并回复“配对已保存”。同一home切换5031，实际连库/SSE、Akasha→AstrBot11229 WS、UIA初始化和gateway_ready均正常；当前配置摘要已实际加载，共享MemoryStore检查200、0条。原QQ connected/online/ready，全部保护检查通过，free/adaptive/vision/memes/memory均保留。启动核对时local_reported=0、unknown为空；未主动生成/发样本，具体效果由用户自然群测。
 
 ## 回滚
 
 运行 Start-Akasha.ps1 stop，仅停止身份匹配的微信项目进程。需要撤销AstrBot接入时，在其受管停止后恢复 state/akasha-deployment 中精确平台/自有插件备份，再正常启动；不要恢复整份旧QQ运行数据。保留WeFlow home/密钥、配对、新增记忆、unknown和其他用户修改，不退出/注销微信，不删除聊天数据或用空库覆盖记忆。
+
+最终运行核对时间：2026-10-31T11:05:04.308079+08:00。源QQ当前绑定1c8d1f3724243023ef4f3ba11e39861c4f19df8061308480f9dfe45aef94a8cc有效；管理/配对页面和启动名称匹配检查已部署。两处main普通push后核对SHA，最终SHA见会话回执。

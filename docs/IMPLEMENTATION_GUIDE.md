@@ -1,6 +1,6 @@
 # 当前实施入口：WX-AKASHA-ALL
 
-2026-10-31 已领取 WX-AKASHA-ALL，正在按[完整合同](AKASHA-IMPLEMENTATION-PLAN.md)实施/部署。当前使用方法见 [README](../README.md)，检查及真实状态见[实施报告](WX-AKASHA-ALL-REPORT.md)和[实施交接](../tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)。不再提交另一份实施计划或重复领取任务；账号向导/真实会话由操作者配合，之后在同一任务继续接通并交用户实测。
+2026-10-31 WX-AKASHA-ALL 已按[完整合同](AKASHA-IMPLEMENTATION-PLAN.md)实施/部署，账号/密钥及真实配对已保存，实际SSE/WS正常，交用户自然群测。当前使用方法见 [README](../README.md)，检查及真实状态见[实施报告](WX-AKASHA-ALL-REPORT.md)和[实施交接](../tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)。具体故障继续本任务修，不再提交另一份实施计划或重复领取任务。
 
 下方所有wxauto分段/ALL指令均为历史，不能再领取或覆盖当前合同；旧CLI缺模块故障保留，路线暂停。
 
