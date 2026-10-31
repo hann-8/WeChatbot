@@ -87,3 +87,7 @@ WX-02复核轮（2026-10-23）：session `WX-02-gap-review-plan-20261023`，20:0
 2026-10-31T10:25:51.763167+08:00：唯一任务 **WX-AKASHA-ALL**，负责人本会话Codex，session WX-AKASHA-ALL-20261031。起点WeChatbot main=938187c。归属：adapters/akasha/**、scripts/*Akasha*及akasha管理脚本、config/examples/akasha*、tests/test_akasha*、README/docs/报告与当前9份规划、PROGRESS/TASKS/实施HANDOFF。完整执行微信计划；已有微信9份规划差异保留，QQ开工干净。不操作旧NapCat根。只管理有创建身份的项目进程；授权受管部署/检查/提交普通push，真实聊天交用户。
 
 2026-10-31T11:05:04.308079+08:00：WX-AKASHA-ALL交用户实测。WeFlow桌面API/bridge受管运行，18766面板、11229独立WS正常；QQ connected/ready且保护检查不变。用户明确回复配对已保存；实际ID/密钥仅本机忽略配置。未主动真实生成/群发样本。
+
+2026-10-31T11:16:39.271914+08:00 WX-AKASHA-ALL具体故障续修，负责人本会话Codex：用户实报Start-Akasha.ps1 status向Python传空--session导致argparse失败。起点main=0cec96d，工作区干净。精确归属仅Start-Akasha.ps1、TASKS.md、本任务HANDOFF；改为仅非空Session才传该可选参数，验证真实status命令。无需重启服务、修改QQ/配置、模型生成或发送；沿原授权审阅提交并普通push。
+
+续修结果：Start-Akasha.ps1仅在Session非空时追加--session和值；当前PowerShell直接运行.\Start-Akasha.ps1 status及Windows PowerShell5.1 -File调用均exit=0、返回状态JSON，SSE/WS仍true。未重启/生成/发送。验证同时看到当前会话有1项unknown且已暂停，保持原记录，不重发、不清账；这与本次参数错误分开。

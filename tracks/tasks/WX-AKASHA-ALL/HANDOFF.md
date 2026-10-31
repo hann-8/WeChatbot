@@ -30,3 +30,7 @@ QQ实现从codex/wx-akasha-all普通快进main，实施及当轮配对已交付�
 入口：Start-Akasha.ps1 start / stop / status，管理http://127.0.0.1:18766，单配置config/local/akasha.json。prepare/inspect/setup/api/pause/resume/reset/memory-status/resolve-unknown仍可用；Stop不退出微信或QQ，只管理有创建身份的微信项目进程。原生@关闭、GIF首帧、不支持媒体准确提示。不要自动重发unknown、复制库/key、清QQ记忆或回滚其他用户差异。
 
 当前全部归属：原九份规划文档＋本交接/报告，Start-Akasha.ps1、adapters/akasha/{source.json,project_bridge.py,project_entry.py}、scripts/akasha.py、config/examples/akasha.json、tests/test_akasha_all.py；QQ实际文件见对应交接/提交。
+
+2026-10-31T11:16:39.271914+08:00 WX-AKASHA-ALL具体故障续修，负责人本会话Codex：用户实报Start-Akasha.ps1 status向Python传空--session导致argparse失败。起点main=0cec96d，工作区干净。精确归属仅Start-Akasha.ps1、TASKS.md、本任务HANDOFF；改为仅非空Session才传该可选参数，验证真实status命令。无需重启服务、修改QQ/配置、模型生成或发送；沿原授权审阅提交并普通push。
+
+续修结果：Start-Akasha.ps1仅在Session非空时追加--session和值；当前PowerShell直接运行.\Start-Akasha.ps1 status及Windows PowerShell5.1 -File调用均exit=0、返回状态JSON，SSE/WS仍true。未重启/生成/发送。验证同时看到当前会话有1项unknown且已暂停，保持原记录，不重发、不清账；这与本次参数错误分开。
