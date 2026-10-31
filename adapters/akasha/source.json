@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/alingalingling/Akasha-WeChat",
+  "commit": "9dbe933a9f1bc46e33ca8121334bb1dd01173248",
+  "app": "wechat-weflow-bridge-ob11",
+  "overlay": ["project_bridge.py", "project_entry.py"],
+  "inline_patch": {"main.py": "Initial API check uses /health instead of messages without a selected talker"},
+  "unchanged_kernel": ["uia_sender.py", "senders.py"],
+  "weflow_repository": "https://github.com/334456777/WeFlow",
+  "weflow_version": "5.0.1",
+  "release_sha256": "8d88ca61c504c8d509fd7b6934e4d2261ba986f6a1e13df68c3732323e1b26fa",
+  "dependencies": {"websockets": "15.0.1", "psutil": "7.2.2", "PyYAML": "6.0.3"}
+}

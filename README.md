@@ -1,4 +1,50 @@
-# WeChatbot 文字版
+# WeChatbot：Akasha主线
+
+当前主线 **WeFlow → Akasha-WeChat → 现有 AstrBot**。WX-AKASHA-ALL 正在实施和受管部署；基础及增强接线、必要替身检查已完成，账号向导/真实绑定仍待操作者完成，尚未宣称真实微信聊天通过。[项目进度](PROGRESS.md) · [实施交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md) · [实施报告](docs/WX-AKASHA-ALL-REPORT.md)。
+
+现有 QQ 功能/凭据保持，模型与人设同源；记忆按本机显式会话/人物配对共享，未配对独立。原 wxauto/CLI 保留为历史，不参与 Akasha 主启动。
+
+## Akasha 使用入口
+
+```powershell
+cd E:\CodexWS\WeChatbot
+.\Start-Akasha.ps1 prepare
+.\Start-Akasha.ps1 setup
+.\Start-Akasha.ps1 start
+.\Start-Akasha.ps1 status
+.\Start-Akasha.ps1 stop
+```
+
+首次运行 `setup` 后打开 [本机管理页](http://127.0.0.1:18766)，点击带本机授权的 WeFlow 向导，选择机器人账号/目录，使用现成向导获取并保存数据库与图片密钥。必要退出/登录和系统授权由你正常操作，密钥不发到聊天。保存后点击“切到桌面 API”及“读取账号/会话选项”。
+
+单一配置为忽略的 `config/local/akasha.json`，管理页可读取/保存，令牌不回显。`bridge.bot_wxid` 填已选机器人账号；`bridge.sessions` 填所选群的 `{"id":"所选sessionId","name":"微信中唯一可搜索的群名"}`。同名群需先在微信中改成可唯一搜索的名称。群内全体非黑名单成员可按规则触发，不设发送者白名单。`mode=all` 仅指入站，回复由同源 free/叫名/续聊策略决定；`mention` 只收文本唤醒，`batch` 保留合并前的每条消息/成员来源。私聊独立开关默认关闭，开启需单独填 `private_sessions`。
+
+共享记忆只在 `pairings` 明确选择：`{"wechat_session":"所选微信群ID","qq_session":"已授权QQ会话ID","scope":"facts_only","actor_links":{"可信微信wxid":"对应真实QQ用户ID"}}`；两端 ID 只填本机。`facts_only` 共用 schema2 事实、短期独立；`shared_context` 同时共用所选会话 RAM。未配对、未链接人物均独立，不凭昵称自动合并。取消配对不会删除旧记忆。
+
+保存配置后运行 `start`；会复用现有 AstrBot/gateway，必要时仅调用该项目受管启停入口加载微信平台，不运行旧的全量 AstrBot 配置重建。原 QQ 6199 保留，微信独立 11229，管理 18766，WeFlow 向导 18108/桌面 API 5031 共用专属 home。普通 SSE/WS 断连由原桥接重连，不回放启动前历史。
+
+`pause` / `resume` / `reset` / `memory-status` / `resolve-unknown` 也可作为入口参数，`-Session` 可选定一个本机会话。reset 只清短期。发送明确完成记 `local_reported`，不是服务器 ACK 或用户已看见；false、异常、部分发送或返回连接丢失暂停该会话，不自动重发。核对微信实际情况后才用 `resolve-unknown` 继续，不补发旧结果。stop 只结束身份记录匹配的 Akasha/WeFlow/面板，不退出微信，不停止其他平台。
+
+## 当前能力
+
+| 能力 | 接线与边界 |
+| --- | --- |
+| 文字/角色/上下文/free/adaptive | 复用现有 QQ 自有业务、provider、队列、ReplyPlan，始终回源；真实效果待用户实测 |
+| schema2 记忆 | 同次模型全文增改删、原子保存/准确回执；复用同一 MemoryStore/key/库，不复制 |
+| 联网 | 同一 CLI 任务内仅 WebSearch/WebFetch，3调用/4步骤/90秒、单8000/总12000字节；无自动后端/账号切换 |
+| 当前图片 | 完整 serverId 关联、一次性本机材料、现有原生归一化/同轮推理；失败不取旧图，不启动 caption 模型 |
+| 表情/成员 | 只发送现有登记素材；公开群成员补充真实称呼，缺失不挡文字；GIF按首帧，不声明保留动画 |
+| @ | 文本唤醒/称呼；原 UIA 发送接口不提供微信原生@，明确关闭 |
+| 控制 | 本机管理；只有公开源可信 wxid 与显式 owner_wxid 相符才允许群内暂停/恢复/reset |
+| 语音/视频/任意文件/B站退役功能 | 关闭/准确提示，不新增 ASR/TTS 或付费 API |
+
+状态分别显示依赖、连库、SSE、AstrBot WS、零生成元数据检查及本地发送次数；任何一个绿灯都不代表用户已收到回复。详细证据与回滚见实施报告。
+
+以下是旧 wxauto 文字版历史说明，保留供查阅，不作为主线启动步骤。原 Start-WeChatbot.ps1 仍是旧入口，后续 CLI 缺模块的 PROTOCOL_ERROR 未修复。
+
+---
+
+# 旧wxauto文字版（历史）
 
 WX-MIG-ALL 已实现；2026-10-31用户反馈启动恢复、测试OK，单群文字版已接受。入口：[PROGRESS](PROGRESS.md)、[任务交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md)、[检查报告](docs/WX-MIG-ALL-REPORT.md)。真实微信兼容、模型效果、原生联网服务与群发送均未由 agent 验收。
 

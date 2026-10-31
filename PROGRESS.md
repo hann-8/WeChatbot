@@ -1,22 +1,24 @@
+当前实施：**WX-AKASHA-ALL active**，见[本次交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)；用户已提交完整实施指令，下方只规划描述为历史。
+
 # WeChatbot项目入口
 
 2026-10-31（Asia/Shanghai）。唯一根进度入口；Windows根E:/CodexWS/WeChatbot，独立于QQ，不另建根HANDOFF。
 
-当前：**WX-MIG-ALL completed，用户反馈测试OK，单群文字版已接受**。入口[README](README.md) / [当前交接](tracks/tasks/WX-MIG-ALL/HANDOFF.md) / [检查报告](docs/WX-MIG-ALL-REPORT.md)。只领取ALL一次，未分MIG-01/02/03轮流停下。禁止过度防御，优先公开接口与已有代码；正常用户反馈即可接受，不加无关验收轮次。
+**当前主线：WeFlow → Akasha-WeChat → 现有AstrBot。WX-AKASHA-ALL已实施接线并部署QQ侧，微信账号向导/真实绑定待操作者完成，同任务继续。** 当前看[实施交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md) / [报告](docs/WX-AKASHA-ALL-REPORT.md) / [使用入口](README.md)。[完整合同](docs/AKASHA-IMPLEMENTATION-PLAN.md)及[原规划交接](tracks/tasks/WX-AKASHA-01/HANDOFF.md)保留；不再提交一轮规划。禁止过度防御性编程。
 
-文字版包含wxauto4单群收发薄适配、人设/单条自然纯文本、八轮上下文、本机控制、固定runner、CLI原生WebSearch/WebFetch、schema2全文独立记忆、配置和一个启动入口。媒体/成员/真实@/QQ式free关闭。源只读固定42911afc4c1f2bcfbbc3c26afc2647fd21992f08，来源与本地差异见[映射](docs/WX-MIGRATION-SOURCE-MAP.json)及manifest；源项目代码/配置/运行实例不变，不搬私密数据。
+计划包含账号/WeFlow准备、必要桥接协议修复、现有AstrBot跨平台路由、共用模型/人设、上下文、显式配对共享记忆、原生联网、当前图识别、受控表情/free/adaptive、成员与控制、管理界面、启动/恢复/回滚。缺原生@等能力用表内明确替代，不另留必需规划轮。
 
-本轮60项组合/相关回归通过，74项快照/工件摘要、compileall、默认启动inspect及旧trial mock通过。只有合成框架/模型/SDK证据；未执行真实微信、模型生成、联网服务、SSH或群发送，不替代真实验收。local_reported可继续；unknown只暂停本会话，不重试、不清账、不索逐条人工ACK。
+当前：固定Akasha运行副本及协议overlay、独立venv、WeFlow维护分支v5.0.1、单配置/管理/启停入口已交付；当前定向34＋微信组合6通过，CLI真实零生成配对完成。现有AstrBot已增量监听11229，原QQ恢复connected/ready；微信向导18108/面板18766已启动，尚未保存机器人账号/密钥及实际映射，未真实收发。不能把接线/检查写成微信已能聊天。
 
-2026-10-31（Asia/Shanghai），用户先反馈“现在可以了”，随后反馈“测试ok，继续”。据此记录指定单群文字版启动恢复、整体试用OK并由用户接受；用户未逐项列出记忆/联网/本机控制结果，不扩写为这些专项全部实测通过，不称服务端ACK或长期稳定性证明。 原始错误明确为框架未找到已登录客户端主窗口；用户按手动展开主窗口/重新登录建议后反馈恢复，具体生效动作未单独确认。不再保留启动故障为当前阻塞，本轮只同步接受记录，不操作运行实例。
+旧wxauto文字版保留。此前用户反馈启动恢复/测试OK是历史记录；随后真实日志出现CLI_START后PROTOCOL_ERROR，零生成握手确认CLI运行包缺模块，未修复。原离线检查不证明当前真实链路可用；现在按用户选择转Akasha，不再扩大旧路线投入。旧实现、检查报告、配置和未决记录均从对应交接读取。
 
-默认通道仍mock、enabled/sends=false；增强模板准备true，但默认启动仅inspect、0真实操作。config/local五份文件和secrets/wxauto4-chat.local.json空模板已准备，后端仍codebuddy_cli，账号/模型/微信persona保留；Ollama手选不自动切换，原生工具仅CLI。数据/密钥/历史/记忆/日志独立且忽略，模型/群文字不执行本机控制，群内全部成员均可按前缀触发，无发送者白名单，不默认回复每条闲聊。
-
-Git只用main，origin为[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)；本轮按明确授权提交检查过的实现和上轮十份规划成果，普通push核SHA，不force、不建分支。交付SHA见本次会话最终答复。AGENTS→本入口→当前交接→报告即可恢复；详细历史从下表进入。
+微信Git只用main，origin为[hann-8/WeChatbot](https://github.com/hann-8/WeChatbot)。本轮起点938187c，已知规划与本次实现一同检查提交；QQ从42911af隔离实施后快进main并受管部署。两处Git/部署分别记录，秘密/数据/运行工件不发布。
 
 | 工作线 | 状态 | 下一步/入口 |
 | --- | --- | --- |
-| WX-MIG-ALL 一次批量迁移 | completed；实现/必要离线检查＋用户整体试用OK | [HANDOFF](tracks/tasks/WX-MIG-ALL/HANDOFF.md)，用户已接受，正常使用；有具体故障再修复 |
+| WX-AKASHA-ALL 一次实施 | active；代码/检查与QQ侧受管部署完成，账号向导/映射待操作者，同任务继续 | [实施交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md) / [报告](docs/WX-AKASHA-ALL-REPORT.md) |
+| WX-AKASHA-01 一次完整规划 | completed；完整方案/唯一medium指令已交付，尚未实施 | [HANDOFF](tracks/tasks/WX-AKASHA-01/HANDOFF.md)，用户提交WX-AKASHA-ALL后一次落地 |
+| WX-MIG-ALL 旧wxauto文字版 | 历史实现/离线通过；后续真实CLI缺模块未修，路线已替代 | [HANDOFF](tracks/tasks/WX-MIG-ALL/HANDOFF.md)，保留代码/配置/历史，不继续扩修 |
 | WX-MIGRATION-PLAN 统一详规 | completed；上轮规划已执行 | [HANDOFF](tracks/tasks/WX-MIGRATION-PLAN/HANDOFF.md) / [计划](docs/QQ-TO-WECHAT-MIGRATION-PLAN.md) |
 | WX-GIT-MAIN | completed；单main整理 | [HANDOFF](tracks/tasks/WX-GIT-MAIN/HANDOFF.md) |
 | WX-WXA-02 | 旧挑战真实未验；账号已准备 | [HANDOFF](tracks/tasks/WX-WXA-02/HANDOFF.md)，新入口已并入ALL |
