@@ -176,9 +176,10 @@ class Protocol:
                             self.replies+=1
                             self.unknown.pop(sid,None)
                             result=dict(message_id=stable_id(self.account,'local_reported',uuid.uuid4().hex),delivery_level='local_reported')
-                        except Exception:
+                        except Exception as error:
                             code=1500;message='LOCAL_SEND_UNKNOWN';self.flags[sid]=True
-                            self.unknown[sid]=dict(at=time.time(),parts_completed=sent)
+                            failure=getattr(self.sender,'failure',{}) or dict(error_type=type(error).__name__)
+                            self.unknown[sid]=dict(at=time.time(),parts_completed=sent,**failure)
                         self.persist()
         elif action=='get_login_info':result=dict(user_id=stable_id(self.account,'bot',self.account),nickname=self.cfg['bridge']['nicknames'][0])
         elif action=='get_status':result=dict(online=self.sse,good=self.sse)

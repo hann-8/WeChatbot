@@ -14,6 +14,8 @@ cfg=load_config()
 home=Path(os.environ['AKASHA_CONFIG']).parents[2]
 status_path=home/'state/akasha-wechat/bridge-status.json'
 protocol=install(cfg,status_path)
+from uia_dispatch import install_sender
+install_sender(cfg)
 import main,state
 
 class Panel(BaseHTTPRequestHandler):
@@ -99,4 +101,6 @@ if __name__=='__main__':
         main._start_bridge()
         threading.Thread(target=monitor,daemon=True).start()
     try:ThreadingHTTPServer(('127.0.0.1',18766),Panel).serve_forever()
-    finally:main._stop_bridge()
+    finally:
+        main._stop_bridge()
+        if state.sender_instance and hasattr(state.sender_instance,'close'):state.sender_instance.close()

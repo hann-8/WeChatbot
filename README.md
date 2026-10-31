@@ -10,6 +10,7 @@
 cd E:\CodexWS\WeChatbot
 .\Start-Akasha.ps1 prepare
 .\Start-Akasha.ps1 setup
+.\Start-Akasha.ps1 bind-window
 .\Start-Akasha.ps1 start
 .\Start-Akasha.ps1 status
 .\Start-Akasha.ps1 stop
@@ -22,6 +23,8 @@ cd E:\CodexWS\WeChatbot
 共享记忆可在本机面板“一次选择实际记忆配对”载入选项后保存，当前操作者已选择 `facts_only` 及1条明确人物映射。配置格式为 `{"wechat_session":"所选微信群ID","qq_session":"已授权QQ会话ID","scope":"facts_only","actor_links":{"可信微信wxid":"对应真实QQ用户ID"}}`；两端 ID 只填本机。`facts_only` 共用 schema2 事实、短期独立；`shared_context` 同时共用所选会话 RAM。未配对、未链接人物均独立，不凭昵称自动合并。取消配对不会删除旧记忆。
 
 保存配置后运行 `start`；会复用现有 AstrBot/gateway，必要时仅调用该项目受管启停入口加载微信平台，不运行旧的全量 AstrBot 配置重建。原 QQ 6199 保留，微信独立 11229，管理 18766，WeFlow 向导 18108/桌面 API 5031 共用专属 home。普通 SSE/WS 断连由原桥接重连，不回放启动前历史。
+
+发送窗口须另行绑定：只保留机器人微信窗口时运行 `bind-window`，再 `start`。WeFlow数据库账号和UIA发送窗口是两个接点；绑定是操作者对当前窗口的明确指定，不是从窗口标题自动核验wxid。当前窗口/进程创建身份会保存到忽略的本机配置，关闭、换号或重开后需重新绑定。上游发送器依赖全局微信窗口查找，本路线暂按机器人单窗口使用；若它指向别的窗口，桥接会停住而不自动跟随。原UIA内核保持不改，初始化和所有发送在同一专用线程执行。联系人每轮重新选取并检查返回结果。
 
 `pause` / `resume` / `reset` / `memory-status` / `resolve-unknown` 也可作为入口参数，`-Session` 可选定一个本机会话。reset 只清短期。发送明确完成记 `local_reported`，不是服务器 ACK 或用户已看见；false、异常、部分发送或返回连接丢失暂停该会话，不自动重发。核对微信实际情况后才用 `resolve-unknown` 继续，不补发旧结果。stop 只结束身份记录匹配的 Akasha/WeFlow/面板，不退出微信，不停止其他平台。
 

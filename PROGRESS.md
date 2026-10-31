@@ -1,5 +1,7 @@
 当前实施：**WX-AKASHA-ALL ready_for_user_test**，见[本次交接](tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)；用户已提交完整实施指令，下方只规划描述为历史。
 
+2026-10-31实测续修：用户实报无回复，并指出双账号时自动化实际落在大号、大号随后退出。已停桥接，修正UIA对象跨线程接点，新增操作者显式窗口/进程身份绑定及联系人切换结果检查；当前机器人窗口已绑定，SSE/WS恢复。依据用户“未收到”反馈归档旧unknown，仅恢复新消息，不补发旧结果；再次群测待反馈。今后换号/重开机器人微信：只保留机器人窗口，执行bind-window后start。
+
 # WeChatbot项目入口
 
 2026-10-31（Asia/Shanghai）。唯一根进度入口；Windows根E:/CodexWS/WeChatbot，独立于QQ，不另建根HANDOFF。

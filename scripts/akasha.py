@@ -145,10 +145,19 @@ def ensure_astrbot(cfg):
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('action', type=str.lower, choices=['prepare','inspect','setup','api','start','stop','status','pause','resume','reset','memory-status','resolve-unknown'])
+    parser.add_argument('action', type=str.lower, choices=['prepare','inspect','setup','api','bind-window','start','stop','status','pause','resume','reset','memory-status','resolve-unknown'])
     parser.add_argument('--session', default='')
     args=parser.parse_args(); cfg=load()
     if args.action=='prepare': prepare(cfg); print('Pinned runtime prepared; config: '+str(LOCAL))
+    elif args.action=='bind-window':
+        if not cfg['bridge']['bot_wxid']:raise SystemExit('Select the robot account first.')
+        stop('bridge');dest=prepare(cfg)
+        sys.path[:0]=[str(ROOT/'adapters/akasha'),str(dest)]
+        import logging
+        logging.disable(logging.CRITICAL)
+        from uia_dispatch import capture_binding
+        cfg['uia_window']=capture_binding(cfg['bridge']['bot_wxid']);save(cfg)
+        print('Robot WeChat window bound locally; no message sent.')
     elif args.action=='setup':
         stop('bridge');stop('weflow')
         launch('setup',[str(EXE),'serve','--host','127.0.0.1','--port','18108'],cfg)
@@ -161,6 +170,7 @@ def main():
         print('WeFlow desktop API requested on 5031.')
     elif args.action=='start':
         if not cfg['bridge']['sessions'] or not cfg['bridge']['bot_wxid']: raise SystemExit('Select the robot account and target session in local config first.')
+        if not cfg.get('uia_window'):raise SystemExit('Bind the robot window with bind-window before starting.')
         stop('setup');dest=prepare(cfg)
         launch('weflow',[str(EXE),'serve','--desktop','--message-push','--host','127.0.0.1','--port','5031'],cfg)
         import requests

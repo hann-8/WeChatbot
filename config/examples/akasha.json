@@ -3,5 +3,6 @@
   "astrbot": {"root": "E:/CodexWS/QQbot_Snowluma", "platform_id": "akasha-wechat", "ws": "ws://127.0.0.1:11229/ws"},
   "bridge": {"bot_wxid": "", "nicknames": ["肥鱼", "鱼鱼"], "sessions": [], "private_enabled": false, "private_sessions": [], "blacklist": [], "mode": "all", "buffer_seconds": 1, "owner_wxid": ""},
   "pairings": [],
+  "uia_window": null,
   "capabilities": {"native_at": false, "gif": "first_frame", "voice": false, "video": false, "files": false}
 }

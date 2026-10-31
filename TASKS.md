@@ -91,3 +91,11 @@ WX-02复核轮（2026-10-23）：session `WX-02-gap-review-plan-20261023`，20:0
 2026-10-31T11:16:39.271914+08:00 WX-AKASHA-ALL具体故障续修，负责人本会话Codex：用户实报Start-Akasha.ps1 status向Python传空--session导致argparse失败。起点main=0cec96d，工作区干净。精确归属仅Start-Akasha.ps1、TASKS.md、本任务HANDOFF；改为仅非空Session才传该可选参数，验证真实status命令。无需重启服务、修改QQ/配置、模型生成或发送；沿原授权审阅提交并普通push。
 
 续修结果：Start-Akasha.ps1仅在Session非空时追加--session和值；当前PowerShell直接运行.\Start-Akasha.ps1 status及Windows PowerShell5.1 -File调用均exit=0、返回状态JSON，SSE/WS仍true。未重启/生成/发送。验证同时看到当前会话有1项unknown且已暂停，保持原记录，不重发、不清账；这与本次参数错误分开。
+
+2026-10-31T11:22:51.902371+08:00 WX-AKASHA-ALL发送故障续修，负责人本会话Codex。用户先不确定是哪条，随后确认“没有回复”。起点main=918de1d、工作区干净。范围：只读当前指定群投递元数据/本机UIA环境，必要adapters/akasha桥接发送接点与定向测试、PROGRESS/TASKS/HANDOFF/报告及受管bridge部署；不改UIA内核、QQ源/配置，不主动模型或发样本，不补发旧结果。未知旧记录留存，按本次人工反馈处理后仅恢复新消息。
+
+本轮精确补充归属adapters/akasha/uia_dispatch.py、source.json、project_entry.py、tests/test_akasha_uia.py：只修现成UIA工厂/调用的线程归属，联系人切换结果检查及错误类型元数据。只读工作线程探针已复现OSError/CoInitialize缺失；uiautomation本机源码明确要求当前线程初始化且Control不能跨线程。两进程同为非提升权限，最后失败部件是text，不臆断图片/权限原因。
+
+用户新增现场事实：之前同时登录两个微信，自动化实际落在大号；随后大号退出。已立即按创建身份停止bridge，WeFlow/QQ/客户端保持，不再发消息。将补发送窗口的显式本机绑定（账号引用＋窗口/进程创建身份），窗口丢失不跟随另一个账号；原UIA按标题全局FindWindow缺少账号绑定是另一确定缺口，不能将该现场全归因COM。补充归属scripts/akasha.py、Start-Akasha.ps1、config/examples/akasha.json及README。
+
+发送续修收尾：UIA同线程/显式窗口与进程绑定/联系人返回检查已实现和部署，6项组合通过。当前新消息恢复；旧unknown和投递证据留存，无补发/主动模型/发送。用户关于多账号的实际反馈已写报告，日常bind-window/start步骤已入README；继续WX-AKASHA-ALL待新消息实测。

@@ -1,5 +1,15 @@
 # WX-AKASHA-ALL 实施与部署报告
 
+## 2026-10-31 实际发送故障续修
+
+用户实报无回复，随后明确双开时自动化实际落在大号，大号之后退出；此前local_reported不等于机器人账号目标群已见。最后未决部件为text；两进程均非提升权限，不猜测图片/权限原因。旧日志没有具体异常，无法将该条失败唯一归因某一子步骤。
+
+两个具体接点已修：原UIA按标题查找首个微信窗口，缺少发送账号/窗口绑定；原工厂在主线程创建Controls，却在线程池发送，本机只读探针复现CoInitialize缺失，库源码也明确禁止这种跨线程用法。新增uia_dispatch桥接层使用同一专用线程创建、使用和释放原sender/COM，并绑定操作者指定的当前机器人窗口及进程创建身份；上游全局FindWindow指向其他窗口时拒绝发送，窗口失效不重新搜索其他账号。每轮检查联系人切换返回结果。第三方UIA文件未改。
+
+用户已说明退出大号；当前仅一个微信窗口，据此完成本机bind-window，保存账号引用/窗口/进程身份，未发送消息。此为操作者窗口指定，不冒充UI层wxid自动核验。后续换号或重开机器人微信需重新bind-window再start；当前上游按机器人单窗口使用。
+
+3项线程/绑定/目标失败定向测试及原3项AstrBot组合通过，实际专用线程与绑定窗口只读检查通过；没有主动模型/发群样本。旧unknown状态已归档到忽略的state/akasha-wechat/unknown-reviewed-*，记录operator_report=no_reply_seen；旧投递台账仍保留，未补发。受管更新bridge后依据本轮人工反馈恢复新消息；SSE/WS/UIA初始化正常，paused=0、unknown=0。后续失败仅记录stage/error_type/数值hresult，不记录正文、联系人或任意异常字符串。实际回复仍待用户新消息实测。
+
 2026-10-31，负责人本会话 Codex。返回 [PROGRESS](../PROGRESS.md) / [实施交接](../tracks/tasks/WX-AKASHA-ALL/HANDOFF.md)。状态 ready_for_user_test：全部接线/必要检查/受管部署完成，实际SSE/WS正常，交用户自然实测；尚未把连接正常当真实聊天验收。
 
 ## 实现
